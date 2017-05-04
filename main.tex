@@ -135,33 +135,7 @@ It is important to note that many of these requirements are tightly coupled.  Fo
 
 \end{itemize}
 
-In order to facilitate discussion of these system trades, we will define some key system performance metrics in the following sections but first we will introduce the non-dimensional parameter $Q$.
-
-\subsection{$\frac{\lambda F^\#}{p}$ or Q}
-\label{sec:q}
-
-The system parameter $Q$ is defined as:
-
-\begin{equation}
-Q = \frac{\lambda F^\#}{p}
-\label{eq:Q}
-\end{equation}
-and is essentially a measure pixel sampling in the spatial domain relative to the Nyquist criterion.  Nyquist says that to completely reconstruct a band-limited system, the spatial sampling frequency. 
-$$\rho_s = 1/p \geq 2 BW_{opt}$$
-
-Because we always sample to DC, the optical bandwidth $BW_{opt}$ is replaced by the diffraction cutoff frequency.
-$$\rho_c = \frac{1}{\lambda F^\#}$$
-
-Thus $Q$ is a measure of Nyquist sampling where $Q=2$ is critically sampled.  Most systems, however, operate at $Q < 2$ and hence incur some spatial aliasing.  There is little reason to operate at $Q > 2$ as the optics do not pass spatial frequency information there so the additional sampling is essentially wasted.
-
-\begin{figure}[h!]
-\includegraphics[width=0.42\textwidth]{figures/Q_fiete.pdf}
-\caption{Spatial interpretation of Q sampling a diffraction-limited PSF.  Adapted from \cite{fiete_q})}
-\end{figure}
-
-In section \ref{sec:iq} we will argue that from an image quality perspective it is desirable to have $1.2 < Q < 1.6$ for typical high-resolution remote sensing systems.  
-
-Beyond a statement of the Nyquist criterion, $Q$ is a very useful parameter by which to evaluate and compare systems.  For more see \cite{fiete_q}.  $Q$ will be used regularly throughout this memo.
+$Q$ will be used regularly throughout this paper, for a definition see \ref{sec:appendix_a}.
 
 \subsection{Image Quality}
 \label{sec:iq}
@@ -273,9 +247,9 @@ GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely
 One thing noticed in parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Fig. \ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ} which indicate that $Q \sim 1.5$ is the optimal balance of resolution and $SNR$ for most real space-based high resolution systems.  
 \subsection{Data Intensity}
 
-Data intensity, $DI$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
+Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
 
-$$DI \equiv \frac{N_{bit}}{px_{out}}$$
+$$I_D \equiv \frac{N_{bit}}{px_{out}}$$
 
 Where we assume an output product to consist of the fused, corrected but un-rectified L1B product. For a typical imaging pipeline that includes compression we must define exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
 
@@ -287,7 +261,7 @@ Where we assume an output product to consist of the fused, corrected but un-rect
 For a digitally oversampling system
 
 \begin{equation}
-    DI = N_f N_{bpp}^{comp} = N_f C N_{bpp}^{raw}
+    I_D = N_f N_{bpp}^{comp} = N_f C N_{bpp}^{raw}
 \end{equation}
 
 \subsection{Detector Line Rate}
@@ -315,14 +289,32 @@ If $LR$ is high enough, it enables digital oversampling of a single ground locat
     N_f = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
 \end{equation}
 
-\subsection{Optical Complexity}
-TBD
-
-
 \subsection{Collection Capacity}
 \label{sec:capacity}
+For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$, and communications bandwidth (which we won't go into here).  
 
-\subsubsection{Swath Width}
+Image collection capacity in turn depends on a number of parameters including ACS agility, swath width and imaging relative ground speed, $V_{gnd}$.  We will not discuss ACS agility here as it is not strictly an imaging system parameter but instead will parametrize it along with other factors such as time-in-sun into a single imaging duty-cycle, $DC_{img} = \frac{t_{img}}{t_{per}}$ metric.  We can say that
+
+There are two primary capacity regimes that a spacecraft may operate in:
+
+\begin{enumerate}
+\item Downlink-constrained regime
+\item Collection-constrained regime
+\end{enumerate}
+
+In Regime 1:
+
+$$t_{d/l} \times BW_{d/l} < I_D t_{per} DC \frac{V_{gnd}w_{ct}}{GSD^2}$$
+
+where $w_{ct}$ is the swath width or cross-track field of view projected to the ground, $t_{D/L}$ is downlink time per orbit, $BW_{D/L}$ is downlink bandwidth and $t_{per}$ is the orbital period.  In Regime 2, the opposite holds.
+
+We distill this down to a capacity constraint metric, $k_{cap}$
+
+\begin{equation}
+k_{cap} = \frac{t_{d/l}}{t_{per}} \frac{BW_{d/l} GSD^2}{I_D \times V_{gnd} w_{ct}}
+\end{equation}
+
+We can now say that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
 
 \subsubsection{Scanrate and Blur}
 
@@ -340,10 +332,82 @@ TBD
 \section{System Trades}
 \label{sec:trades}
 
-\subsection{Size, Image Quality and Q}
+\subsection{Pixel Size}
+\label{sec:px_size}
+
+\subsection{Entendue}
+\label{sec:entendue}
+
+\subection{Stabilization and Data Intensity}
+\label{sec:stabilization}
+
+Large orbital velocity is a large advantage of spacecraft for remote sensing over other platforms as it gives:
+
+\begin{itemize}
+\item Daily global access
+\item High collection rates
+\end{itemize}
+
+However it also presents large challenges in developing an imaging system that can collect sufficient light at the high relative scene velocity without incurring unreasonable blur.
+
+For blur-limited integration time, in can be shown that \cite{shaw}
+
+$$SNR \propto \frac{D \times GSD^{3/2}}{\sqrt{V_{gnd}}}$$
+
+Or if $SNR$ is a fixed requirement, relative ground velocity must be reduced such that:
+
+\begin{equation}
+V_{gnd} \propto GSD^3
+\end{equation}
+
+which has many system-level impacts, the largest of which is its impact on area collection rate, $ACR$:
+
+$$ACR \propto GSD^4$$
+
+This is a major challenge for high-resolution systems and historically there have been many solutions to compensate for scene motion on spacecraft to avoid so-called "back-scanning".  These date back to the earliest film-based systems that used the film motion through the camera itself to compensate.  Other mechanical solutions included gimbaled cameras and full-aperture scan mirrors among others.
+
+Indeed for systems with resolutions better than a few meters, some form of stabilization is essentially required to obtain sufficient $SNR$ without going to unreasonably low relative imaging velocities.
+
+We will classify modern stabilization strategies into three major buckets
+
+\begin{enumerate}
+\item Analog electronic charge transfer or time-delayed integration (TDI) stabilization
+\item Analog optomechanical stabilization
+\item Digital oversampling stabilization
+\end{enumerate}
+
+The first two techniques are considered analog because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  The third relies on detector line-rates high enough to enable multiple digital samples of a single ground point.
 
 \section{Imaging Modalities}
 \label{sec:modalities}
+
+\subsection{Collection Modalities}
+
+Digital imaging spacecraft have traditionally used either a "push-broom" architecture where a line-array sensor is pushed along the ground by the spacecraft's motion or a "step-and-stare" architecture in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.
+
+\begin{figure}[hb!]
+\includegraphics[width=0.42\textwidth]{figures/modalities.png}
+\caption{General satellite imaging modalities}
+\label{fig:modalities}
+\end{figure}
+
+There are many variants of these basic collection modalities but the most important ones address the large relative image motions that high resolution spacecraft must cope with.  These include time-delayed integration (TDI), spatio-temporally over-sampled step-and-stare and opto-mechanically stabilized step-and-stare.
+
+Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
+
+\begin{table}[h!t]
+\resizebox{.45\textwidth}{!}{%
+\centering
+\begin{tabular}{@{}rccccc@{}}
+\multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & \textbf{Q \textgreater 1}         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 
+\textbf{TDI}                                                         & {\color[HTML]{F56B00} \textbf{-}} & {\color[HTML]{32CB00} \textbf{+}}   & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{FE0000} \textbf{- -}}                                & {\color[HTML]{32CB00} \textbf{++}}                                \\ \midrule
+\textbf{Step-Stare}                                                  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{FE0000} \textbf{- -}} & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{32CB00} \textbf{++}}                                 & {\color[HTML]{FE0000} \textbf{- -}}                               \\ \midrule
+\textbf{\begin{tabular}[c]{@{}r@{}}Stab. \\ Step-Stare\end{tabular}} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{++}}  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{Tunable}}                            & {\color[HTML]{32CB00} \textbf{Tunable}}                           \\ \bottomrule
+\end{tabular}%
+}
+\caption{Relative advantages, disadvantages of the modalities. $DR$ is dynamic range, $SNR$ is signal-to-noise ratio}
+\label{table:modalities}
+\end{table}
 
 \subsection{Background and Definition for Analyses}
 \label{sec:analyses_background}
@@ -379,6 +443,35 @@ TBD
 
 \section{Conclusions}
 \label{sec:conclusions}
+
+\section{Appendix A: Definitions}
+\label{sec:appendix_a}
+
+\subsection{$\frac{\lambda F^\#}{p}$ or Q}
+\label{sec:q}
+
+The system parameter $Q$ is defined as:
+
+\begin{equation}
+Q = \frac{\lambda F^\#}{p}
+\label{eq:Q}
+\end{equation}
+and is essentially a measure pixel sampling in the spatial domain relative to the Nyquist criterion.  Nyquist says that to completely reconstruct a band-limited system, the spatial sampling frequency. 
+$$\rho_s = 1/p \geq 2 BW_{opt}$$
+
+Because we always sample to DC, the optical bandwidth $BW_{opt}$ is replaced by the diffraction cutoff frequency.
+$$\rho_c = \frac{1}{\lambda F^\#}$$
+
+Thus $Q$ is a measure of Nyquist sampling where $Q=2$ is critically sampled.  Most systems, however, operate at $Q < 2$ and hence incur some spatial aliasing.  There is little reason to operate at $Q > 2$ as the optics do not pass spatial frequency information there so the additional sampling is essentially wasted.
+
+\begin{figure}[h!]
+\includegraphics[width=0.42\textwidth]{figures/Q_fiete.pdf}
+\caption{Spatial interpretation of Q sampling a diffraction-limited PSF.  Adapted from \cite{fiete_q})}
+\end{figure}
+
+In section \ref{sec:iq} we will argue that from an image quality perspective it is desirable to have $1.2 < Q < 1.6$ for typical high-resolution remote sensing systems.  
+
+Beyond a statement of the Nyquist criterion, $Q$ is a very useful parameter by which to evaluate and compare systems.  For more see \cite{fiete_q}.  
 
 \bibliography{main}
 
