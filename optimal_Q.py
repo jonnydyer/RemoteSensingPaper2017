@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 rc('figure', figsize=(3.5,2.5))
 rc('legend', fontsize='x-small')
+rc('font', family='serif')
 
 def giqe5(gsd, rer, snr, blur):
     c = [4.4, -3.32, 3.32, -5.308, -0.402, -2.92, -0.069]
@@ -43,7 +44,7 @@ Q0 = Fnum0 * lamda / px_pitch0
 lamda = 550e-9
 Fnum = Fnum0
 #d_ap = [0.2, 0.35, 0.5]
-Ne_well = [10e3, 30e3, 60e3]
+Ne_well = [20e3, 30e3, 60e3]
 
 px_pitch = np.linspace(1e-6, 20e-6, 100)
 
@@ -89,13 +90,13 @@ for i, N_e in enumerate(Ne_well):
 
 f = plt.figure(5)
 plt.plot(Q, iq)
-plt.vlines(Fnum0*lamda/px_pitch0, -0.8, 0.8, linestyle='--', 
-           color='r', linewidth=1)
+#plt.vlines(Fnum0*lamda/px_pitch0, -0.8, 0.8, linestyle='--', 
+#           color='r', linewidth=1)
 plt.xlabel(r'Q $\left(\frac{\lambda F^\#}{p_{px}}\right)$')
 plt.ylabel('$\Delta$ NIIRS')
-plt.legend([r'$Ne_{e-}$ = %.0f ke-' % (N/1e3) for N in Ne_well] + ['SkySat-C'])
-plt.xlim(0.5, 3)
-plt.ylim(-0.8, 0.8)
+plt.legend([r'$N_fNe_{e^-} = %.0f ke^-$' % (N/1e3) for N in Ne_well] + ['SkySat-C'])
+plt.xlim(0.5, 2)
+plt.ylim(-0.4, 0.4)
 f.set_tight_layout(True)
 f.savefig('figures/Q_iq.pgf')
 
