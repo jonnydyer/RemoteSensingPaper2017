@@ -1,0 +1,45 @@
+- Why is SkySat-1 so good and how did we make it that way?
+    - Performance?  Sort of...
+    - Cost?  Maybe (see below)...
+    - Integration?  Probably...
+- Need to measure things to get better!
+    - Axis of improvement:
+        - Cost / Capital Req'd
+        - Volume of Data
+            - Scale up vs. Scale out
+        - Value of Data
+            - Not just IQ
+                - Timeliness, responsiveness, reliability
+                - Product quality, usability, traction, uptake (stuff around the pixels)
+                - Context / meta
+            - Value added products
+- Cost
+    - Do pie charts for SS-1, SS-2, SS-C1, SS-C13
+    - NRE
+    - Launch
+    - Optics
+    - BOM
+    - I&T
+    - Overhead
+    - Economies of Scale and Fractionation
+    - Scaling of each contributor (vs. number, size, etc)
+- Optical scaling
+	- Rayleigh
+	- SNR / px
+	- Sampling / Q
+- Mass (area / volume)
+- Power
+	- Solar array area
+	- Batteries
+- Information theoretical
+    - Image data collection / value
+        - Compare to space RF receivers - shorter wavelength = more value?
+	- Communications
+		- Antenna size
+		- Power
+	- Pixel processing / storage
+    - Attitude knowledge
+- Actuators
+    - Attitude control (rotational)
+    - Propulsion
+- Radiation and electronics shielding
