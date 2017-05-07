@@ -107,7 +107,7 @@ Meanwhile the large commercial investment in imaging sensors driven by the consu
     \item Significant increase in detector read-out rates at low noise
 \end{itemize}
 
-CCD-based sensors still hold some performance advantages over CMOS sensors but the capability gap has narrowed almost completely and the manufacturing and read-out rate advantages offered by CMOS have led to wholesale adoption.
+CCD-based sensors still hold some performance advantages over CMOS sensors but the capability gap has narrowed almost entirely and the manufacturing and read-out rate advantages offered by CMOS have led to wholesale adoption.
 
 When developing new remote sensing systems, the capabilities of modern commercial detectors promise the potential of smaller, less expensive systems with similar or better imaging performance to traditional TDI CCD-based systems.  However to realize this promise, the imaging system designer must consider the unique capabilities and shortcomings of the technology.
 
@@ -142,7 +142,7 @@ Table \ref{table:drivers} shows the effect of many mission-level needs on lower-
 \begin{tabular}{@{}ll@{}}
 \toprule
 \textbf{Requirement} & \textbf{Drives} \\ \toprule
-Resolution & \begin{tabular}[c]{@{}l@{}}Aperture Diameter\\ Altitude\\Pixel size\end{tabular} \\ \midrule
+Resolution & \begin{tabular}[c]{@{}l@{}}Aperture Diameter\\ Altitude\\$Q$\end{tabular} \\ \midrule
 \begin{tabular}[c]{@{}l@{}}SNR \& Dynamic Range\end{tabular} & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector Full-well\\Optical $F^\#$\end{tabular} \\ \midrule
 Swath Width & \begin{tabular}[c]{@{}l@{}}Optical Complexity\\ Detector Width\\ Data Volume\end{tabular} \\ \midrule
 Collection Rate & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector line-rate\end{tabular} \\ \midrule
@@ -154,14 +154,14 @@ Spectral Sampling & \begin{tabular}[c]{@{}l@{}}In-track FOV\\ Camera filters\\ S
 \label{table:drivers}
 \end{table}
 
-It is important to note that many of these requirements are tightly coupled.  For example chosing a high resolution requirement directly impacts the difficulty of meeting other requirements:
+It is important to note that many of these requirements are tightly coupled.  %For example chosing a high resolution requirement directly impacts the difficulty of meeting other requirements:
 
-\begin{itemize}
-\item High resolution drives either a reduction in achievable SNR or a increase in required integration time and associated tighter ACS stability and more powerful image stabilization
-\item Recovering SNR at high resolution drives detectors with high line-rate (for digital oversampling) and/or significant analogy stabilization (TDI or optical)
-\item High resolution increases focal plane width and data intensity or reduces swath width while still increasing data intensity
-
-\end{itemize}
+%\begin{itemize}
+%\item High resolution drives either a reduction in achievable SNR or a increase in required integration time and associated tighter ACS stability and more powerful image stabilization
+%\item Recovering SNR at high resolution drives detectors with high line-rate (for digital oversampling) and/or significant analogy stabilization (TDI or optical)
+%\item High resolution increases focal plane width and data intensity or reduces swath width while still increasing data intensity
+%
+%\end{itemize}
 
 \subsection{Imaging Modalities}
 \label{sec:modalities}
@@ -174,8 +174,7 @@ Digital imaging spacecraft have traditionally used a "push-broom" architecture w
 \label{fig:modalities}
 \end{figure}
 
-Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  Pushbroom is highlighted mostly for historical reference as it is impractical to use un-stabilized pushbroom collection in systems with $GSD$ much below 10m.
-
+Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  Pushbroom is highlighted mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
 
 \subsection{The case for smaller systems}
 \label{sec:smaller}
