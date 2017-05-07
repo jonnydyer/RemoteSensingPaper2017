@@ -174,7 +174,7 @@ Digital imaging spacecraft have traditionally used a "push-broom" architecture w
 \label{fig:modalities}
 \end{figure}
 
-Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  Pushbroom is highlighted mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
+Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure \ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
 
 \subsection{The case for smaller systems}
 \label{sec:smaller}
@@ -375,7 +375,7 @@ where $GSD_{m}$\footnote{GSD units must be paid close attention to - many refere
 
 GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  
 
-\includepgf{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$}
+\includepgf{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$ and that $SNR \approx 1 / Q$}
 
 One thing noticed in parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Fig. \ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ}.
 
