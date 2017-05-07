@@ -23,7 +23,7 @@ def rer_approx(Q):
     '''
     Auelemann approximation for RER as a function of Q
     '''
-    return 1. / (Q * (1. + 1./(Q**1.35))**(1./1.35))
+    return 0.5 / (Q * (1. + 1./(Q**1.35))**(1./1.35))
 
 def SNR_GIQE(Ne_well=10e3, Ne_rd=15.):
     return 0.07 * Ne_well / (np.sqrt(0.15 * Ne_well) + Ne_rd)
@@ -44,7 +44,7 @@ Q0 = Fnum0 * lamda / px_pitch0
 lamda = 550e-9
 Fnum = Fnum0
 #d_ap = [0.2, 0.35, 0.5]
-Ne_well = [20e3, 30e3, 60e3]
+Ne_well = [20e3, 30e3, 50e3]
 
 px_pitch = np.linspace(1e-6, 20e-6, 100)
 
@@ -54,10 +54,10 @@ gsd = np.zeros([len(px_pitch), len(Ne_well)])
 
 for i, N_e in enumerate(Ne_well):
     Q[:,i] = Fnum * lamda / px_pitch
-    #rer = rer_approx(Q[:,i])
+    rer = rer_approx(Q[:,i])
     f = Fnum * d_ap0
     gsd[:,i] = px_pitch / f * alt
-    rer = rer0 * gsd[:,i] / gsd0
+    #rer = rer0 * gsd[:,i] / gsd0
     #snr = snr0 / (Q[:,i]/Q0)**snr_exp
     snr = SNR_GIQE(px_pitch**2 / px_pitch0**2 * N_e)             
     iq[:,i] = giqe5(gsd[:,i], rer, snr, 1.0) - NIIRS0
@@ -97,7 +97,7 @@ plt.ylabel('$\Delta$ NIIRS')
 plt.legend([r'$N_fNe_{e^-} = %.0f ke^-$' % (N/1e3) for N in Ne_well] +
         ['SkySat-C'], loc='lower right')
 plt.xlim(0.5, 2)
-plt.ylim(-0.5, 0.5)
+plt.ylim(-0.5, 0.6)
 f.set_tight_layout(True)
 f.savefig('figures/Q_iq.pgf')
 
