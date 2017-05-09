@@ -30,7 +30,7 @@
  pdfcreator={}, 
  pdflang={English}}
 
-\newcommand{\includepgf}[3]
+\newcommand{\includefigure}[3]
 {
   \begin{figure}[h!]
   \centering
@@ -45,6 +45,7 @@
 \begin{document}
 
 \newtheorem{mydef}{Definition}
+\newtheorem{observation}{Observation}
 
 \makeatletter
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
@@ -52,6 +53,7 @@
 
 \author{Jonathan~Dyer,~\IEEEmembership{Member,~IEEE,}
         Dirk~Robinson,~\IEEEmembership{Member,~IEEE,}
+        Matthew~Messana,~\IEEEmembership{Member,~IEEE,}
         and~Paul~Boerner,~\IEEEmembership{Member,~IEEE}%
 }
 
@@ -61,7 +63,11 @@
         
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-The abstract goes here.
+Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution" will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  And while these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complimentary such that interest and investment will continue to grow alongside development of more traditional platforms.
+
+The authors identify the trends in imaging and micro-electronics driven by other industries' investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and, in some cases, performance improvements but also come with technical shortcomings and challenges that must be addressed at the system-level.
+
+We argue that a) commercial technology trends enable a level of imaging performance / cost heretofore impossible, b) system size reduction is key to realizing these improvements, c) new imaging architectures and technologies are required to fully realize these improvements and d) embrace of the COTS/SmallSat mindset will accelerate performance/cost trends in the coming years.
 \end{abstract}
 
 
@@ -78,13 +84,47 @@ IEEE, remote sensing, satellite, spacecraft, high resolution.
 \section{Introduction}
 \label{sec:introduction}
 
-The last 15 years have seen a massive upheaval in digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and Movie industries.
+The last 15 years have seen a massive upheaval in digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and movie industries.
 
 Satellite remote sensing systems underwent a similar revolution roughly 30 years earlier as film-based systems were phased out in favor of CCD-based electronic line scanners.  While the specific demanding requirements of satellite remote sensing drove much of the early technology investment and development in digital electronic imaging, far more investment is now being applied in the commercial arena than in further refinement of now mature CCD-based line scan sensors.
 
 We assert that the future of the satellite remote-sensing industry will be in leveraging the massive investment in commercial digital and computational imaging technologies rather than continued large-scale investment in standalone technologies for these systems and that this shift presents both opportunities and challenges to new systems.
 
-\section{Sensor Technology Trends}
+\section{Trends}
+In order to motivate the subsequent discussion, we identify and discuss the "SmallSat" philosophical trend and two technology trends uniquely enabling it in remote sensing systems.
+
+\subsection{Trend to Smaller Spacecraft}
+
+\label{sec:smallsat}
+There is a large and growing interest in what can be accomplished with much smaller spacecraft.  This trend is driven by 
+\begin{itemize}
+    \item Reduced appetite for the large and ballooning costs of traditional systems
+    \item Recognition of the mission level advantages offered by constellations of satellites (homogeneous or with sensor disaggregation, diversity) enabled by lower cost systems
+    \item Demonstration of high-performance remote sensing SmallSats developed at low cost by small, commercially funded teams
+\end{itemize} 
+
+There is significant evidence indicating that mission cost is non-linearly correlated with spacecraft size and complexity.  Indeed \cite{bearden} has shown with high correlation that 
+
+$$C \sim m^k$$
+with $k=1.261$ implying cost $C$ is super-linearly impacted by mass, $m$.  Because for spacecraft systems
+
+$$m \sim \chi^n$$
+
+where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, we can also say:
+
+\begin{equation}
+C \sim \chi^m
+\end{equation}
+
+where $m = n + k >> 2$
+
+Similar arguments can be derived from other cost scaling observations such as Meinel's Law for telescopes which states
+
+$$C \sim D_{ap}^{2.7}$$
+
+While there are certainly cases where mission requirements strictly necessitate large spacecraft or component dimensions (diffraction-limited resolution requirements are such an example), it is the authors' observation that in many cases mission imaging application requirements are not this black-and-white and that significantly better performance/cost ratios are achievable by driving to smaller systems.
+
+\subsection{Sensor Technology}
 \label{sec:sensor_trends}
 
 Historically, space-based remotes sensing systems have utilized CCD-based Time Delayed Integration (TDI) line-scan sensors.  Modern TDI sensors are a mature technology with several very desire-able characteristics for high resolution remote sensing:
@@ -107,14 +147,48 @@ Meanwhile the large commercial investment in imaging sensors driven by the consu
     \item Significant increase in detector read-out rates at low noise
 \end{itemize}
 
-CCD-based sensors still hold some performance advantages over CMOS sensors but the capability gap has narrowed almost entirely and the manufacturing and read-out rate advantages offered by CMOS have led to wholesale adoption.
+\begin{figure}[h!]
+\includegraphics[width=0.45\textwidth]{figures/pixel_trend.png}
+\caption[]{Trends in commercial sensor pixel sizes from \cite{isscc2016}}
+\label{fig:pix_trend}
+\end{figure}
+
+CCD-based sensors still hold some performance advantages over CMOS sensors but the capability gap has narrowed almost entirely and the manufacturing and read-out rate advantages offered by CMOS have led to wholesale adoption in the consumer / commercial world.
 
 When developing new remote sensing systems, the capabilities of modern commercial detectors promise the potential of smaller, less expensive systems with similar or better imaging performance to traditional TDI CCD-based systems.  However to realize this promise, the imaging system designer must consider the unique capabilities and shortcomings of the technology.
+
+\subsection{Non-Imaging Commercial Electronic Trends}
+
+In addition to the rapid advances in commercial imaging technology, Moore's law has continued to drive massive increase in microelectronic integration density with the associated performance, cost and device size improvements.
+
+Indeed in recent years much of the emphasis has been in large-scale functional integration into single die "system-on-chip" (SoC) devices that operate at very high performance/watt for the consumer devices industry.  Such devices are uniquely enabling for small spacecraft in that, just as with consumer devices, they enable massive functionality in a small, low power package limit the amount of functional engineering "glue" required shortening design cycles.  Stated more directly, the computational power most people have in their pockets today was unavailable in large, complex spacecraft 10 years ago.
+
+Similar arguments can be made for:
+
+\begin{itemize}
+    \item High density solid-state storage (Flash memory)
+    \item Dedicated signal- and image-processing hardware for compression or computational imaging
+    \item Digital modulation and radio technologies
+    \item Inertial sensors
+\end{itemize}
+
+Indeed one can look at many of our personal consumer electronic devices and see the applicability to spacecraft in virtually every technology.  And these technologies have investment rates orders-of-magnitude higher than dedicated aerospace technologies.
+
+Historically there has been resistance to the utilization of commercial electronics technologies for space applications due to reliability concerns, both intrinsic and due to the space environment.  Again, several things make such resistance less defensible:
+
+\begin{itemize}
+    \item High demonstrated statistical reliability of commercially-available components qualified to operate over thermal ranges much more severe than typical in-space environments (e.g. auto, industrial)
+    \item Substantial improvement in CMOS latch-up susceptibility
+    \item Deep and pervasive integration of hardware single-event protection driven by sea-level single-event susceptibility to massive integration devices
+    \item Demonstration of high uptime and reliable operation of COTS-based avionics in LEO \cite{careful_cost}.
+\end{itemize}
+
+For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-adverse) systems.
 
 \section{Performance Trade Space}
 \label{sec:trade_space}
 
-The high resolution imaging trade space is fairly well constrained by a few driving requirements which are, in turn, driven by four primary mission needs:
+The remote-sensing trade space is largely constrained by four mission needs:
 
 \begin{enumerate}
 \item Phenomenology
@@ -123,122 +197,74 @@ The high resolution imaging trade space is fairly well constrained by a few driv
 \item Cost
 \end{enumerate}
 
-\emph{Phenomenology} refers to the phenomenon being sensed or study and drives things like the spectral range, signal-to-noise ratio (SNR) and resolution required.  
+\emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100nm$) collection in the near-visible spectrum ($\sim 400nm$ to $\sim 1000nm$) but will also point out where the trends in questions impact the ability to perform other phenomenology (e.g. SWIR or HSI).
 
-\emph{Image Quality}, likewise, drives resolution and SNR.  
-
-\emph{Collection capacity} drives many system variables both within the payload (such as swath width) as well as elsewhere in the spacecraft (collection rate, attitude control agility).  
-
-\emph{Cost} is an increasingly important constraint placed on both technology selection and physical dimensions of the spacecraft.
-
-We will largely ignore Phenomenology here and focus instead on the balance of Quality, Capacity and Cost in such systems.
-
-\subsection{Remote Sensing Driving Requirements}
-\label{sec:requirements}
-
-Table \ref{table:drivers} shows the effect of many mission-level needs on lower-level requirements.
-\begin{table}[h!t]
-\resizebox{.45\textwidth}{!}{%
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Requirement} & \textbf{Drives} \\ \toprule
-Resolution & \begin{tabular}[c]{@{}l@{}}Aperture Diameter\\ Altitude\\$Q$\end{tabular} \\ \midrule
-\begin{tabular}[c]{@{}l@{}}SNR \& Dynamic Range\end{tabular} & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector Full-well\\Optical $F^\#$\end{tabular} \\ \midrule
-Swath Width & \begin{tabular}[c]{@{}l@{}}Optical Complexity\\ Detector Width\\ Data Volume\end{tabular} \\ \midrule
-Collection Rate & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector line-rate\end{tabular} \\ \midrule
-Spectral Sampling & \begin{tabular}[c]{@{}l@{}}In-track FOV\\ Camera filters\\ Semiconductor Bandgap\end{tabular} \\ \bottomrule
-\end{tabular}%
-}
-\centering
-\caption{System Performance Drivers}
-\label{table:drivers}
-\end{table}
-
-It is important to note that many of these requirements are tightly coupled.  %For example chosing a high resolution requirement directly impacts the difficulty of meeting other requirements:
-
-%\begin{itemize}
-%\item High resolution drives either a reduction in achievable SNR or a increase in required integration time and associated tighter ACS stability and more powerful image stabilization
-%\item Recovering SNR at high resolution drives detectors with high line-rate (for digital oversampling) and/or significant analogy stabilization (TDI or optical)
-%\item High resolution increases focal plane width and data intensity or reduces swath width while still increasing data intensity
-%
-%\end{itemize}
-
-\subsection{Imaging Modalities}
-\label{sec:modalities}
-
-Digital imaging spacecraft have traditionally used a "push-broom" architecture where a line-array sensor is pushed along the ground by the spacecraft's motion.  Development of large format CCD and CMOS framing detectors allow for  "step-and-stare" architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.
-
-\begin{figure}[hb!]
-\includegraphics[width=0.42\textwidth]{figures/modalities.png}
-\caption{General satellite imaging modalities}
-\label{fig:modalities}
-\end{figure}
-
-Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure \ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
-
-\subsection{The case for smaller systems}
-\label{sec:smaller}
-The industry is in the midst of a shift toward smaller systems.  This is largely due to the cost, development speed and scaling advantages that constellations of small satellites offer.  Indeed \ref{bearden} has shown for historic small satellites that:
-
-$$C \propto m^{1.261}$$
-
-with a high correlation indicating that size alone is a major factor in system cost.
-
-Happily, three trends in commercial image sensor and computing technology enable the development of smaller, lower cost spacecraft - 
-\begin{itemize}
-    \item Small pixels
-    \item High read-out rates at low power
-    \item High performance processing and storage at low power
-    \item Inherent radiation tolerance of CMOS sensors
-\end{itemize}
-
-Other factors that are first-order influences on system cost which commercial imaging technologies positively impact are
-
-\begin{itemize}
-    \item Custom development cost and program risk
-    \item Optomechanical components and integration
-    \item Availability of development and test infrastructure
-\end{itemize}
-
-Before diving into these factors, we will define the different imaging modalities relevant to historical and future systems.
-
-
-\subsection{Resolution and Pixel Size}
-
-Resolution is a surprisingly difficult-to-define metric.  Often Ground Sample Distance (GSD) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying SNR or sharpness (see Section \ref{sec:q}).
-
-More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance (GRD) is an example of a such a metric.  Unfortunately the definition of GRD is not universally agreed to or consistent.  We will use the definition of GRD proposed in \cite{auelmann_iq} where:
+\emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  We will discuss each and their relation to each other in more detail later, but to motivate the tradeoffs, we note the following result derived in \cite{shaw}
 
 \begin{equation}
-    \alpha_{eff} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
-\label{eq:alpha_eff}
+    \label{eq:acr_scaling}
+    ACR \propto \frac{GSD^4}{SNR^2 \times N_{\lambda}^2}
 \end{equation}
 
-\cite{auelmann_iq} has shown that a good approximation for $\alpha_{eff}$ for diffraction limited systems is given by:
+where is $ACR$ is Area-Collection-Rate in land area per time, $N_{\lambda}$ is the number of spectral bands the full spectral bandwidth is divided into.  
 
+Equation \ref{eq:acr_scaling} very effectively demonstrates the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.  It also forms the basis for a useful overall system performance and complexity figure-of-merit:
 
 \begin{equation}
-    \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
-\label{eq:alpha_eff_approx}
+    \label{eq:perf_complex_metric}
+    FOM = \frac{ACR \times SNR^2 \times N_{\lambda}^2}{GSD^4}
 \end{equation}
 
-\includepgf{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
+\subsection{Pixel Size and Q}
 
-Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and illustrates why GSD is a problematic resolution metric.
-
-$Q$ is generally chosen as a trade between image quality, collection capacity and system size.  
-
-[TODO: reference or discuss how collection capacity is impacted by Q]
-
-More specifically, given a $Q$ and aperture diameter necessary to achieve mission image quality and collection capacity requirements, optical focal length and pixel size may be traded against each other directly.
+The first technology trend we will discuss is pixel size or pitch, $p_{px}$ and its impact on image quality, collection capacity and system characteristic size and, hence, cost.  We will study the effect of pixel size through the lens of $Q$ recognizing that
 
 $$Q \propto \frac{f}{p_{px}}$$
 
-Historically because pixel sizes have been limited by CCD semiconductor process and well depth requirements (see ?? section) and swath width requirements would drive to unreasonably large focal planes at high $Q$, high resolution systems have been designed with $Q < 1$, leaving image quality on the table.  Even so, such systems typically have relatively high $F^{\#}$ ($> 10$) and thus focal lengths, $f$.  Both the pixel-size-driven focal plane sizes and focal-length-driven optical envelopes have been large and drive the rest of the system size.
+and then show why driving Q with pixel size is preferable to focal length, $f$ or diameter, D.
 
-$$m \approx s^3 \approx [f^3, p_{px}^3]$$
+$Q$ is generally chosen as a trade between image quality, collection capacity and system size.  
 
-As we mentioned earlier, the recent emphasis is on smaller systems and, happily, the trend towards much smaller pixel in commercial image detectors opens up the opportunity.  However nothing comes for free and while the smaller pixels enable more compact systems, they also have smaller electron well depths and thus present a challenge in achieving acceptale $SNR$.  We will go into this further in TBD section and show how the digital and hybrid stabilized systems offer sa solution.
+In \ref{sec:iq} we show that the NIIRS as predicted by the Generalized Image Quality Equation (GIQE-5) is a useful image quality metric for remote sensing systems.
+
+\includefigure{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$ and that $SNR \approx 1 / Q$}
+
+One thing demonstrated in parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Fig. \ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ} and is not unexpected considering that in a diffraction-limited system with $Q<2$, there is contrast passed by the optical system that is not sampled by the detector.  At first blush it seems obvious that, given the cost and difficulty of building larger optics, systems would be designed at $Q>1$.  However, there are three other system impacts of $Q$ that make pushing $Q$ higher problematic.
+
+The first is that for CCD-based TDI systems, pixels with sufficient full well capacity ($FWC$), and hence $SNR$ performance have required $p_{px} >> 10um$.
+
+The second is that given other system constraints (detector line rate, $SNR$ required, focal plane dimension) [TODO: verify this relationship is right!!]
+
+\begin{equation}
+    ACR \propto \frac{1}{Q^2}
+\end{equation}
+
+Finally, other constraints being equal
+
+\begin{equation}
+    SNR \propto \frac{1}{Q}
+\end{equation}
+
+if pixel pitch of FWC is considered (see section \ref{sec:FWC_px}) is considered.
+
+Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poorer image quality in exchange for manageable optical focal lengths, increased area collection capacity and acceptable $SNR$ / $DR$.
+
+\begin{observation}[$Q > 1$]
+Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems were pixel-size limited, historical systems typically been developed at $Q<1$.
+\end{observation}
+
+Happily, the trend towards much smaller pixel in commercial image detectors (Fig. \ref{fig:pix_trend}) opens up the opportunity of driving to towards higher $Q$'s where image quality is optimized without increasing system size.
+
+However smaller pixels inherently store less charge, both in the photodector and storage node. In fact to first order\cite{jerram}:
+$$N_{e^-}^{FWC} \propto p^2$$
+and while there are process optimizations that can improve this, these typically are second order to simple area scaling.
+
+This leaves the challenge of achieving acceptable $SNR$ and $DR$ and we will show in section \ref{sec:modalities} that the high data sampling rates of modern CMOS pixels coupled with analog stabilization enables this at high $Q$ and with small pixels.
+
+And so we also argue that:
+\begin{observation}[Trend Towards Smaller Pixels and Hybrid Stabilization]
+Smaller pixels enable driving system size down, $Q$ up but require hybrid stabilization (digital + analog) to make practical due to inherently lower signal, $S$ obtained during exposure.
+\end{observation}
 
 \subsection{Image Stabilization}
 
@@ -251,7 +277,7 @@ Large orbital velocity is a large advantage of spacecraft for remote sensing ove
 
 However it also presents large challenges in developing an imaging system that can collect sufficient light at the high relative scene velocity without incurring unreasonable blur.
 
-For blur-limited integration times (unstabilized systems), in can be shown that \cite{shaw}
+For blur-limited integration times, in can be shown that \cite{shaw}
 
 $$SNR \propto \frac{D_{ap} GSD^{3/2}}{\sqrt{V_{gnd}}}$$
 
@@ -263,7 +289,7 @@ V_{gnd} \propto GSD^3
 
 which has many system-level impacts, the largest of which is its impact on area collection rate, $ACR$:
 
-$$ACR \propto GSD^4$$
+$$ACR \propto V_{gnd}$$
 
 This is a major challenge for high-resolution systems and historically there have been many solutions to compensate for scene motion on spacecraft.  These date back to the earliest film-based systems that used the film motion through the camera itself to compensate.  Other mechanical solutions included gimbaled cameras, "back-scan" of the entire spacecraft bus and full-aperture scan mirrors among others.
 
@@ -277,18 +303,85 @@ We will classify modern stabilization strategies into three major buckets
 \item Analog optomechanical stabilization
 \end{enumerate}
 
-The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling relies on detector line-rates high enough to enable multiple digital samples of a single ground point.
+Digital imaging spacecraft have traditionally used a "push-broom" architecture where a line-array sensor is pushed along the ground by the spacecraft's motion.  Stabilization by charge transfer between rows synchronous with scene velocity allows for so-called Time Delayed Integration TDI.  
+
+Development of large format CCD and CMOS framing detectors allow for  "step-and-stare" architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.  If the framing rate is high enough, the scene can be digitally oversampled such that a single point on the ground is captured with multiple exposures of the focal plane.
+
+\begin{figure}[h!t]
+\includegraphics[width=0.42\textwidth]{figures/modalities.png}
+\caption{General satellite imaging modalities}
+\label{fig:modalities}
+\end{figure}
+
+Analog optomechanical stabilization relies on an optomechanical component with the ability to dynamically steer the payload line of sight repetetively so as to remove relative scene motion during integration.  Fast scan mirrors (FSM) or excited dynamic motion of the entire instrument are two ways to achieve this \cite{patent:jonny}, \cite{patent:dirk}.
+
+The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling is not as constrained by $FWC$ beause each exposure resets the pixel and thus is the $FWC$ can be effectively expanded by as many redundant samples as can be obtained.
+
+Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure \ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
 
 To-date analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is very immature - see \ref{sensor_tech}.  
 
 Likewise digital oversampling is typically not practical using CCD sensors in high resolution systems due to the inherent limitations on read-out rate of CCD as compared with CMOS technology.
 
-Analog optomechanical stabilization is implemented outside the detector such that it is potentially applicable to any sensor technology.
+Finally it is important to point out that digital and analog stabilization can be combined in the same system.  Such hybrid stabilization schemes could be in the form of analog opto-mechanical stabilization plus digital oversampling or a TDI CCD that is read out fast enough to allow digital oversampling.  Indeed we will argue later that such hybrid stabilization schemes uniquely leverage the capabilities of modern CMOS detectors, enable smaller systems and provide significant system-level flexibility.  The authors assert that such hybrid systems are the future of remote sensing from space.
 
-Finally it is important to point out that digital and analog stabilization can be combined in the same system.  Such hybrid stabilization schemes could be in the form of analog opto-mechanical stabilization plus digital oversampling or a TDI CCD that is read out fast enough to allow digital oversampling.  Indeed we will argue later that such hybrid stabilization schemes uniquely leverage the capabilities of modern CMOS detectors, enable smaller systems and provide significant system-level flexibility.
+\section{Collection Modalities}
+\label{sec:modalities}
 
-\section{Comparison of Modalities}
-\label{sec:comp_modalities}
+\subsection{Analog Stabilization with TDI}
+
+TDI systems are based on a unique property of CCD image sensors - their ability to move charge between nodes at very high charge transfer efficiency (CTI) and without incurring significant noise in the process.  In fact TDI sensors essentially enabled the move away from film in the classified systems of the 1970's.
+
+Typical TDI sensors will have anywhere from 4 to 256 "stages" each consisting of a row of pixels covering the swath width.  The rows are oriented normal to the scan direction and charge is shifted row-to-row synchronously with the scene motion such that the effective integration time for a point on the ground is multiplied by the number of stages in the device.  Figure \ref{fig:tdi} illustrates this mode for an 12-stage TDI detector in t-x space where x is in-track dimension.
+
+\includefigure{figures/tdi.pgf}{fig:tdi}{TDI t-x diagram.  Red row indicates one in-track ground sample}
+
+In general TDI system's photon collection efficacy is "well-depth limited" meaning that the duration of integration is typically limited by pixel well saturation before other factors such as number of TDI stages, dark current, charge transfer efficiency.  For an appropriately exposed scene, the well-limited signal level is quite simple:
+
+\begin{equation}
+s = \alpha N_{e^-}^{FWC}
+\label{eq:well_limited}
+\end{equation}
+
+Noting that the exposure time for a single stage of a TDI system is simply $t_{int}^{line} = \frac{1}{LR}$ where $LR$ is line-rate and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \ref{eq:s} to obtain an expression for optimal number of TDI stages:
+
+\begin{equation}
+N_{TDI} = \frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}^\lambda \Delta \lambda}\frac{LR}{QE}
+\label{eq:n_tdi}
+\end{equation}
+
+where $LR = V_{gnd} / GSD$.  Figure \ref{fig:n_tdi} below shows this trade.
+
+\includefigure{figures/N_tdi.pgf}{fig:n_tdi}{Optimal TDI stages vs. resolution and Q}
+
+While extremely powerful and well-proven over many missions, TDI detectors present challenges for low-cost, high resolution missions.
+
+Historically missions have developed custom TDI detectors due to the unique performance and mission requirements of a spacecraft\cite{jerram}.  These include high line rates, large full-well capacity, low read-noise, high quantum-efficiency and radiation tolerance.  And while there are commercially available TDI detectors, they typically do not meet the requirements of high resolution collection from a space platform.
+
+Furthermore collecting high-resolution imagery in TDI-mode introduces stringent requirements on spacecraft attitude rate accuracy and stability so as to maintain precise row-to-row alignment during integration and minimize blur. As an example, notional ACS requirements for a 16-stage TDI-based 1-m resolution system operating at 500km altitude would be\cite{pittelkau}:
+$$\norm{\tilde{\omega}} \leq 100 \mu rad / sec$$
+$$\sigma_{\omega}(0-150Hz) \leq 50 \mu rad/sec$$
+
+\subsection{Digital Stabilization with Step-and-Stare}
+Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to creat output data with a longer effective integration time - virtual TDI in a way.
+
+\includefigure{figures/step_stare.pgf}{fig:step_stare}{Step-and-stare t-x diagram.  Red row indicates one in-track ground sample}
+
+Figure \ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels in and a very high framing rate whereas in reality the panchromatic Skybox detector is 1080 pixels high and frames at about 1/6 of the rate shown.  Fig. \ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate illustrating the extremely low imaging duty cycle.
+
+It is worth noting in this diagram that the imaging duty cycle is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is fundamentally limited by pixel blur.  This is a problematic limitation and severe enough that Skybox slows the effective scene scan rate down to ~1/3 of orbital rate with a bus "back-knod" in order to get sufficient signal without incurring substantial blur.
+
+\includefigure{figures/step_stare_real.pgf}{fig:step_stare_real}{Step-and-stare t-x diagram with realistic array height and framerate.}
+
+However step-and-stare IS NOT limited by small pixel FWC as each the well is read out in each independent integration and then summed digitally.  Thus the advantages and disadvantages of step-and-stare compared with TDI can be summarized as:
+
+
+\subsection{Hybrid Step-and-stare / analog opto-mechanical stabilization}
+
+\includefigure{figures/stab_step_stare.pgf}{fig:stab_step_stare}{Stabilized Step-and-Stare t-x diagram.  Red row indicates one in-track ground sample}
+
+\subsection{Comparison of modalities}
+[TODO] - put some quantitative results here comparing system size, ACR, IQ, etc with different modalities...]
 
 Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
 
@@ -314,6 +407,27 @@ Table \ref{table:modalities} summarizes qualitatively the relative advantages an
 \section{Appendix A: Definitions}
 \label{sec:appendix_a}
 
+\subsection{Remote Sensing Driving Requirements}
+\label{sec:requirements}
+
+Table \ref{table:drivers} shows the effect of many mission-level needs on lower-level requirements.
+\begin{table}[h!t]
+\resizebox{.45\textwidth}{!}{%
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Requirement} & \textbf{Drives} \\ \toprule
+Resolution & \begin{tabular}[c]{@{}l@{}}Aperture Diameter\\ Altitude\\$Q$\end{tabular} \\ \midrule
+\begin{tabular}[c]{@{}l@{}}SNR \& Dynamic Range\end{tabular} & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector Full-well\\Optical $F^\#$\end{tabular} \\ \midrule
+Swath Width & \begin{tabular}[c]{@{}l@{}}Optical Complexity\\ Detector Width\\ Data Volume\end{tabular} \\ \midrule
+Collection Rate & \begin{tabular}[c]{@{}l@{}}Stabilization\\ Detector line-rate\end{tabular} \\ \midrule
+Spectral Sampling & \begin{tabular}[c]{@{}l@{}}In-track FOV\\ Camera filters\\ Semiconductor Bandgap\end{tabular} \\ \bottomrule
+\end{tabular}%
+}
+\centering
+\caption{System Performance Drivers}
+\label{table:drivers}
+\end{table}
+
 \subsection{$\frac{\lambda F^\#}{p}$ or Q}
 \label{sec:q}
 
@@ -338,10 +452,77 @@ Thus $Q$ is a measure of Nyquist sampling where $Q=2$ is critically sampled.  Mo
 
 Beyond a statement of the Nyquist criterion, $Q$ is a very useful parameter by which to evaluate and compare systems.  For more see \cite{fiete_q}.  
 
+\subsection{Photon Radiometry}
+
+In order to not have to carry full radiometry for every calculation, we will define a payload photo-electron gain, 
+
+\begin{equation}
+k_{pe} \equiv \frac{\dot{N}_{e^-}^{std}}{L^\lambda\Delta \lambda}
+\label{eq:k_pe}
+\end{equation}
+
+Where $L$ is radiance at aperture in W/m$^2$-sr-um, $QE$ is quantum efficiency, $\Delta \lambda$ is spectral bandwidth and $\dot{N}_{e^-}^{std}$ is photo-electron generation rate for the case of $QE=1$, $Q=1$.
+
+Moving forward, we will use $k_{pe} = 2\times 10^5$ e$^-$-sr-um-m$^2$/J\footnote{Given $\Delta \lambda = 0.5$um, $L = 100$ W/m$^2$-sr-um, this equates to $\dot{N}_{e^-}^{std} = 1\times 10^7$ e$^-$ / s or 5,000 photo-electrons accumulated in a 1ms integration time on a $Q=1$, $QE=0.5$ system}
+
+Now we have a simple relationship useful in comparing systems radiometrically:
+
+\begin{equation}
+\dot{N}_{e^-} = \frac{k_{pe} L \Delta \lambda QE}{Q^2}
+\label{eq:N_e_dot}
+\end{equation}
+
+Typically remote sensing systems report signal to noise at a radiance a small fraction of the saturation radiance.  We will define this ratio of typical to saturation radiance - 
+
+\begin{equation}
+\alpha = \frac{L_{typ}^\lambda}{L_{sat}^\lambda}
+\label{eq:alpha}
+\end{equation}
+
+For systems in which shot and read noise dominate
+\begin{equation}
+SNR = \frac{s}{\sigma_{rd} + \sqrt{s}}
+\label{eq:snr}
+\end{equation}
+
+where $s$ is the signal magnitude in photoelectrons and $\sigma_{rd}$ is read noise in RMS photoelectrons.
+
+Finally, we come to a very useful relationship for a single exposure in eq. \ref{eq:s} -
+\begin{equation}
+s = \alpha k_{pe}L_{sat}^\lambda\Delta \lambda \frac{t_{int}QE}{Q^2}
+\label{eq:s}
+\end{equation}
+
+Note that in several of the modalities, digital over-sampling is utilized.  In that case, the effective output signal level for a ground sample is 
+$$s^{eff} = N_s s$$
+where $N_s$ is the oversampling ratio.
+
 \subsection{Image Quality}
 \label{sec:iq}
 
 Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  Before jumping into integrated image quality models, we will define the geometric and radiometric components of image quality.
+
+\subsubsection{Resolution}
+Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance (GSD) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying SNR or sharpness (see Section \ref{sec:q}).
+
+More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance (GRD) is an example of a such a metric.  Unfortunately the definition of GRD is not universally agreed to or consistent.  We will use the definition of GRD proposed in \cite{auelmann_iq} where:
+
+\begin{equation}
+    \alpha_{eff} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
+\label{eq:alpha_eff}
+\end{equation}
+
+\cite{auelmann_iq} has shown that a good approximation for $\alpha_{eff}$ for diffraction limited systems is given by:
+
+
+\begin{equation}
+    \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
+\label{eq:alpha_eff_approx}
+\end{equation}
+
+\includefigure{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
+
+Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and illustrates why GSD is a problematic resolution metric.
 
 \subsubsection{NIIRS and GIQE}
 High resolution systems are typically evaluated by quantitative "image interpretability" scales the best known being the National Image Interpretability Rating Scale, or NIIRS.
@@ -375,9 +556,6 @@ where $GSD_{m}$\footnote{GSD units must be paid close attention to - many refere
 
 GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  
 
-\includepgf{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$ and that $SNR \approx 1 / Q$}
-
-One thing noticed in parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Fig. \ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ}.
 
 \subsubsection{Dynamic Range ($DR$) and Signal-to-noise Ratio ($SNR$)}
 Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
