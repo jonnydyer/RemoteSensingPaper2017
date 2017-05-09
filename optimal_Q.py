@@ -97,7 +97,11 @@ plt.ylabel('$\Delta$ NIIRS')
 plt.legend([r'$N_fNe_{e^-} = %.0f ke^-$' % (N/1e3) for N in Ne_well] +
         ['SkySat-C'], loc='lower right')
 plt.xlim(0.5, 2)
+<<<<<<< HEAD
 plt.ylim(-0.5, 0.6)
+=======
+plt.ylim(-0.5, 0.8)
+>>>>>>> Figure updates
 f.set_tight_layout(True)
 f.savefig('figures/Q_iq.pgf')
 
