@@ -6967,7 +6967,7 @@
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=1.952333in,y=0.298000in,,top]{\sffamily\fontsize{12.000000}{14.400000}\selectfont Time}%
+\pgftext[x=1.952333in,y=0.298000in,,top]{\rmfamily\fontsize{12.000000}{14.400000}\selectfont Time}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -6989,7 +6989,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.423000in,y=0.305361in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 0}%
+\pgftext[x=0.423000in,y=0.305361in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 0}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -7011,7 +7011,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=0.837236in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 10}%
+\pgftext[x=0.353555in,y=0.837236in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 10}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -7033,7 +7033,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=1.369111in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 20}%
+\pgftext[x=0.353555in,y=1.369111in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 20}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -7055,10 +7055,10 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=1.900986in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 30}%
+\pgftext[x=0.353555in,y=1.900986in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 30}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.298000in,y=1.204555in,,bottom,rotate=90.000000]{\sffamily\fontsize{12.000000}{14.400000}\selectfont In-Track Dimension}%
+\pgftext[x=0.298000in,y=1.204555in,,bottom,rotate=90.000000]{\rmfamily\fontsize{12.000000}{14.400000}\selectfont In-Track Dimension}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7083,10 +7083,10 @@
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=1.409174in,y=2.268982in,left,base]{\sffamily\fontsize{8.330000}{9.996000}\selectfont TDI \(\displaystyle t_i (eff) = 3.4 ms\)}%
+\pgftext[x=1.399167in,y=2.268982in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont TDI \(\displaystyle t_i (eff) = 3.4 ms\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.928174in,y=2.141204in,left,base]{\sffamily\fontsize{8.330000}{9.996000}\selectfont \(\displaystyle N_{tdi} = 12\), \(\displaystyle v_g = 3.5 km/s\), \(\displaystyle GSD = 1.0 m\)}%
+\pgftext[x=0.928174in,y=2.141204in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont \(\displaystyle N_{tdi} = 12\), \(\displaystyle v_g = 3.5 km/s\), \(\displaystyle GSD = 1.0 m\)}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

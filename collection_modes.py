@@ -10,6 +10,8 @@ import matplotlib.patches as patches
 from matplotlib import rc
 
 rc('figure', figsize=(3.5,2.5))
+rc('legend', fontsize='x-small')
+rc('font', family='serif')
 
 fc = (0.7,0.7,1.0)
 ec = (0.2, 0.2, 0.2)

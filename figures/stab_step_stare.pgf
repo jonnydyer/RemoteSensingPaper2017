@@ -2647,7 +2647,7 @@
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=1.952333in,y=0.298000in,,top]{\sffamily\fontsize{12.000000}{14.400000}\selectfont Time}%
+\pgftext[x=1.952333in,y=0.298000in,,top]{\rmfamily\fontsize{12.000000}{14.400000}\selectfont Time}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -2669,7 +2669,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.423000in,y=0.305361in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 0}%
+\pgftext[x=0.423000in,y=0.305361in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 0}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -2691,7 +2691,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=0.717135in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 20}%
+\pgftext[x=0.353555in,y=0.717135in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 20}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -2713,7 +2713,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=1.128909in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 40}%
+\pgftext[x=0.353555in,y=1.128909in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 40}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -2735,7 +2735,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=1.540684in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 60}%
+\pgftext[x=0.353555in,y=1.540684in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 60}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetbuttcap%
@@ -2757,10 +2757,10 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.353555in,y=1.952458in,left,base]{\sffamily\fontsize{10.000000}{12.000000}\selectfont 80}%
+\pgftext[x=0.353555in,y=1.952458in,left,base]{\rmfamily\fontsize{10.000000}{12.000000}\selectfont 80}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.298000in,y=1.204555in,,bottom,rotate=90.000000]{\sffamily\fontsize{12.000000}{14.400000}\selectfont In-Track Dimension}%
+\pgftext[x=0.298000in,y=1.204555in,,bottom,rotate=90.000000]{\rmfamily\fontsize{12.000000}{14.400000}\selectfont In-Track Dimension}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -2785,10 +2785,10 @@
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=1.082337in,y=2.274692in,left,base]{\sffamily\fontsize{8.330000}{9.996000}\selectfont Stab. Step Stare \(\displaystyle t_i(eff) = 7.0 ms\)}%
+\pgftext[x=1.065446in,y=2.274692in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont Stab. Step Stare \(\displaystyle t_i(eff) = 7.0 ms\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.624581in,y=2.146914in,left,base]{\sffamily\fontsize{8.330000}{9.996000}\selectfont \(\displaystyle t_f = 3 ms\), \(\displaystyle v_g = 3.5 km/s\), \(\displaystyle GSD = 1.0 m\), \(\displaystyle t_i = 1.4 ms\)}%
+\pgftext[x=0.624581in,y=2.146914in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont \(\displaystyle t_f = 3 ms\), \(\displaystyle v_g = 3.5 km/s\), \(\displaystyle GSD = 1.0 m\), \(\displaystyle t_i = 1.4 ms\)}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

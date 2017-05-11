@@ -12,6 +12,7 @@ from matplotlib import rc
 
 rc('figure', figsize=(3.5,3))
 rc('legend', fontsize='x-small')
+rc('font', family='serif')
 
 k_pe = 2e5
 QE = 0.4
@@ -57,7 +58,7 @@ plt.legend(legend, fontsize='small')
 
 plt.xlabel('Q')
 plt.ylabel('$N_{TDI}$')
-plt.ylim(1, 200)
+plt.ylim(1, 150)
 plt.title('Optimal TDI stages for $V_s$ = %.1f km/s\n QE=%.2f, $L_{sat}=%d$ W/m$^2$-sr-um' %\
           (Vs/1e3, QE, L_sat), fontsize='small')
 f.savefig('figures/N_tdi.pgf')
@@ -76,10 +77,12 @@ for i, o in enumerate(OS):
 f = plt.figure()
 f.set_tight_layout(True)
 plt.plot(GSD, LR/1e3, linewidth=1.5)
-plt.hlines(KAI_FPS*KAI_H/1e3, min(GSD), max(GSD), linestyle='--', color='r', linewidth=1.5)
-plt.legend(['%dx, $N_{e-}^{FWC}$ = %d ke-' % (o, o*Ne_well/1e3) for o in OS] + ['KAI-29050 @ 4 FPS'], 
+#plt.hlines(KAI_FPS*KAI_H/1e3, min(GSD), max(GSD), linestyle='--', color='r', linewidth=1.5)
+plt.legend(['%dx, $N_{e-}^{FWC}$ = %d ke-' % (o, o*Ne_well/1e3) for o in OS],# + ['KAI-29050 @ 4 FPS'], 
             fontsize='small')
 plt.xlabel('GSD(m)')
 plt.ylabel('Linerate (klines / sec)')
 plt.title('Linerate required for equivalent well depth', fontsize='small')
 f.savefig('figures/LR_req.pgf')
+
+plt.show()
