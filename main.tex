@@ -319,7 +319,7 @@ The analog techniques are considered such because they occur before digital samp
 
 Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure \ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10m.
 
-To-date analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is very immature - see \ref{sensor_tech}.  
+To-date analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is still immature - see \ref{sensor_tech}.  
 
 Likewise digital oversampling is typically not practical using CCD sensors in high resolution systems due to the inherent limitations on read-out rate of CCD as compared with CMOS technology.
 
@@ -346,11 +346,11 @@ s = \alpha N_{e^-}^{FWC}
 Noting that the exposure time for a single stage of a TDI system is simply $t_{int}^{line} = \frac{1}{LR}$ where $LR$ is line-rate and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \ref{eq:s} to obtain an expression for optimal number of TDI stages:
 
 \begin{equation}
-N_{TDI} = \frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}^\lambda \Delta \lambda}\frac{LR}{QE}
+N_{TDI} \propto N_{e^-}^{FWC} Q^3 V_{gnd}D_{ap} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{D_{ap}^2 GSD^3}
 \label{eq:n_tdi}
 \end{equation}
 
-where $LR = V_{gnd} / GSD$.  Figure \ref{fig:n_tdi} below shows this trade.
+Figure \ref{fig:n_tdi} below shows this trade.
 
 \includefigure{figures/N_tdi.pgf}{fig:n_tdi}{Optimal TDI stages vs. resolution and Q}
 
