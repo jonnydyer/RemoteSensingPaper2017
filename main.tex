@@ -194,7 +194,11 @@ In order to compare different remote sensing systems, we need quantitative metri
 
 Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  Before jumping into integrated image quality models, we will define the geometric and radiometric components of image quality.
 
-\subsubsection{NIIRS and GIQE}
+\subsubsection{Resolution, NIIRS and GIQE}
+Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance ($GSD$) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying $SNR$ or sharpness (see Section \ref{sec:q}).
+
+More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance ($GRD$) is an example of a such a metric.  Unfortunately the definition of $GRD$ is not universally agreed to or consistent.  We will define a $GRD$ metric based on the NIIRS scale.
+
 High resolution systems are typically evaluated by quantitative "image interpretability" scales the best known being the National Image Interpretability Rating Scale, or NIIRS.
 
 NIIRS rating is described by specific human interpretation standards, examples of which are shown in Table \ref{table:NIIRS}\cite{niirs}.
@@ -224,20 +228,22 @@ NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\
 \end{dmath}
 where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
 
-GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.  
+GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
 
-\subsubsection{Resolution}
-Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance (GSD) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying SNR or sharpness (see Section \ref{sec:q}).
-
-More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance (GRD) is an example of a such a metric.  Unfortunately the definition of GRD is not universally agreed to or consistent.  We will use the definition of GRD proposed in \cite{auelmann_iq} where:
+Based on this definition, one can use GIQE-5 to define $GRD$:
 
 \begin{equation}
-    \alpha_{eff} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
+    GRD(m) = 10^{4.4 - \frac{NIIRS}{3.32}}
+\end{equation}
+
+\cite{auelmann_iq} shows that:
+
+\begin{equation}
+    \alpha_{eff} = \frac{GRD}{R} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
 \label{eq:alpha_eff}
 \end{equation}
 
-\cite{auelmann_iq} has shown that a good approximation for $\alpha_{eff}$ for diffraction limited systems is given by:
-
+and that a good approximation for the GIQE-based $\alpha_{eff}$ for diffraction limited systems is given by:
 
 \begin{equation}
     \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
@@ -298,9 +304,21 @@ SNR_{\alpha} \approx \sqrt{N_f \alpha N_{e^-}^{well}}
 \label{sec:capacity}
 For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$, and communications bandwidth (which we won't go into here).  
 
-Image collection capacity in turn depends on a number of parameters including ACS agility, swath width and imaging relative ground speed, $V_{gnd}$.  We will not discuss ACS agility here as it is not strictly an imaging system parameter but instead will parametrize it along with other factors such as time-in-sun into a single imaging duty-cycle, $\beta = \frac{t_{img}}{t_{per}}$ metric where $t_{per}$ is the spacecraft orbital period and $t_{img}$ is the imaging time per orbit.  
+Image collection capacity in turn depends on a number of parameters including time over land, ACS agility, and area collection rate,
 
-For remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$.
+$$ACR = V_{gnd}W_{ct}$$
+
+where $W_{ct}$ is the cross-track swath width.
+
+We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the systme $ACR$ as:
+
+\begin{equation}
+    \beta = \frac{t_{collect}}{t_{per}}
+\end{equation} 
+
+where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targetted spacecraft), attitude control bandwidth, etc.
+
+For remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$.  Note that later we will define a 
 
 There are two primary capacity regimes that a spacecraft may operate in:
 
