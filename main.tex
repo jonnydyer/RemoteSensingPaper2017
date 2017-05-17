@@ -185,6 +185,187 @@ Historically there has been resistance to the utilization of commercial electron
 
 For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-adverse) systems.
 
+\section{Remote Sensing Metrics}
+\label{sec:Metrics}
+In order to compare different remote sensing systems, we need quantitative metrics.  The metrics we will introduce are fundamentally related to the data produced by such systems and are in two categories - \emph{quality} and \emph{volume}.  In a value-based assessment, quality and volume would form the numerator of a global value metric with cost in the denominator.
+
+\subsection{Image Quality}
+\label{sec:iq}
+
+Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  Before jumping into integrated image quality models, we will define the geometric and radiometric components of image quality.
+
+\subsubsection{NIIRS and GIQE}
+High resolution systems are typically evaluated by quantitative "image interpretability" scales the best known being the National Image Interpretability Rating Scale, or NIIRS.
+
+NIIRS rating is described by specific human interpretation standards, examples of which are shown in Table \ref{table:NIIRS}\cite{niirs}.
+
+\begin{table}[h!t]
+\resizebox{.45\textwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{NIIRS} & \textbf{GRD}          & \textbf{Description}                                                                                                                             \\ \toprule
+3     & 2.5m - 4.5m  & \begin{tabular}[c]{@{}l@{}}Identify a road as divided or undivided\\ Detect rows of automobiles in a parking lot\end{tabular}           \\ \midrule
+4     & 1.2m - 2.5m  & \begin{tabular}[c]{@{}l@{}}Detect barriers/obstacles (barrels) on runways\\ Distinguish between locomotives and railcars\end{tabular}   \\ \midrule
+5     & 0.75m - 1.2m & \begin{tabular}[c]{@{}l@{}}Identify individual lines painted on paved roads,  parking lots\\ Identify fallen utility poles\end{tabular} \\ \midrule
+6     & 0.4m - 0.75m & \begin{tabular}[c]{@{}l@{}}Detect individuals, when not in a group\\ Detect small road signs in an urban area\end{tabular}              \\ \bottomrule
+\end{tabular}%
+}
+\centering
+\caption{NIIRS definitions}
+\label{table:NIIRS}
+\end{table}
+
+NIIRS is a logarithmic scale traditionally evaluated by trained human image interpreters.  However, much work has gone into developing semi-analytic regressions to predict NIIRS from basic image quality parameters such as sharpness, signal-to-noise ratio (SNR), etc. The Generalized Image Quality Equation (GIQE) is an example of such a function; we will use the 5th version, GIQE-5 which is defined in eq. \ref{eq:giqe5}.
+
+\begin{dmath}
+NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\right]\log(RER_0)
+- 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear}
+\label{eq:giqe5}
+\end{dmath}
+where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
+
+GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.  
+
+\subsubsection{Resolution}
+Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance (GSD) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying SNR or sharpness (see Section \ref{sec:q}).
+
+More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance (GRD) is an example of a such a metric.  Unfortunately the definition of GRD is not universally agreed to or consistent.  We will use the definition of GRD proposed in \cite{auelmann_iq} where:
+
+\begin{equation}
+    \alpha_{eff} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
+\label{eq:alpha_eff}
+\end{equation}
+
+\cite{auelmann_iq} has shown that a good approximation for $\alpha_{eff}$ for diffraction limited systems is given by:
+
+
+\begin{equation}
+    \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
+\label{eq:alpha_eff_approx}
+\end{equation}
+
+\includefigure{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
+
+Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and illustrates why GSD is a problematic resolution metric.
+
+\subsubsection{Dynamic Range ($DR$) and Signal-to-noise Ratio ($SNR$)}
+Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
+
+Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image:
+
+$$DR = \frac{S_{max}}{S_{min}}$$
+
+The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, etc.
+
+The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directlye expands dynamic range by increasing the effective well depth such that $s_{max} = N_f N_{e^-}^{well}$ where $N_f$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
+
+\begin{equation}
+    DR = \sqrt{N_f}\frac{N_{e^-}^{well}}{\sigma_{uncor}}
+\label{eq:DR_OS}
+\end{equation}
+
+For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in section \ref{sec:hdr}.
+
+Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  In general $SNR$ is defined as:
+
+$$SNR = \frac{s}{\sigma_{noise}}$$
+
+In general noise consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that:
+
+$$SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}$$
+
+In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  For a perfectly exposed scene with
+
+$$\alpha = \frac{L_{typ}^\lambda}{L_{sat}^\lambda}$$
+,
+$$SNR_{\alpha} = \frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}$$
+
+where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.  This relation, like $DR$, can be expanded to include multiple digital exposures such that
+
+\begin{equation}
+\label{eq:snr_alpha_multiframe}
+SNR_{\alpha} = \sqrt{N_f}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
+\end{equation}
+
+For most modern detectors, uncorrelated noise sources are small compared with shot noise so we can approximate eq. \ref{eq:snr_alpha_multiframe}
+
+\begin{equation}
+\label{eq:snr_alpha_multiframe_simp}
+SNR_{\alpha} \approx \sqrt{N_f \alpha N_{e^-}^{well}}
+\end{equation}
+
+\subsection{Collection Capacity}
+\label{sec:capacity}
+For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$, and communications bandwidth (which we won't go into here).  
+
+Image collection capacity in turn depends on a number of parameters including ACS agility, swath width and imaging relative ground speed, $V_{gnd}$.  We will not discuss ACS agility here as it is not strictly an imaging system parameter but instead will parametrize it along with other factors such as time-in-sun into a single imaging duty-cycle, $\beta = \frac{t_{img}}{t_{per}}$ metric where $t_{per}$ is the spacecraft orbital period and $t_{img}$ is the imaging time per orbit.  
+
+For remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$.
+
+There are two primary capacity regimes that a spacecraft may operate in:
+
+\begin{enumerate}
+\item Downlink-constrained regime
+\item Collection-constrained regime
+\end{enumerate}
+
+In Regime 1:
+
+$$t_{d/l} \times BW_{d/l} < I_D t_{per} \beta \frac{V_{gnd}w_{ct}}{GSD^2}$$
+
+where $w_{ct}$ is the swath width or cross-track field of view projected to the ground, $t_{D/L}$ is downlink time per orbit and $BW_{D/L}$ is downlink bandwidth.  In Regime 2, the opposite holds.
+
+We distill this down to a capacity constraint metric, $k_{cap}$
+
+\begin{equation}
+k_{cap} = \frac{t_{d/l}}{t_{per}} \frac{BW_{d/l} GSD^2}{I_D \beta V_{gnd} w_{ct}}
+\end{equation}
+
+We can now say that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
+
+
+\subsubsection{Data Intensity}
+
+Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
+
+$$I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}}$$
+
+Where we assume an output product to consist of the fused, corrected but un-rectified L1b product. For a typical imaging pipeline that includes compression we must define exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
+
+\begin{equation}
+    \label{eq:compression}
+    C \equiv \frac{N_{bpp}^{L0}}{N_{bpp}^{L1b}}
+\end{equation}
+
+For a digitally oversampling system
+
+\begin{equation}
+    I_D = N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
+\end{equation}
+
+Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ since becaues for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
+
+$${\eta}_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}$$
+
+such that
+
+\begin{equation}
+    I_D = {\eta}_{rs} N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
+\end{equation}
+
+
+\subsection{Imaging Information Bandwidth}
+\label{sec:info_bw}
+In trade studies, the system designer is often confronted with comparing various architectures are designs in terms of the above capacity and image quality metrics.  In some cases, it would be useful to have a metric that allows one to directly compare how \emph{efficiently} a given system captures imagery from a first-principles perspective.
+
+In communications theory, the Shannon-Hartley theorem blah blah blah...
+
+Given a set of design constraints (e.g. Aperture diameter, Q, orbital altitude), we can treat the imaging system as a noisy channel and define a per-pixel channel capacity as:
+
+\begin{equation}
+    C_{px} = B_{px}\log_2 \left(1 + \sqrt{S}\right)
+\end{equation}
+
 \section{Performance Trade Space}
 \label{sec:trade_space}
 
@@ -324,6 +505,7 @@ To-date analog electronic or TDI stabilization has only been implemented success
 Likewise digital oversampling is typically not practical using CCD sensors in high resolution systems due to the inherent limitations on read-out rate of CCD as compared with CMOS technology.
 
 Finally it is important to point out that digital and analog stabilization can be combined in the same system.  Such hybrid stabilization schemes could be in the form of analog opto-mechanical stabilization plus digital oversampling or a TDI CCD that is read out fast enough to allow digital oversampling.  Indeed we will argue later that such hybrid stabilization schemes uniquely leverage the capabilities of modern CMOS detectors, enable smaller systems and provide significant system-level flexibility.  The authors assert that such hybrid systems are the future of remote sensing from space.
+
 
 \section{Collection Modalities}
 \label{sec:modalities}
@@ -497,170 +679,6 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 $$s^{eff} = N_s s$$
 where $N_s$ is the oversampling ratio.
 
-\subsection{Image Quality}
-\label{sec:iq}
-
-Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  Before jumping into integrated image quality models, we will define the geometric and radiometric components of image quality.
-
-\subsubsection{Resolution}
-Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance (GSD) is used as a proxy for resolution under the assumption that all pixels are created equally.  This assumption doesn't hold for systems with widely varying SNR or sharpness (see Section \ref{sec:q}).
-
-More holistic definitions of resolution typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.  The so-called Ground Resolution Distance (GRD) is an example of a such a metric.  Unfortunately the definition of GRD is not universally agreed to or consistent.  We will use the definition of GRD proposed in \cite{auelmann_iq} where:
-
-\begin{equation}
-    \alpha_{eff} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
-\label{eq:alpha_eff}
-\end{equation}
-
-\cite{auelmann_iq} has shown that a good approximation for $\alpha_{eff}$ for diffraction limited systems is given by:
-
-
-\begin{equation}
-    \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
-\label{eq:alpha_eff_approx}
-\end{equation}
-
-\includefigure{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
-
-Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and illustrates why GSD is a problematic resolution metric.
-
-\subsubsection{NIIRS and GIQE}
-High resolution systems are typically evaluated by quantitative "image interpretability" scales the best known being the National Image Interpretability Rating Scale, or NIIRS.
-
-NIIRS rating is described by specific human interpretation standards, examples of which are shown in Table \ref{table:NIIRS}\cite{niirs}.
-
-\begin{table}[h!t]
-\resizebox{.45\textwidth}{!}{%
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{NIIRS} & \textbf{GRD}          & \textbf{Description}                                                                                                                             \\ \toprule
-3     & 2.5m - 4.5m  & \begin{tabular}[c]{@{}l@{}}Identify a road as divided or undivided\\ Detect rows of automobiles in a parking lot\end{tabular}           \\ \midrule
-4     & 1.2m - 2.5m  & \begin{tabular}[c]{@{}l@{}}Detect barriers/obstacles (barrels) on runways\\ Distinguish between locomotives and railcars\end{tabular}   \\ \midrule
-5     & 0.75m - 1.2m & \begin{tabular}[c]{@{}l@{}}Identify individual lines painted on paved roads,  parking lots\\ Identify fallen utility poles\end{tabular} \\ \midrule
-6     & 0.4m - 0.75m & \begin{tabular}[c]{@{}l@{}}Detect individuals, when not in a group\\ Detect small road signs in an urban area\end{tabular}              \\ \bottomrule
-\end{tabular}%
-}
-\centering
-\caption{NIIRS definitions}
-\label{table:NIIRS}
-\end{table}
-
-NIIRS is a logarithmic scale traditionally evaluated by trained human image interpreters.  However, much work has gone into developing semi-analytic regressions to predict NIIRS from basic image quality parameters such as sharpness, signal-to-noise ratio (SNR), etc. The Generalized Image Quality Equation (GIQE) is an example of such a function; we will use the 5th version, GIQE-5 which is defined in eq. \ref{eq:giqe5}.
-
-\begin{dmath}
-NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\right]\log(RER_0)
-- 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear}
-\label{eq:giqe5}
-\end{dmath}
-where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
-
-GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  
-
-
-\subsubsection{Dynamic Range ($DR$) and Signal-to-noise Ratio ($SNR$)}
-Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
-
-Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image:
-
-$$DR = \frac{S_{max}}{S_{min}}$$
-
-The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, etc.
-
-The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directlye expands dynamic range by increasing the effective well depth such that $s_{max} = N_f N_{e^-}^{well}$ where $N_f$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
-
-\begin{equation}
-    DR = \sqrt{N_f}\frac{N_{e^-}^{well}}{\sigma_{uncor}}
-\label{eq:DR_OS}
-\end{equation}
-
-For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in section \ref{sec:hdr}.
-
-Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  In general $SNR$ is defined as:
-
-$$SNR = \frac{s}{\sigma_{noise}}$$
-
-In general noise consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that:
-
-$$SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}$$
-
-In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  For a perfectly exposed scene with
-
-$$\alpha = \frac{L_{typ}^\lambda}{L_{sat}^\lambda}$$
-,
-$$SNR_{\alpha} = \frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}$$
-
-where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.  This relation, like $DR$, can be expanded to include multiple digital exposures such that
-
-\begin{equation}
-\label{eq:snr_alpha_multiframe}
-SNR_{\alpha} = \sqrt{N_f}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
-\end{equation}
-
-For most modern detectors, uncorrelated noise sources are small compared with shot noise so we can approximate eq. \ref{eq:snr_alpha_multiframe}
-
-\begin{equation}
-\label{eq:snr_alpha_multiframe_simp}
-SNR_{\alpha} \approx \sqrt{N_f \alpha N_{e^-}^{well}}
-\end{equation}
-
-\subsection{Collection Capacity}
-\label{sec:capacity}
-For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$, and communications bandwidth (which we won't go into here).  
-
-Image collection capacity in turn depends on a number of parameters including ACS agility, swath width and imaging relative ground speed, $V_{gnd}$.  We will not discuss ACS agility here as it is not strictly an imaging system parameter but instead will parametrize it along with other factors such as time-in-sun into a single imaging duty-cycle, $\beta = \frac{t_{img}}{t_{per}}$ metric where $t_{per}$ is the spacecraft orbital period and $t_{img}$ is the imaging time per orbit.  
-
-For remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$.
-
-There are two primary capacity regimes that a spacecraft may operate in:
-
-\begin{enumerate}
-\item Downlink-constrained regime
-\item Collection-constrained regime
-\end{enumerate}
-
-In Regime 1:
-
-$$t_{d/l} \times BW_{d/l} < I_D t_{per} \beta \frac{V_{gnd}w_{ct}}{GSD^2}$$
-
-where $w_{ct}$ is the swath width or cross-track field of view projected to the ground, $t_{D/L}$ is downlink time per orbit and $BW_{D/L}$ is downlink bandwidth.  In Regime 2, the opposite holds.
-
-We distill this down to a capacity constraint metric, $k_{cap}$
-
-\begin{equation}
-k_{cap} = \frac{t_{d/l}}{t_{per}} \frac{BW_{d/l} GSD^2}{I_D \beta V_{gnd} w_{ct}}
-\end{equation}
-
-We can now say that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
-
-
-\subsubsection{Data Intensity}
-
-Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
-
-$$I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}}$$
-
-Where we assume an output product to consist of the fused, corrected but un-rectified L1b product. For a typical imaging pipeline that includes compression we must define exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
-
-\begin{equation}
-    \label{eq:compression}
-    C \equiv \frac{N_{bpp}^{L0}}{N_{bpp}^{L1b}}
-\end{equation}
-
-For a digitally oversampling system
-
-\begin{equation}
-    I_D = N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
-\end{equation}
-
-Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ since becaues for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
-
-$${\eta}_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}$$
-
-such that
-
-\begin{equation}
-    I_D = {\eta}_{rs} N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
-\end{equation}
 
 \subsection{Detector Line Rate}
 For satelite remote sensing systems, the detector line rate, $LR$ is an important performance parameter because it limits the number of ground samples that can be captured.  For a push-broom system, $LR$ is simply defined as the number of in-track lines (or rows) that can be read from the detector per second:
