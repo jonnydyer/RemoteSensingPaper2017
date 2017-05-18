@@ -308,9 +308,9 @@ Image collection capacity in turn depends on a number of parameters including ti
 
 $$ACR = V_{gnd}W_{ct}$$
 
-where $W_{ct}$ is the cross-track swath width.
+where $W_{ct}$ is the swath width or cross-track field of view projected to the ground
 
-We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the systme $ACR$ as:
+We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the system $ACR$ as:
 
 \begin{equation}
     \beta = \frac{t_{collect}}{t_{per}}
@@ -318,7 +318,17 @@ We will define a collection duty cycle metric that captures all of the impacts o
 
 where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targetted spacecraft), attitude control bandwidth, etc.
 
-For remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$.  Note that later we will define a 
+For targeting remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.05$ as shown in Fig. \ref{fig:beta}
+
+\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$, for various cross-track target spacings for a reasonably agile spacecraft}
+
+We can similarly define a downlink duty cycle
+
+\begin{equation}
+    \gamma = \frac{t_{d/l}}{t_{per}}
+\end{equation}
+
+where $\gamma$ is typically 0.1 - 0.15 for a single ground station well matched in latitude to the spacecraft's orbit inclination and can be increased with additional, geographically diverse ground stations.
 
 There are two primary capacity regimes that a spacecraft may operate in:
 
@@ -327,19 +337,13 @@ There are two primary capacity regimes that a spacecraft may operate in:
 \item Collection-constrained regime
 \end{enumerate}
 
-In Regime 1:
-
-$$t_{d/l} \times BW_{d/l} < I_D t_{per} \beta \frac{V_{gnd}w_{ct}}{GSD^2}$$
-
-where $w_{ct}$ is the swath width or cross-track field of view projected to the ground, $t_{D/L}$ is downlink time per orbit and $BW_{D/L}$ is downlink bandwidth.  In Regime 2, the opposite holds.
-
-We distill this down to a capacity constraint metric, $k_{cap}$
+We can define a capacity constraint metric, $k_{cap}$
 
 \begin{equation}
-k_{cap} = \frac{t_{d/l}}{t_{per}} \frac{BW_{d/l} GSD^2}{I_D \beta V_{gnd} w_{ct}}
+k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{I_D \beta ACR}
 \end{equation}
 
-We can now say that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
+such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
 
 
 \subsubsection{Data Intensity}
@@ -352,23 +356,23 @@ Where we assume an output product to consist of the fused, corrected but un-rect
 
 \begin{equation}
     \label{eq:compression}
-    C \equiv \frac{N_{bpp}^{L0}}{N_{bpp}^{L1b}}
+    C \equiv \frac{N_{bpp}^{raw}}{N_{bpp}^{comp.}}
 \end{equation}
 
 For a digitally oversampling system
 
 \begin{equation}
-    I_D = N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
+    I_D = N_f N_{bpp}^{comp.} = \frac{N_f N_{bpp}^{raw}}{C}
 \end{equation}
 
-Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ since becaues for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
+Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ because for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
 
 $${\eta}_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}$$
 
 such that
 
 \begin{equation}
-    I_D = {\eta}_{rs} N_f N_{bpp}^{L1b} = N_f C N_{bpp}^{L0}
+    I_D = {\eta}_{rs} N_f N_{bpp}^{comp.}
 \end{equation}
 
 
