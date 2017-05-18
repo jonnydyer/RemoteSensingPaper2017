@@ -153,8 +153,8 @@ for i,s in enumerate(target_spacing):
 
 f = plt.figure(1)
 plt.plot(gnd_rate, beta)
-plt.xlabel('Scan rate (km/s)')
-plt.ylabel('Collection Duty Cycle')
+plt.xlabel(r'Scan rate, $V_{gnd}$ (km/s)')
+plt.ylabel(r'Collection Duty Cycle, $\beta$')
 plt.xticks([1,3,5,7])
 plt.ylim(0, 0.1)
 plt.xlim(1, 7)
