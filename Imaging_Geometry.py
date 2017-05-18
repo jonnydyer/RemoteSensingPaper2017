@@ -145,18 +145,18 @@ for i,s in enumerate(target_spacing):
     targ_per_min[:,i] = 60. / (collect_times + slew_times)
     targ_per_orb[:,i] = o.per * (1.-o.eclipse_frac) / (collect_times + slew_times)
     targ_per_day[:,i] = land_min_per_day * 60. / (collect_times + slew_times)
-    beta[:,i] = targ_per_orb[:,i] * collect_times / o.per
     min_img_per_day[:,i] = 24. * 60. * (1.-o.eclipse_frac) * duty_cycle[:,i]
     land_img_min_per_day[:,i] = land_min_per_day * duty_cycle[:,i]
     area_per_day[:,i] = min_img_per_day[:,i] * gnd_rate * 60. * swath
     land_area_per_day[:,i] = land_img_min_per_day[:,i] * gnd_rate * 60. * swath
+    beta[:,i] = land_img_min_per_day[:,i] / 60. / 24.
 
 f = plt.figure(1)
 plt.plot(gnd_rate, beta)
 plt.xlabel('Scan rate (km/s)')
 plt.ylabel('Collection Duty Cycle')
 plt.xticks([1,3,5,7])
-plt.ylim(0, 0.3)
+plt.ylim(0, 0.1)
 plt.xlim(1, 7)
 plt.legend(['%d km' % t for t in target_spacing * alt], 
            loc='best')
