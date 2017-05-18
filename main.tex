@@ -318,7 +318,7 @@ We will define a collection duty cycle metric that captures all of the impacts o
 
 where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targetted spacecraft), attitude control bandwidth, etc.
 
-For targeting remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.05$ as shown in Fig. \ref{fig:beta}
+For targeting remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$ as shown in Fig. \ref{fig:beta}
 
 \includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$, for various cross-track target spacings for a reasonably agile spacecraft}
 
@@ -328,7 +328,7 @@ We can similarly define a downlink duty cycle
     \gamma = \frac{t_{d/l}}{t_{per}}
 \end{equation}
 
-where $\gamma$ is typically 0.1 - 0.15 for a single ground station well matched in latitude to the spacecraft's orbit inclination and can be increased with additional, geographically diverse ground stations.
+where $\gamma$ is typically $\sim 0.1$ for a single ground station well matched in latitude to the spacecraft's orbit inclination and can be increased with additional, geographically diverse ground stations.
 
 There are two primary capacity regimes that a spacecraft may operate in:
 
@@ -340,11 +340,16 @@ There are two primary capacity regimes that a spacecraft may operate in:
 We can define a capacity constraint metric, $k_{cap}$
 
 \begin{equation}
-k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{I_D \beta ACR}
+k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{\beta I_D ACR}
 \end{equation}
 
 such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
 
+For a commercial system with multiple ground stations and a dense target deck, a reasonable rule-of-thumb is that $\frac{\gamma}{\beta} \approx 3$ so that a well balanced system has:
+
+\begin{equation}
+    BW_{d/l} \approx \frac{I_D ACR}{3 GSD^2}
+\end{equation}
 
 \subsubsection{Data Intensity}
 
