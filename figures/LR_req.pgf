@@ -740,7 +740,7 @@
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=2.070331in,y=2.477991in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 1x, \(\displaystyle N_{e-}^{FWC}\) = 20 ke-}%
+\pgftext[x=2.070331in,y=2.477991in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 1x, \(\displaystyle N_{e-}^{FWC}\) = 25 ke-}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -754,7 +754,7 @@
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=2.070331in,y=2.276164in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 4x, \(\displaystyle N_{e-}^{FWC}\) = 80 ke-}%
+\pgftext[x=2.070331in,y=2.276164in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 4x, \(\displaystyle N_{e-}^{FWC}\) = 100 ke-}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -768,7 +768,7 @@
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=2.070331in,y=2.074337in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 8x, \(\displaystyle N_{e-}^{FWC}\) = 160 ke-}%
+\pgftext[x=2.070331in,y=2.074337in,left,base]{\rmfamily\fontsize{8.330000}{9.996000}\selectfont 8x, \(\displaystyle N_{e-}^{FWC}\) = 200 ke-}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

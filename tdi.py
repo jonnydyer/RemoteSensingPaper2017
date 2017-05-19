@@ -22,7 +22,7 @@ L_sat = 200.      # W/m^2-sr-um
 lambda_c = 600e-9
 delta_lambda = 0.5    # um
 Vs = 7e3
-Ne_well = 20000
+Ne_well = 25000
 KAI_FPS = 4
 KAI_H = 6400 / 4.
 
@@ -53,7 +53,7 @@ for i, g in enumerate(GSD):
     N[:,i] = N_TDI(Q, Vs, g, Ne_well*4)
 
 plt.plot(Q, N, linewidth=1.5, linestyle='--')
-legend += ['$N_{e^-}^{FWC}=%dke^-$, %.2f m GSD' % (Ne_well*4e-3, g) for g in GSD]
+legend += ['$N_{e^-}^{FWC}=%dke^-$, %.2f m GSD' % (Ne_well*2e-3, g) for g in GSD]
 plt.legend(legend, fontsize='small')
 
 plt.xlabel('Q')
