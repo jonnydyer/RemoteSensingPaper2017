@@ -116,7 +116,7 @@ where $\chi$ is a characteristic spacecraft dimension and $n$ is typically betwe
 C \sim \chi^m
 \end{equation}
 
-where $m = n + k >> 2$
+where $m = n + k > 2$
 
 Similar arguments can be derived from other cost scaling observations such as Meinel's Law for telescopes which states
 
@@ -188,6 +188,33 @@ For small systems these trends are uniquely empowering and are more easily adopt
 \section{Remote Sensing Metrics}
 \label{sec:Metrics}
 In order to compare different remote sensing systems, we need quantitative metrics.  The metrics we will introduce are fundamentally related to the data produced by such systems and are in two categories - \emph{quality} and \emph{volume}.  In a value-based assessment, quality and volume would form the numerator of a global value metric with cost in the denominator.
+
+\subsection{Entendue and Photon Efficiency}
+\label{sec:entendue}
+
+Optical Entendue or throughput, $A \Omega$, is a fundamental space-bandwidth capacity metric for optics.  It is important because it captures the optical photon collection capacity of the optics. 
+
+\begin{equation}
+    P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L d\lambda 
+\end{equation}
+
+It is also highly correlated with complexity and cost.  So a reasonable design objective is, given some optical entendue, extract the most imaging performance from the optics as possible.
+Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Thus the effective usable photon power for imaging is:
+
+\begin{equation}
+    P_{img} = \eta_{ph} A \Omega \int_{\lambda_1}^{\lambda_2}L d\lambda 
+\end{equation}
+
+where
+
+\begin{equation}
+    \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int}
+\end{equation}
+
+where $A_{det}$ is detector area, $A_{\Omega}$ is the area of the optical field of view at the focal plane and $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons.  
+
+$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.
+
 
 \subsection{Image Quality}
 \label{sec:iq}
@@ -351,7 +378,7 @@ For a commercial system with multiple ground stations and a dense target deck, a
     BW_{d/l} \approx \frac{I_D ACR}{3 GSD^2}
 \end{equation}
 
-\subsubsection{Data Intensity}
+\subsection{Data Intensity}
 
 Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
 
@@ -378,19 +405,6 @@ such that
 
 \begin{equation}
     I_D = {\eta}_{rs} N_f N_{bpp}^{comp.}
-\end{equation}
-
-
-\subsection{Imaging Information Bandwidth}
-\label{sec:info_bw}
-In trade studies, the system designer is often confronted with comparing various architectures are designs in terms of the above capacity and image quality metrics.  In some cases, it would be useful to have a metric that allows one to directly compare how \emph{efficiently} a given system captures imagery from a first-principles perspective.
-
-In communications theory, the Shannon-Hartley theorem blah blah blah...
-
-Given a set of design constraints (e.g. Aperture diameter, Q, orbital altitude), we can treat the imaging system as a noisy channel and define a per-pixel channel capacity as:
-
-\begin{equation}
-    C_{px} = B_{px}\log_2 \left(1 + \sqrt{S}\right)
 \end{equation}
 
 \section{Performance Trade Space}
@@ -425,7 +439,7 @@ Equation \ref{eq:acr_scaling} very effectively demonstrates the deep relationshi
 
 \subsection{Pixel Size and Q}
 
-The first technology trend we will discuss is pixel size or pitch, $p_{px}$ and its impact on image quality, collection capacity and system characteristic size and, hence, cost.  We will study the effect of pixel size through the lens of $Q$ recognizing that
+The first technology observation we made regarded pixel size or pitch, $p_{px}$ and its impact on image quality, collection capacity and system characteristic size and, hence, cost.  We will study the effect of pixel size through the lens of $Q$ recognizing that
 
 $$Q \propto \frac{f}{p_{px}}$$
 
@@ -464,7 +478,12 @@ Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems we
 Happily, the trend towards much smaller pixel in commercial image detectors (Fig. \ref{fig:pix_trend}) opens up the opportunity of driving to towards higher $Q$'s where image quality is optimized without increasing system size.
 
 However smaller pixels inherently store less charge, both in the photodector and storage node. In fact to first order\cite{jerram}:
-$$N_{e^-}^{FWC} \propto p^2$$
+
+\begin{equation}
+  \label{eq:pix_fwc_scaling}  
+N_{e^-}^{FWC} \propto p^2
+\end{equation}
+
 and while there are process optimizations that can improve this, these typically are second order to simple area scaling.
 
 This leaves the challenge of achieving acceptable $SNR$ and $DR$ and we will show in section \ref{sec:modalities} that the high data sampling rates of modern CMOS pixels coupled with analog stabilization enables this at high $Q$ and with small pixels.
@@ -474,9 +493,10 @@ And so we also argue that:
 Smaller pixels enable driving system size down, $Q$ up but require hybrid stabilization (digital + analog) to make practical due to inherently lower signal, $S$ obtained during exposure.
 \end{observation}
 
-\subsection{Image Stabilization}
-
+\section{Collection Modalities}
+\label{sec:modalities}
 Large orbital velocity is a large advantage of spacecraft for remote sensing over other platforms as it gives:
+
 
 \begin{itemize}
 \item Daily global access
@@ -531,11 +551,7 @@ To-date analog electronic or TDI stabilization has only been implemented success
 
 Likewise digital oversampling is typically not practical using CCD sensors in high resolution systems due to the inherent limitations on read-out rate of CCD as compared with CMOS technology.
 
-Finally it is important to point out that digital and analog stabilization can be combined in the same system.  Such hybrid stabilization schemes could be in the form of analog opto-mechanical stabilization plus digital oversampling or a TDI CCD that is read out fast enough to allow digital oversampling.  Indeed we will argue later that such hybrid stabilization schemes uniquely leverage the capabilities of modern CMOS detectors, enable smaller systems and provide significant system-level flexibility.  The authors assert that such hybrid systems are the future of remote sensing from space.
-
-
-\section{Collection Modalities}
-\label{sec:modalities}
+Finally it is important to point out that digital and analog stabilization can be combined in the same system.  Such hybrid stabilization schemes could be in the form of analog opto-mechanical stabilization plus digital oversampling or a TDI CCD that is read out fast enough to allow digital oversampling.  Indeed we will argue later that such hybrid stabilization schemes uniquely leverage the capabilities of modern CMOS detectors, enable smaller systems and provide significant system-level flexibility.
 
 \subsection{Analog Stabilization with TDI}
 
@@ -590,6 +606,71 @@ However step-and-stare IS NOT limited by small pixel FWC as each the well is rea
 \includefigure{figures/stab_step_stare.pgf}{fig:stab_step_stare}{Stabilized Step-and-Stare t-x diagram.  Red row indicates one in-track ground sample}
 
 \subsection{Comparison of modalities}
+
+\subsubsection{$\eta_{ph}$}
+
+One way to conceptualize $\eta_{ph}$ for the different modalities is as the time-average (or integral over time) of the blue areas in Figures \ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and \ref{fig:stab_step_stare}.
+
+In order to quantify this it can be shown that
+
+$$A_{fov} = D_{ap}^2 \left(F^\# \right)^2 \Omega = f^2 \Omega $$
+
+or 
+
+$$A_{fov} = \pi D_{ap}^2 \left(F^\# \right)^2 \theta_{fov}^2 = \pi f^2 \theta_{fov}^2$$
+
+where $\theta_{fov}$ is the conical field of view in the small angle approximation.
+
+From this, we can derive $\eta_{ph}$ for systems in both blur-dominated and full-well capacity-dominated regimes.
+
+For the full-well capacity-dominated regime
+
+\begin{equation}
+    \eta_{ph}^{FWC} = \frac{\lambda^2 h_{px} N_{e^-}^{FWC} LR}{\pi D_{ap}^2 \theta_{fov}^2 k_{pe}L \Delta \lambda QE}
+\end{equation}
+
+which we can simplify to observe
+
+\begin{equation}
+    \label{eq:eta_fwc_scaling}
+    \eta_{ph}^{FWC} \propto \frac{N_{e^-}^{FWC} LR}{D_{ap}^2 \theta_{fov}^2 QE}
+\end{equation}
+
+In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
+
+\begin{equation}
+    \label{eq:eta_fwc_scaling}
+    \eta_{ph}^{FWC} \propto \frac{p_{px}^2 LR}{D_{ap}^2 \theta_{fov}^2 QE}
+\end{equation}
+
+Showing that high efficiency systems must either move to larger pixels or higher line-rates.  We observed earlier that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).  This is exactly the trend that CMOS sensors are driving and thus
+
+\begin{observation}[CMOS trends enable higher $\eta_{ph}$]
+The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
+\end{observation}
+
+All of the above assumes that the system radiometry is dominated by saturation of the pixel well.  However, for high resolution systems without analog stabilization, typically radiometry is constrained by in-track blur due to the high apparent motion in the focal plane.  In this case,
+
+\begin{equation}
+    \label{eq:eta_ph_blur}
+    \eta_{ph}^{blur} = \frac{h_{px}N_{blur}(LR)(GSD)^3}{\pi \theta_{fov}^2 R^2 V_{gnd}}
+\end{equation}
+
+Or 
+
+\begin{equation}
+    \label{eq:eta_blur_scaling}
+    \eta_{ph}^{blur} \sim \frac{(LR)(GSD)^3}{\theta_{fov}^2 V_{gnd}}
+\end{equation}
+
+This scaling law is not good for high resolution systems, requiring extremely high line-rates (and commensurate large data intensity, $I_{D}$ or reduced apparent ground speed, $V_{gnd}$ induced through bus back-scan or other methods.
+
+Thus
+
+\begin{observation}[Analog opto-mechanical stabilization is enabling]
+Analog opto-mechanical stabilization coupled is virtually required to fully realize the advantages provided by high read-out rate, small pixel CMOS detectors.
+\end{observation}
+
 [TODO] - put some quantitative results here comparing system size, ACR, IQ, etc with different modalities...]
 
 Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
@@ -732,8 +813,6 @@ If $LR$ is high enough, it enables digital oversampling of a single ground locat
     N_f = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
 \end{equation}
 
-\subsection{Entendue}
-\label{sec:entendue}
 
 \bibliography{main}
 
