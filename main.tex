@@ -183,7 +183,7 @@ Historically there has been resistance to the utilization of commercial electron
     \item Demonstration of high uptime and reliable operation of COTS-based avionics in LEO \cite{careful_cost}.
 \end{itemize}
 
-For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-adverse) systems.
+For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less rsk-adverse) systems.
 
 \section{Remote Sensing Metrics}
 \label{sec:Metrics}
@@ -195,14 +195,14 @@ In order to compare different remote sensing systems, we need quantitative metri
 Optical Entendue or throughput, $A \Omega$, is a fundamental space-bandwidth capacity metric for optics.  It is important because it captures the optical photon collection capacity of the optics. 
 
 \begin{equation}
-    P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L d\lambda 
+    P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda 
 \end{equation}
 
-It is also highly correlated with complexity and cost.  So a reasonable design objective is, given some optical entendue, extract the most imaging performance from the optics as possible.
+$A\Omega$ is also highly correlated with complexity and cost.  So a reasonable design objective is, given some optical entendue, extract the most imaging performance from the optics as possible.
 Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Thus the effective usable photon power for imaging is:
 
 \begin{equation}
-    P_{img} = \eta_{ph} A \Omega \int_{\lambda_1}^{\lambda_2}L d\lambda 
+    P_{img} = \eta_{ph} A \Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda 
 \end{equation}
 
 where
@@ -211,7 +211,7 @@ where
     \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int}
 \end{equation}
 
-where $A_{det}$ is detector area, $A_{\Omega}$ is the area of the optical field of view at the focal plane and $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons.  
+where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of view at the focal plane and $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons.  
 
 $\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.
 
@@ -266,14 +266,14 @@ Based on this definition, one can use GIQE-5 to define $GRD$:
 \cite{auelmann_iq} shows that:
 
 \begin{equation}
-    \alpha_{eff} = \frac{GRD}{R} = \frac{IFOV}{RER} = \frac{\lambda_{mean}}{D_{ap} Q \times RER (Q)}
+    GRD = \frac{R\times IFOV}{RER} = \frac{R\lambda_{mean}}{D_{ap} Q \times RER (Q)}
 \label{eq:alpha_eff}
 \end{equation}
 
-and that a good approximation for the GIQE-based $\alpha_{eff}$ for diffraction limited systems is given by:
+and that a good approximation for the GIQE-based $GRD$ for diffraction limited systems is given by:
 
 \begin{equation}
-    \alpha_{eff} \approx \frac{\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
+    GRD \approx \frac{R\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
 \label{eq:alpha_eff_approx}
 \end{equation}
 
@@ -592,9 +592,9 @@ Step and stare relies on a high speed framing CMOS sensor to capture multiple, o
 
 \includefigure{figures/step_stare.pgf}{fig:step_stare}{Step-and-stare t-x diagram.  Red row indicates one in-track ground sample}
 
-Figure \ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels in and a very high framing rate whereas in reality the panchromatic Skybox detector is 1080 pixels high and frames at about 1/6 of the rate shown.  Fig. \ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate illustrating the extremely low imaging duty cycle.
+Figure \ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels in and a very high framing rate whereas in reality most modern framing sensors are > 1000 pixels high and frames at about 1/6 of the rate shown.  Fig. \ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate illustrating the extremely low imaging duty cycle.
 
-It is worth noting in this diagram that the imaging duty cycle is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is fundamentally limited by pixel blur.  This is a problematic limitation and severe enough that Skybox slows the effective scene scan rate down to ~1/3 of orbital rate with a bus "back-knod" in order to get sufficient signal without incurring substantial blur.
+It is worth noting in this diagram that the photon collection duty cycle, $\phi_{ph}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is fundamentally limited by pixel blur.  This is a problematic limitation and severe enough that systems $GSD$ below about 3m must reduce $V_{gnd}$ with a bus "back-knod" in order to get sufficient signal without incurring substantial blur.
 
 \includefigure{figures/step_stare_real.pgf}{fig:step_stare_real}{Step-and-stare t-x diagram with realistic array height and framerate.}
 
@@ -609,7 +609,7 @@ However step-and-stare IS NOT limited by small pixel FWC as each the well is rea
 
 \subsubsection{$\eta_{ph}$}
 
-One way to conceptualize $\eta_{ph}$ for the different modalities is as the time-average (or integral over time) of the blue areas in Figures \ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and \ref{fig:stab_step_stare}.
+One way to conceptualize $\eta_{ph}$ for the different modalities is as the time-average (or integral over time) of the blue areas in Figures \ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and \ref{fig:stab_step_stare}.  Increasing in-track height of the blue bars with taller arrays helps improve this integral and reducing the gaps between them horizontally (in time) improves this.  TDI has a time-duty cycle of 1. (no horizontal gaps) while step-and-stare typically have much taller arrays.
 
 In order to quantify this it can be shown that
 
@@ -621,7 +621,12 @@ $$A_{fov} = \pi D_{ap}^2 \left(F^\# \right)^2 \theta_{fov}^2 = \pi f^2 \theta_{f
 
 where $\theta_{fov}$ is the conical field of view in the small angle approximation.
 
-From this, we can derive $\eta_{ph}$ for systems in both blur-dominated and full-well capacity-dominated regimes.
+From this, we can derive $\eta_{ph}$ for systems in two regimes: blur constrained and full-well capacity constrained.  The domains are separated by the following criteria:
+
+\begin{align*}
+    N_{e^-}^{FWC} &>& \frac{N_{bl} QE \times GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{Blur-constrained} \\
+    N_{e^-}^{FWC} &\leq& \frac{N_{bl} QE \times GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
+\end{align*}
 
 For the full-well capacity-dominated regime
 
@@ -633,7 +638,7 @@ which we can simplify to observe
 
 \begin{equation}
     \label{eq:eta_fwc_scaling}
-    \eta_{ph}^{FWC} \propto \frac{N_{e^-}^{FWC} LR}{D_{ap}^2 \theta_{fov}^2 QE}
+    \eta_{ph}^{FWC} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{e^-}^{FWC} LR}{QE}
 \end{equation}
 
 In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
@@ -653,17 +658,17 @@ All of the above assumes that the system radiometry is dominated by saturation o
 
 \begin{equation}
     \label{eq:eta_ph_blur}
-    \eta_{ph}^{blur} = \frac{h_{px}N_{blur}(LR)(GSD)^3}{\pi \theta_{fov}^2 R^2 V_{gnd}}
+    \eta_{ph}^{bl} = \frac{\lambda^2 h_{px}N_{bl}LR \times GSD}{\pi D_{ap}^2\theta_{fov}^2 Q^2 V_{gnd}}
 \end{equation}
 
 Or 
 
 \begin{equation}
     \label{eq:eta_blur_scaling}
-    \eta_{ph}^{blur} \sim \frac{(LR)(GSD)^3}{\theta_{fov}^2 V_{gnd}}
+    \eta_{ph}^{bl} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{blur} LR \times GSD}{Q^2 V_{gnd}}
 \end{equation}
 
-This scaling law is not good for high resolution systems, requiring extremely high line-rates (and commensurate large data intensity, $I_{D}$ or reduced apparent ground speed, $V_{gnd}$ induced through bus back-scan or other methods.
+This scaling law is not good for high resolution systems, requiring extremely high line-rates (and commensurate large data intensity, $I_{D}$) or reduced apparent ground speed, $V_{gnd}$ induced through bus back-scan or other methods.
 
 Thus
 
@@ -671,7 +676,21 @@ Thus
 Analog opto-mechanical stabilization coupled is virtually required to fully realize the advantages provided by high read-out rate, small pixel CMOS detectors.
 \end{observation}
 
-[TODO] - put some quantitative results here comparing system size, ACR, IQ, etc with different modalities...]
+\subsubsection{$I_{D}$, $ACR$, $IQ$}
+
+It can be shown that the total photo-electron generation rate, $\dot{N_{e^-}} \propto \eta_{ph}A_{ap}\Omega$ and in the shot-limited noise regime
+
+\begin{equation}
+    \dot{N_{e^-}} = \frac{ACR \times SNR^2}{GSD^2}
+\end{equation}
+
+such so that we can say
+
+\begin{equation}
+    \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph}A_{ap}\Omega
+\end{equation}
+
+This relationship demonstrates that $\eta_{ph}A_{ap}\Omega$ is a fundamental performance constraint for a remote sensings system within which trades between volume and quality can be made.
 
 Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
 
@@ -679,7 +698,7 @@ Table \ref{table:modalities} summarizes qualitatively the relative advantages an
 \resizebox{.45\textwidth}{!}{%
 \centering
 \begin{tabular}{@{}rccccc@{}}
-\multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & \textbf{Q \textgreater 1}         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 
+\multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & $\eta_{ph}$         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 
 \textbf{\begin{tabular}[c]{@{}r@{}}Analog \\Electronic\end{tabular}}                                                         & {\color[HTML]{F56B00} \textbf{-}} & {\color[HTML]{32CB00} \textbf{+}}   & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{FE0000} \textbf{- -}}                                & {\color[HTML]{32CB00} \textbf{++}}                                \\ \midrule
 \textbf{\begin{tabular}[c]{@{}r@{}}Digital\\Oversampling\end{tabular}}                                                  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{FE0000} \textbf{- -}} & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{32CB00} \textbf{++}}                                 & {\color[HTML]{FE0000} \textbf{- -}}                               \\ \midrule
 \textbf{Hybrid} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{++}}  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{Tunable}}                            & {\color[HTML]{32CB00} \textbf{Tunable}}                           \\ \bottomrule
