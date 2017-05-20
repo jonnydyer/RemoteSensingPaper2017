@@ -15,7 +15,7 @@ Q = np.linspace(0.5, 2)
 D = 0.35
 lam = 550e-9
 h = 500e3
-snr0 = 20.
+snr0 = 21.
 
 alpha = alpha_eff(D, lam, Q)
 GRD = h * alpha
