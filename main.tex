@@ -624,21 +624,25 @@ where $\theta_{fov}$ is the conical field of view in the small angle approximati
 From this, we can derive $\eta_{ph}$ for systems in two regimes: blur constrained and full-well capacity constrained.  The domains are separated by the following criteria:
 
 \begin{align*}
-    N_{e^-}^{FWC} &>& \frac{N_{bl} QE \times GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{Blur-constrained} \\
-    N_{e^-}^{FWC} &\leq& \frac{N_{bl} QE \times GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
+    N_{e^-}^{FWC} &>& \frac{k_{pe}L_{sat}QE N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{Blur-constrained} \\
+    N_{e^-}^{FWC} &\leq& \frac{k_{pe}L_{sat}QE N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
 \end{align*}
+
+\includefigure{figures/
+
+Figure \ref{fig:eta_regime} is a regime map for a set of reasonable parameters.
 
 For the full-well capacity-dominated regime
 
 \begin{equation}
-    \eta_{ph}^{FWC} = \frac{\lambda^2 h_{px} N_{e^-}^{FWC} LR}{\pi D_{ap}^2 \theta_{fov}^2 k_{pe}L \Delta \lambda QE}
+    \eta_{ph}^{FWC} = \frac{\lambda^2 h_{px} N_{e^-}^{FWC} LR}{\pi D_{ap}^2 \theta_{fov}^2 k_{pe}(L)(QE)}
 \end{equation}
 
 which we can simplify to observe
 
 \begin{equation}
     \label{eq:eta_fwc_scaling}
-    \eta_{ph}^{FWC} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{e^-}^{FWC} LR}{QE}
+    \eta_{ph}^{FWC} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{e^-}^{FWC} LR}{(L)(QE)}
 \end{equation}
 
 In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
@@ -766,25 +770,31 @@ Beyond a statement of the Nyquist criterion, $Q$ is a very useful parameter by w
 In order to not have to carry full radiometry for every calculation, we will define a payload photo-electron gain, 
 
 \begin{equation}
-k_{pe} \equiv \frac{\dot{N}_{e^-}^{std}}{L^\lambda\Delta \lambda}
+k_{pe} \equiv \frac{\dot{N}_{e^-}^{std}}{L}
 \label{eq:k_pe}
 \end{equation}
 
-Where $L$ is radiance at aperture in W/m$^2$-sr-um, $QE$ is quantum efficiency, $\Delta \lambda$ is spectral bandwidth and $\dot{N}_{e^-}^{std}$ is photo-electron generation rate for the case of $QE=1$, $Q=1$.
+Where 
+
+\begin{equation*}
+    L = \int_{\lambda_1}^{\lambda_2}L_{\lambda}(\lambda)d\lambda
+\end{equation*}
+
+is radiance at aperture in W/m$^2$-sr, $QE$ is quantum efficiency, $\Delta \lambda$ is spectral bandwidth and $\dot{N}_{e^-}^{std}$ is photo-electron generation rate for the case of $QE=1$, $Q=1$.
 
 Moving forward, we will use $k_{pe} = 2\times 10^5$ e$^-$-sr-um-m$^2$/J\footnote{Given $\Delta \lambda = 0.5$um, $L = 100$ W/m$^2$-sr-um, this equates to $\dot{N}_{e^-}^{std} = 1\times 10^7$ e$^-$ / s or 5,000 photo-electrons accumulated in a 1ms integration time on a $Q=1$, $QE=0.5$ system}
 
 Now we have a simple relationship useful in comparing systems radiometrically:
 
 \begin{equation}
-\dot{N}_{e^-} = \frac{k_{pe} L \Delta \lambda QE}{Q^2}
+\dot{N}_{e^-} = \frac{k_{pe} L \times QE}{Q^2}
 \label{eq:N_e_dot}
 \end{equation}
 
 Typically remote sensing systems report signal to noise at a radiance a small fraction of the saturation radiance.  We will define this ratio of typical to saturation radiance - 
 
 \begin{equation}
-\alpha = \frac{L_{typ}^\lambda}{L_{sat}^\lambda}
+\alpha = \frac{L_{typ}}{L_{sat}}
 \label{eq:alpha}
 \end{equation}
 
@@ -798,7 +808,7 @@ where $s$ is the signal magnitude in photoelectrons and $\sigma_{rd}$ is read no
 
 Finally, we come to a very useful relationship for a single exposure in eq. \ref{eq:s} -
 \begin{equation}
-s = \alpha k_{pe}L_{sat}^\lambda\Delta \lambda \frac{t_{int}QE}{Q^2}
+s = \alpha k_{pe}L_{sat} \frac{t_{int}QE}{Q^2}
 \label{eq:s}
 \end{equation}
 
