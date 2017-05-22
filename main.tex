@@ -628,7 +628,7 @@ From this, we can derive $\eta_{ph}$ for systems in two regimes: blur constraine
     N_{e^-}^{FWC} &\leq& \frac{k_{pe}L_{sat}QE N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
 \end{align*}
 
-\includefigure{figures/
+\includefigure{figures/blur_fwc_regime.pgf}{fig:eta_regime}{Representative regime map as a function of $GSD$ and $V_{gnd}$}
 
 Figure \ref{fig:eta_regime} is a regime map for a set of reasonable parameters.
 
@@ -645,12 +645,12 @@ which we can simplify to observe
     \eta_{ph}^{FWC} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{e^-}^{FWC} LR}{(L)(QE)}
 \end{equation}
 
-In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
-
-\begin{equation}
-    \label{eq:eta_fwc_scaling}
-    \eta_{ph}^{FWC} \propto \frac{p_{px}^2 LR}{D_{ap}^2 \theta_{fov}^2 QE}
-\end{equation}
+%In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
+%
+%\begin{equation}
+%    \label{eq:eta_fwc_scaling}
+%    \eta_{ph}^{FWC} \propto \frac{p_{px}^2 LR}{D_{ap}^2 \theta_{fov}^2 QE}
+%\end{equation}
 
 Showing that high efficiency systems must either move to larger pixels or higher line-rates.  We observed earlier that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).  This is exactly the trend that CMOS sensors are driving and thus
 
