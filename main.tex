@@ -605,10 +605,10 @@ s = \alpha N_{e^-}^{FWC}
 \label{eq:well_limited}
 \end{equation}
 
-Noting that the exposure time for a single stage of a TDI system is simply $t_{int}^{line} = \frac{1}{LR}$ where $LR$ is line-rate and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \ref{eq:s} to obtain an expression for optimal number of TDI stages:
+Noting that the exposure time for a single stage of a TDI system is extrinsically related to the linerate, $LR$ $t_{int}^{line} = \frac{1}{LR}$, and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \ref{eq:s} to obtain an expression for optimal number of TDI stages:
 
 \begin{equation}
-N_{TDI} \propto N_{e^-}^{FWC} Q^3 V_{gnd}D_{ap} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{D_{ap}^2 GSD^3}
+N_{TDI} =\frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}}\frac{LR}{QE} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{D_{ap}^2 GSD^3 L_{sat}}
 \label{eq:n_tdi}
 \end{equation}
 
@@ -620,9 +620,9 @@ While extremely powerful and well-proven over many missions, TDI detectors prese
 
 Historically missions have developed custom TDI detectors due to the unique performance and mission requirements of a spacecraft\cite{jerram}.  These include high line rates, large full-well capacity, low read-noise, high quantum-efficiency and radiation tolerance.  And while there are commercially available TDI detectors, they typically do not meet the requirements of high resolution collection from a space platform.
 
-Furthermore collecting high-resolution imagery in TDI-mode introduces stringent requirements on spacecraft attitude rate accuracy and stability so as to maintain precise row-to-row alignment during integration and minimize blur. As an example, notional ACS requirements for a 16-stage TDI-based 1-m resolution system operating at 500km altitude would be\cite{pittelkau}:
-$$\norm{\tilde{\omega}} \leq 100 \mu rad / sec$$
-$$\sigma_{\omega}(0-150Hz) \leq 50 \mu rad/sec$$
+As we noted in Observation \ref{obs:small_pix}, smaller pixels are desirable from a system-size perspective but this typically comes at the expense of pixel full-well capacity, especially in off-the-shelf CCD's.  We show in section \ref{sec:eta_ph} that this limitation can be overcome through digital oversampling. 
+
+However, because TDI systems inherently couple stabilization rate, integration time and read-out line rate, digital oversampling is not an option with a single TDI array, limiting dynamic range.  The limited dynamic range is also compounded by inflexibility in exposure which is entirely constrained by the line rate and number of TDI stages.  
 
 \subsection{Digital Stabilization with Step-and-Stare}
 Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to creat output data with a longer effective integration time - virtual TDI in a way.
@@ -714,17 +714,19 @@ Per eq. \ref{eq:eta_ph_fwc}, we note that
     \eta_{ph}^{FWC} \propto h_{px}N_{e^-}^{FWC}LR
 \end{equation}
 
-and in light of Observation \ref{obs:small_pix}, we define a sensor figure of merit
+High efficiency FWC-limited systems must either have larger full-well capacities or higher line-rates.  We observed earlier (Observation \ref{obs:small_pix}) that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).
+
+In light of this we define a sensor figure of merit
 
 \begin{equation}
     \psi_{px} = \frac{h_{px}N_{e^-}^{FWC}LR}{p_{px}}
 \end{equation}
 
-$\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plotted in Fig \ref{fig:psi_px}.
+$\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plotted in Fig. \ref{fig:psi_px}.
 
-\includefigure{figures/p_kpi.pgf}{fig:psi_px}
+\includefigure{figures/p_kpi.pgf}{fig:psi_px}{Detector figure of merit, $\psi_{px}$.  Note log scale and general trend of higher $\psi_{px}$ for CMOS sensors.}
 
-Because $N_{e^-}^{FWC} \propto p_{px}^2$ (eq. \ref{eq:pix_fwc_scaling}), high efficiency FWC-limited systems must either move to larger pixels or higher line-rates.  We observed earlier that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).  This is exactly the trend that CMOS sensors are driving and thus
+Modern CMOS sensors are t
 
 \begin{observation}[CMOS detectors coupled with analog stabilization are enabling]
 The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
