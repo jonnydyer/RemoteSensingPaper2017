@@ -195,14 +195,14 @@ In order to compare different remote sensing systems, we need quantitative metri
 Optical Entendue or throughput, $A \Omega$, is a fundamental space-bandwidth capacity metric for optics.  It is important because it captures the optical photon collection capacity of the optics. 
 
 \begin{equation}
-    P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda 
+    P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda = A\Omega L
 \end{equation}
 
 $A\Omega$ is also highly correlated with complexity and cost.  So a reasonable design objective is, given some optical entendue, extract the most imaging performance from the optics as possible.
 Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Thus the effective usable photon power for imaging is:
 
 \begin{equation}
-    P_{img} = \eta_{ph} A \Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda 
+    P_{img} = \eta_{ph} A \Omega L 
 \end{equation}
 
 where
@@ -290,12 +290,32 @@ $$DR = \frac{S_{max}}{S_{min}}$$
 
 The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, etc.
 
-The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directlye expands dynamic range by increasing the effective well depth such that $s_{max} = N_f N_{e^-}^{well}$ where $N_f$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
+The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directlye expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
 
 \begin{equation}
-    DR = \sqrt{N_f}\frac{N_{e^-}^{well}}{\sigma_{uncor}}
+    DR = \sqrt{N_s}\frac{N_{e^-}^{well}}{\sigma_{uncor}}
 \label{eq:DR_OS}
 \end{equation}
+
+Dynamic range is a very important quality parameter for remote sensing systems because the dynamic range of terrestrial natural scenes can be quite high.  
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width = \textwidth]{figures/}
+\caption{Left figure}
+\label{fig:left}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\centering
+\includegraphics[width = \textwidth]{tikzexample2.png}
+\caption{Right figure}
+\label{fig:right}
+\end{subfigure}
+\caption{Combined figure}
+\label{fig:combined}
+\end{figure}
 
 For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in section \ref{sec:hdr}.
 
@@ -317,14 +337,14 @@ where $\alpha$ is the ratio of target radiance (or reflectance) to the saturatio
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe}
-SNR_{\alpha} = \sqrt{N_f}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
+SNR_{\alpha} = \sqrt{N_s}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
 \end{equation}
 
 For most modern detectors, uncorrelated noise sources are small compared with shot noise so we can approximate eq. \ref{eq:snr_alpha_multiframe}
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe_simp}
-SNR_{\alpha} \approx \sqrt{N_f \alpha N_{e^-}^{well}}
+SNR_{\alpha} \approx \sqrt{N_s \alpha N_{e^-}^{well}}
 \end{equation}
 
 \subsection{Collection Capacity}
@@ -394,7 +414,7 @@ Where we assume an output product to consist of the fused, corrected but un-rect
 For a digitally oversampling system
 
 \begin{equation}
-    I_D = N_f N_{bpp}^{comp.} = \frac{N_f N_{bpp}^{raw}}{C}
+    I_D = N_s N_{bpp}^{comp.} = \frac{N_s N_{bpp}^{raw}}{C}
 \end{equation}
 
 Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ because for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
@@ -404,7 +424,27 @@ $${\eta}_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}$$
 such that
 
 \begin{equation}
-    I_D = {\eta}_{rs} N_f N_{bpp}^{comp.}
+    \label{eq:I_D}
+    I_D = {\eta}_{rs} N_s N_{bpp}^{comp.}
+\end{equation}
+
+We can also define a collect-area normalized data intensity, $I_A = \frac{I_{D}}{GSD^2}$.  Given eq. \ref{eq:I_D}
+
+\begin{equation}
+    I_A = \frac{N_s N_{bpp}^{comp.}}{GSD_{L0}^2}
+\end{equation}
+
+Finally, it is worth noting that for a system with well-matched analog and digital (quantization) dynamic range
+
+\begin{equation}
+    N_{bpp}^{raw} \sim \textrm{log}_2(SNR_{sat})
+\end{equation}
+
+where $SNR_{sat}$ is the saturated signal-to-noise ratio for a single exposure.  In the FWC exposure-limited, shot noise-limited regimes $SNR_{sat} = \sqrt{N_{e^-}^{FWC}}$ such that
+
+\begin{equation}
+    \label{eq:n_bpp_Ne}
+    N_{bpp}^{raw} \sim \frac{\textrm{log}_2(N_{e^-}^{FWC})}{2}
 \end{equation}
 
 \section{Performance Trade Space}
@@ -594,7 +634,7 @@ Step and stare relies on a high speed framing CMOS sensor to capture multiple, o
 
 Figure \ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels in and a very high framing rate whereas in reality most modern framing sensors are > 1000 pixels high and frames at about 1/6 of the rate shown.  Fig. \ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate illustrating the extremely low imaging duty cycle.
 
-It is worth noting in this diagram that the photon collection duty cycle, $\phi_{ph}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is fundamentally limited by pixel blur.  This is a problematic limitation and severe enough that systems $GSD$ below about 3m must reduce $V_{gnd}$ with a bus "back-knod" in order to get sufficient signal without incurring substantial blur.
+It is worth noting in this diagram that the photon collection duty cycle, $\phi_{ph}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is typically limited blur-limited (see \ref{sec:eta_ph}).  This is a problematic limitation and severe enough that systems $GSD$ below about 3m must reduce $V_{gnd}$ with a bus "back-nod" in order to get sufficient signal without incurring substantial blur.
 
 \includefigure{figures/step_stare_real.pgf}{fig:step_stare_real}{Step-and-stare t-x diagram with realistic array height and framerate.}
 
@@ -605,9 +645,8 @@ However step-and-stare IS NOT limited by small pixel FWC as each the well is rea
 
 \includefigure{figures/stab_step_stare.pgf}{fig:stab_step_stare}{Stabilized Step-and-Stare t-x diagram.  Red row indicates one in-track ground sample}
 
-\subsection{Comparison of modalities}
-
-\subsubsection{$\eta_{ph}$}
+\subsection{$\eta_{ph}$ and Comparison of modalities}
+\label{sec:eta_ph}
 
 One way to conceptualize $\eta_{ph}$ for the different modalities is as the time-average (or integral over time) of the blue areas in Figures \ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and \ref{fig:stab_step_stare}.  Increasing in-track height of the blue bars with taller arrays helps improve this integral and reducing the gaps between them horizontally (in time) improves this.  TDI has a time-duty cycle of 1. (no horizontal gaps) while step-and-stare typically have much taller arrays.
 
@@ -645,56 +684,59 @@ which we can simplify to observe
     \eta_{ph}^{FWC} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{e^-}^{FWC} LR}{(L)(QE)}
 \end{equation}
 
-%In light of eq. \ref{eq:pix_fwc_scaling} we can thus also say:
-%
-%\begin{equation}
-%    \label{eq:eta_fwc_scaling}
-%    \eta_{ph}^{FWC} \propto \frac{p_{px}^2 LR}{D_{ap}^2 \theta_{fov}^2 QE}
-%\end{equation}
-
-Showing that high efficiency systems must either move to larger pixels or higher line-rates.  We observed earlier that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).  This is exactly the trend that CMOS sensors are driving and thus
-
-\begin{observation}[CMOS trends enable higher $\eta_{ph}$]
-The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
-\end{observation}
-
-All of the above assumes that the system radiometry is dominated by saturation of the pixel well.  However, for high resolution systems without analog stabilization, typically radiometry is constrained by in-track blur due to the high apparent motion in the focal plane.  In this case,
+For high resolution systems without analog stabilization (digital stabilization or pure step-and-stare), radiometry is typically constrained by in-track blur due to the high apparent motion in the focal plane rather than the limited FWC of the pixel (Fig. \ref{fig:eta_regime}).  In this case,
 
 \begin{equation}
     \label{eq:eta_ph_blur}
-    \eta_{ph}^{bl} = \frac{\lambda^2 h_{px}N_{bl}LR \times GSD}{\pi D_{ap}^2\theta_{fov}^2 Q^2 V_{gnd}}
+    \eta_{ph}^{bl} = \frac{\lambda^2 h_{px}N_{bl}(LR)(GSD)}{\pi D_{ap}^2\theta_{fov}^2 Q^2 V_{gnd}}
 \end{equation}
 
 Or 
 
 \begin{equation}
     \label{eq:eta_blur_scaling}
-    \eta_{ph}^{bl} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{blur} LR \times GSD}{Q^2 V_{gnd}}
+    \eta_{ph}^{bl} \propto \frac{1}{D_{ap}^2 \theta_{fov}^2} \frac{N_{blur} (LR) (GSD)}{Q^2 V_{gnd}}
 \end{equation}
 
-This scaling law is not good for high resolution systems, requiring extremely high line-rates (and commensurate large data intensity, $I_{D}$) or reduced apparent ground speed, $V_{gnd}$ induced through bus back-scan or other methods.
+This scaling law is not good for high resolution systems, requiring high $\frac{LR}{V_{gnd}}$ (and commensurate large data intensity, $I_{D}$), $N_{bl} >> 1 \: \textrm{px}$ or very low $Q$.
 
-Thus
-
-\begin{observation}[Analog opto-mechanical stabilization is enabling]
-Analog opto-mechanical stabilization coupled is virtually required to fully realize the advantages provided by high read-out rate, small pixel CMOS detectors.
+\begin{observation}[Design for FWC-limited regime]
+Operation in the FWC-limited regime results in higher $\eta_{ph}$ and thus should be a design goal.
+\end{observation}
+and thus
+\begin{observation}[The need for analog stabilization]
+Analog stabilization is likely required to fully realize the advantages provided by high read-out rate, small pixel staring detectors.
 \end{observation}
 
-\subsubsection{$I_{D}$, $ACR$, $IQ$}
+Because $N_{e^-}^{FWC} \propto p_{px}^2$ (eq. \ref{eq:pix_fwc_scaling}), high efficiency FWC-limited systems must either move to larger pixels or higher line-rates.  We observed earlier that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).  This is exactly the trend that CMOS sensors are driving and thus
 
-It can be shown that the total photo-electron generation rate, $\dot{N_{e^-}} \propto \eta_{ph}A_{ap}\Omega$ and in the shot-limited noise regime
+\begin{observation}[CMOS detectors coupled with analog stabilization are enabling]
+The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
+\end{observation}
+
+\subsubsection{Relationshp of $\eta_{ph}$ to $ACR$ and $IQ$}
+
+It can be shown that the total photo-electron generation rate, $\dot{N}_{e^-} \propto L\eta_{ph}A_{ap}\Omega$ and for FWC-limited systems operating in the shot-limited noise regime
 
 \begin{equation}
-    \dot{N_{e^-}} = \frac{ACR \times SNR^2}{GSD^2}
+    \dot{N}_{e^-} = \frac{ACR \times SNR^2}{GSD^2}
 \end{equation}
 
 such so that we can say
 
 \begin{equation}
-    \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph}A_{ap}\Omega
+    \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L
 \end{equation}
 
-This relationship demonstrates that $\eta_{ph}A_{ap}\Omega$ is a fundamental performance constraint for a remote sensings system within which trades between volume and quality can be made.
+This relationship demonstrates that $\eta_{ph}A_{ap}\Omega$ is a fundamental performance constraint for a remote sensings system within which trades between collection area and image quality can be made.
+
+\subsubsection{Relationship of $\eta_{ph}$ to $I_{D}$ and $I_A$}
+
+It is interesting to note that the relationship of $\eta_{ph}$ to data intensity is regime dependent as well.  In the blur-limited regime, it can be shown that:
+
+\begin{equation}
+    I_D \propto 
+\end{equation}
 
 Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
 
@@ -836,10 +878,10 @@ A necessary condition for the collection of contiguous, gapless imagery along th
 
 where $V_{gnd}$ is the apparent velocity of the ground in the spacecraft's camera frame and $R$ is the range to the ground (equal to the spacecraft altitude when nadir-pointed).  This condition provides a lower-bound requirement on the detector line-rate at a given $GSD$.  
 
-If $LR$ is high enough, it enables digital oversampling of a single ground location which has multiple potential uses that will be discussed in Section \ref{sec:step_stare}.  This has most relevance to framing detectors with significant in-track extent and we can define the oversampling ration, $N_f$:
+If $LR$ is high enough, it enables digital oversampling of a single ground location which has multiple potential uses that will be discussed in Section \ref{sec:step_stare}.  This has most relevance to framing detectors with significant in-track extent and we can define the oversampling ration, $N_s$:
 
 \begin{equation}
-    N_f = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
+    N_s = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
 \end{equation}
 
 
