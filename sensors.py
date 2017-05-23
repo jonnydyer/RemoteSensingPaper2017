@@ -27,7 +27,7 @@ ccds = sensors.loc[sensors['Type'] == 'CCD']
 cmos = sensors.loc[sensors['Type'] == 'CMOS']
 
 f = plt.figure(1)
-plt.plot(np.linspace(2,10), 0.5*np.linspace(2,10)**2, 'r--',
+plt.plot(np.linspace(2,10), 0.7*np.linspace(2,10)**2, 'r--',
          label=r'$N_{e^-}^{FWC} \propto p_{px}^2$')
 plt.plot(ccds['Pixel Size'], ccds['FWC']/1e3, 'b^', label='CCD')
 plt.plot(cmos['Pixel Size'], cmos['FWC']/1e3, 'go', label='CMOS')
