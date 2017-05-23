@@ -21,19 +21,19 @@ QE = 0.4
 Lsat = 200
 Nbl = 1.
 Q = 1.
-Ne_fwc = 10e3
+Ne_fwc = 20e3
 
-Vg = np.linspace(1, 10) * 1e3
+Vg = np.linspace(0.01, 10) * 1e3
 GSD = np.linspace(0.5, 10)
 
 frontier = kpe * Lsat * QE * Nbl * np.tile(GSD, [len(Vg), 1]).T / Q**2 / Vg / Ne_fwc
 
 f = plt.figure(1)
-CS = plt.contourf(Vg/1e3, GSD, frontier, [0, 1, 100], 
+CS = plt.contourf(Vg/1e3, GSD, frontier, [0, 1, 1e4], 
                   colors=['white', 'grey', 'black'])
 plt.ylabel('GSD (m)')
 plt.xlabel(r'$V_{gnd}$ (km/s)')
-plt.xlim(1, 10)
+plt.xlim(0, 10)
 plt.ylim(0.5,10)
 plt.grid(False)
 plt.title(r'$\eta_{ph}$ regime for $k_{pe}=2.5 \times 10^5$, $QE=%.1f$, ' % (QE) + \
@@ -42,5 +42,5 @@ plt.title(r'$\eta_{ph}$ regime for $k_{pe}=2.5 \times 10^5$, $QE=%.1f$, ' % (QE)
 plt.text(6, 2, 'Blur-limited', fontdict={'color' : 'k', 'size' : 12})
 plt.text(1.5, 8, 'FWC-limited', fontdict={'color' : 'w', 'size' : 12})
 plt.tight_layout()
-f.savefig('figures/blur_fwc_regime_10ke.pgf')
+f.savefig('figures/blur_fwc_regime.pgf')
 plt.show()
