@@ -826,7 +826,7 @@
 \end{pgfscope}%
 \end{pgfscope}%
 \begin{pgfscope}%
-\pgftext[x=0.326037in,y=1.696809in,,bottom,rotate=90.000000]{\rmfamily\fontsize{8.400000}{10.080000}\selectfont \(\displaystyle \frac{N_{e^-}^{FWC} h_{px}LR}{p_{px}}\)}%
+\pgftext[x=0.326037in,y=1.696809in,,bottom,rotate=90.000000]{\rmfamily\fontsize{8.400000}{10.080000}\selectfont \(\displaystyle \psi_{px} = \frac{h_{px}N_{e^-}^{FWC} LR}{p_{px}}\)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfpathrectangle{\pgfqpoint{0.691008in}{0.533618in}}{\pgfqpoint{2.668992in}{2.326382in}} %
