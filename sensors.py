@@ -20,8 +20,8 @@ rc('font', size=7)
 sensors = pd.read_csv('figures/sensors.csv')
 
 sensors['kpi1'] = sensors['FWC'] * sensors['Width'] * sensors['Height'] * \
-                   sensors['FPS']# / \
-#                   sensors['Pixel Size']**2
+                   sensors['FPS'] / \
+                   sensors['Pixel Size']
 
 ccds = sensors.loc[sensors['Type'] == 'CCD']
 cmos = sensors.loc[sensors['Type'] == 'CMOS']
@@ -43,7 +43,7 @@ f = plt.figure(2)
 plt.semilogy(ccds['Pixel Size'], ccds['kpi1'], 'b^', label='CCD')
 plt.semilogy(cmos['Pixel Size'], cmos['kpi1'], 'go', label='CMOS')
 plt.xlabel(r'$p_{px}$ (um)')
-plt.ylabel(r'$N_{e^-}^{FWC} w_{px}h_{px}FPS$')
+plt.ylabel(r'$\frac{N_{e^-}^{FWC} h_{px}LR}{p_{px}}$')
 plt.xlim(2, 8)
 plt.tight_layout()
 plt.legend()
