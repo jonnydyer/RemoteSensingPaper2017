@@ -18,12 +18,12 @@ rc('figure', figsize=(3.5,3.5))
 rc('legend', fontsize='x-small')
 rc('axes', grid=False)
 
-Q = 2.
+Q = 1.
 d_ap = 0.35
 lam = 600e-9
 ifov = lam / d_ap / Q
 
-SNR = (1, 50)
+SNR = (0.5, 50)
 
 OS = 8 
 img_dim = int(128*Q)
@@ -69,8 +69,8 @@ f = plt.figure(1)
 ax = plt.subplot(gs[1:, 1:])
 plt.imshow(img, cmap='gray', interpolation='nearest')
 #plt.clim(0,1)
-CS = plt.contour(SNR_v * np.tile(mtf_w_samp[:,0], (img_dim,1)), [0.5, 1, 2], colors='y')
-plt.clabel(CS, inline=1, fontsize=10)
+#CS = plt.contour(SNR_v * np.tile(mtf_w_samp[:,0], (img_dim,1)), [0.5, 1, 2], colors='y')
+#plt.clabel(CS, inline=1, fontsize=10)
 ax.set_axis_off()
 
 rot = transforms.Affine2D().rotate_deg(270)
@@ -95,7 +95,7 @@ ax.set_xticklabels([r'$0$', r'$\frac{%.1f}{\lambda F^\#}$' % rho_max])
 ax.set_xlim(0,len(mtf_w_samp[:,0]))
 ax.xaxis.tick_top()
 #f.set_tight_layout(True)
-f.savefig('figures/SNR_mtf_Q2.pdf')
+f.savefig('figures/SNR_mtf_Q1.pdf')
 
 #plt.figure()
 #plt.imshow(tel.psf(), cmap='viridis')

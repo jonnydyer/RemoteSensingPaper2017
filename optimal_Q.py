@@ -37,7 +37,7 @@ if __name__ == '__main__':
     d_ap0 = 0.35
     Ne_well0 = 30e3
     alt = 500e3
-    lamda = 550e-9
+    lamda = 650e-9
     snr_exp = 1.         # 1 for stabilized systems or variable blur, 1.5 for constant blur
     gsd0 = px_pitch0 / (Fnum0*0.35) * alt
     NIIRS0 = giqe5(gsd0, rer0, snr0, 1.0)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     lamda = 550e-9
     Fnum = Fnum0
     #d_ap = [0.2, 0.35, 0.5]
-    Ne_well = [20e3, 30e3, 50e3]
+    Ne_well = [20e3, 28e3, 64e3]
     
     px_pitch = np.linspace(1e-6, 20e-6, 100)
     
@@ -96,11 +96,12 @@ if __name__ == '__main__':
     #           color='r', linewidth=1)
     plt.xlabel(r'Q $\left(\frac{\lambda F^\#}{p_{px}}\right)$')
     plt.ylabel('$\Delta$ NIIRS')
-    plt.legend([r'$N_fNe_{e^-} = %.0f ke^-$' % (N/1e3) for N in Ne_well] +
+    plt.legend([r'$SNR_{\Delta \rho}$ = %.0f at $Q=1$' % (SNR_GIQE(N)) for N in Ne_well] +
             ['SkySat-C'], loc='lower right')
     plt.xlim(0.5, 2)
     plt.ylim(-0.5, 0.6)
     f.set_tight_layout(True)
+    #plt.grid(True)
     f.savefig('figures/Q_iq.pgf')
     
     #f = plt.figure(6)
