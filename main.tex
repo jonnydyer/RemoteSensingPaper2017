@@ -242,9 +242,11 @@ NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\
 - 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear}
 \label{eq:giqe5}
 \end{dmath}
-where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
+where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of 
+5 is fairly well 
+alidated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding 
 
-GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
+er parameters constant) results in a NIIRS improvement of 1.
 
 Based on this definition, one can use GIQE-5 to define an effective ground resolve-ability distance $GRD_{eff}$:
 
