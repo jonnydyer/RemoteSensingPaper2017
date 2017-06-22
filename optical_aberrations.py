@@ -11,6 +11,7 @@ import poppy
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import interp2d, RectBivariateSpline
+from scipy.signal import fftconvolve
 
 lam = 633e-9
 
@@ -71,19 +72,44 @@ class telescope(object):
         r = np.linspace(0, mtf.shape[0]/self.det_os, mtf.shape[0])
         mtf_interp = RectBivariateSpline(np.arange(mtf.shape[0]), 
                                          np.arange(mtf.shape[1]), mtf)
-        return mtf_interp
+        return mtf_interp, mtf, r
 
 
     def get_mtf(self):
         '''
         Return MTF curve in two directions
         '''
-        mtf_interp = self.get_mtf_2d()
+        mtf_interp, mtf, r = self.get_mtf_2d()
         mtf_x = mtf_interp.ev(mtf.shape[0]/2 + r,
                                np.ones(mtf.shape[1])*mtf.shape[1]/2) / np.max(mtf)
         mtf_xy = mtf_interp.ev(mtf.shape[0]/2 + r/sqrt(2),
                                mtf.shape[1]/2 + r/sqrt(2)) / np.max(mtf)
         return mtf_x, mtf_xy
+    
+    def get_edge_response(self):
+        '''
+        Compute and return edge response
+        '''
+        psf = self.psf()
+        edge = np.zeros([psf.shape[0]*10, psf.shape[1]*10])
+        edge[:, psf.shape[1]*5:] = 1
+        print psf.shape, edge.shape
+        er = fftconvolve(edge, psf)
+        er -= np.min(er)
+        er /= np.max(er)
+        return er
+    
+    def get_edge_response1d(self):
+        er = self.get_edge_response()
+        er1d = er[er.shape[0]/2, :]
+        xdim = np.linspace(-len(er1d)/ 2. / self.det_os, 
+                           len(er1d)/ 2. / self.det_os, len(er1d))
+        return xdim, er1d
+    
+    def get_rer(self):
+        xdim, er1d = self.get_edge_response1d()
+        rer = np.interp(0.5, xdim, er1d) - np.interp(-0.5, xdim, er1d)
+        return rer
 
 if __name__ == "__main__":
 
@@ -158,7 +184,7 @@ if __name__ == "__main__":
     plt.xlim(0,1)
     plt.legend(loc='best', fontsize='x-small')
     
-    f.savefig('out.png')
+    #f.savefig('out.png')
     
     f = plt.figure()
     rms_wfe = np.sqrt(np.mean(opd[~np.isnan(opd)]**2))/lam
@@ -171,6 +197,32 @@ if __name__ == "__main__":
     plt.ylim(0,1)
     plt.title(r'WFE = %.3f $\lambda$ RMS' % rms_wfe)
     
-    f.savefig('strehl.png')
+    #f.savefig('strehl.png')
+    
+#    Q = np.linspace(0.5, 2, 10)
+#    rer = np.zeros_like(Q)
+#    for i, qi in enumerate(Q):
+#        ts = telescope(0.35, 
+#                        [0.0, # piston
+#                        0.0, # tip
+#                        0.0, # tilt
+#                        0.0, # focus
+#                        0.0, # astig x
+#                        0.0, # astig y
+#                        0.0, # coma x
+#                        0.0, # coma y
+#                        0.0, # astig 2 x
+#                        0.0, # astig 2 y
+#                        0.0],  # spherical
+#                         ifov = lam / 0.35 / qi,
+#                         lam = lam,
+#                         obsc=0.0,
+#                      det_os=15)
+#        rer[i] = ts.get_rer()
+#    rer_approx = 1.2 / (Q * (1. + 1./(Q**1.35))**(1./1.35))
+#    plt.figure()
+#    plt.plot(Q, rer, label='exact')
+#    plt.plot(Q, rer_approx, label='approx')
+#    plt.legend()
     
     plt.show()

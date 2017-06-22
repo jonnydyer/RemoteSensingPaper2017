@@ -23,7 +23,7 @@ def rer_approx(Q):
     '''
     Auelemann approximation for RER as a function of Q
     '''
-    return 0.5 / (Q * (1. + 1./(Q**1.35))**(1./1.35))
+    return 0.7 / (Q * (1. + 1./(Q**1.35))**(1./1.35))
 
 def SNR_GIQE(Ne_well=10e3, Ne_rd=15.):
     return 0.07 * Ne_well / (np.sqrt(0.15 * Ne_well) + Ne_rd)
@@ -31,7 +31,7 @@ def SNR_GIQE(Ne_well=10e3, Ne_rd=15.):
 if __name__ == '__main__':
 
     snr0 = 30.
-    rer0 = 0.3
+    rer0 = rer_approx(1)
     Fnum0 = 10.
     px_pitch0 = 6.5e-6
     d_ap0 = 0.35
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     lamda = 550e-9
     Fnum = Fnum0
     #d_ap = [0.2, 0.35, 0.5]
-    Ne_well = [20e3, 28e3, 64e3]
+    Ne_well = [20e3, 28e3, 39e3]
     
     px_pitch = np.linspace(1e-6, 20e-6, 100)
     
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     plt.legend([r'$SNR_{\Delta \rho}$ = %.0f at $Q=1$' % (SNR_GIQE(N)) for N in Ne_well] +
             ['SkySat-C'], loc='lower right')
     plt.xlim(0.5, 2)
-    plt.ylim(-0.5, 0.6)
+    plt.ylim(-0.5, 0.5)
     f.set_tight_layout(True)
     #plt.grid(True)
     f.savefig('figures/Q_iq.pgf')
