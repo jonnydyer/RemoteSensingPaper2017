@@ -55,9 +55,9 @@
 \makeatother
 
 \author{Jonathan~Dyer,~\IEEEmembership{Member,~IEEE,}
+        Paul~Boerner,~\IEEEmembership{Member,~IEEE}
         Dirk~Robinson,~\IEEEmembership{Member,~IEEE,}
-        Matthew~Messana,~\IEEEmembership{Member,~IEEE,}
-        and~Paul~Boerner,~\IEEEmembership{Member,~IEEE}%
+        and~Matthew~Messana,~\IEEEmembership{Member,~IEEE,}%
 }
 
 \markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2015}%
@@ -213,11 +213,11 @@ Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems
 
 \includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolvability for $Q=2$}
 
-More holistic image quality formulations typically refer back to \emph{resolve-ability} or the ability to distinguish objects or features of a given size in an image.  We will define a resolve-ability metric based on the NIIRS scale.
+More holistic image quality formulations typically refer back to \emph{resolve-ability} or the ability to distinguish objects or features of a given size in an image.
 
 High resolution systems are typically evaluated by quantitative "image interpretability" scales the best known being the National Image Interpretability Rating Scale, or NIIRS.
 
-NIIRS rating is described by specific human interpretation standards, examples of which are shown in Table \ref{table:NIIRS}\cite{niirs}.
+NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table \ref{table:NIIRS}\cite{niirs}.
 
 \begin{table}[h!t]
 \resizebox{.45\textwidth}{!}{%
@@ -242,11 +242,9 @@ NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\
 - 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear}
 \label{eq:giqe5}
 \end{dmath}
-where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of 
-5 is fairly well 
-alidated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding 
+where $GSD_{m}$\footnote{GSD units must be paid close attention to - many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
 
-er parameters constant) results in a NIIRS improvement of 1.
+GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
 
 Based on this definition, one can use GIQE-5 to define an effective ground resolve-ability distance $GRD_{eff}$:
 
@@ -270,7 +268,7 @@ Based on this definition, one can use GIQE-5 to define an effective ground resol
 
 \includefigure{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
 
-Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and illustrates why GSD is a problematic resolution metric.
+Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$.
 
 \subsubsection{Dynamic Range ($DR$) and Signal-to-noise Ratio ($SNR$)}
 Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
@@ -279,7 +277,7 @@ Dynamic range is defined as the ratio of maximum-to-minimum signal level that th
 
 $$DR = \frac{S_{max}}{S_{min}}$$
 
-The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, etc.
+The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, quantization, etc.
 
 The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
 
@@ -565,11 +563,11 @@ Figure \ref{fig:n_tdi} below shows this trade.
 
 While extremely powerful and well-proven over many missions, TDI detectors present challenges for low-cost, high resolution missions.
 
-Historically missions have developed custom TDI detectors due to the unique performance and mission requirements of a spacecraft\cite{jerram}.  These include high line rates, large full-well capacity, low read-noise, high quantum-efficiency and radiation tolerance.  And while there are commercially available TDI detectors, they typically do not meet the requirements of high resolution collection from a space platform.
+Historically missions have developed custom TDI detectors due to the unique performance and mission requirements of a spacecraft\cite{jerram}.  These include high line rates, large full-well capacity, low read-noise, high quantum-efficiency and radiation tolerance.  The challenge with CCD-based detectors is data read-out rate which is often limiting for high resolution systems.
 
 As we noted in Observation \ref{obs:small_pix}, smaller pixels are desirable from a system-size perspective but this typically comes at the expense of pixel full-well capacity, especially in off-the-shelf CCD's.  We show in section \ref{sec:eta_ph} that this limitation can be overcome through digital oversampling. 
 
-Because TDI systems inherently couple stabilization rate, integration time and read-out line rate, digital oversampling is not an option with a single TDI array, limiting dynamic range.  The limited dynamic range is also compounded by inflexibility in exposure which is entirely constrained by the line rate and number of TDI stages.  
+Because TDI systems inherently couple stabilization rate, integration time and read-out line rate, digital oversampling is not an option with a single push-broom TDI array, limiting dynamic range.  The limited dynamic range is also compounded by inflexibility in exposure which is entirely constrained by the line rate and number of TDI stages.  Staring detectors do not have this constraint.
 
 \subsection{Digital Stabilization with Step-and-Stare}
 Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to creat output data with a longer effective integration time - virtual TDI in a way.
@@ -582,7 +580,7 @@ It is worth noting in this diagram that the photon collection duty cycle, $\phi_
 
 \includefigure{figures/step_stare_real.pgf}{fig:step_stare_real}{Step-and-stare t-x diagram with realistic array height and framerate.}
 
-However digital oversampling through step-and-stare IS NOT limited by small pixel FWC, as the well is read out in each independent integration and then summed digitally.  This means that, in principle, much higher dynamic range can be achieved.  To realize this requires analog stabilization to move into the FWC-constrained regime as will be discussed in Section \ref{sec:sec:eta_ph}.
+However digital oversampling through step-and-stare IS NOT limited by small pixel FWC, as the well is read out in each independent integration and then summed digitally.  This means that, in principle, much higher dynamic range can be achieved with small pixels and at high SNR.  To realize this requires analog stabilization to move into the FWC-constrained regime as will be discussed in Section \ref{sec:sec:eta_ph}.
 
 
 \subsection{Hybrid stabilization}
@@ -625,7 +623,7 @@ Analog stabilization in a staring sensor system can be accomplished in one of th
 
 The third option is attractive from a simplicity perspective but the authors are unaware of staring sensors that both support such a charge transfer mode and have sufficient digital read-out rates to enable digital oversampling in high resolution systems.
 
-Alternatively, multiple TDI line-scan arrays with separate digital read-outs mosaic'd in-track could accomplish digital oversampling.  The oversampling ratio in this case would simply be the number of independent detectors integrated.
+Alternatively, multiple TDI push-broom arrays with separate digital read-outs mosaic'd in-track could accomplish digital oversampling.  The oversampling ratio in this case would simply be the number of independent detectors integrated.
 
 The authors belief is that the most promising path to realization are high framerate CMOS detectors coupled with either option 1 or 2.
 
