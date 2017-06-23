@@ -1,6 +1,5 @@
 \documentclass[10pt,journal]{IEEEtran}  %10pt, sans, memo
 
-\usepackage{subcaption}
 \usepackage{amsthm}
 
 \usepackage[utf8]{inputenc}
@@ -16,9 +15,9 @@
 \usepackage{mathtools}
 \usepackage{breqn}
 \usepackage[noadjust]{cite}
-\usepackage{cleveref}
-
 \usepackage{hyperref}
+
+\usepackage{cleveref}
 
 \bibliographystyle{IEEEtran}
 
@@ -110,10 +109,15 @@ There is a large and growing interest in what can be accomplished with much smal
 
 There is significant evidence indicating that mission cost is non-linearly correlated with spacecraft size and complexity.  Indeed \cite{bearden} has shown with high correlation that 
 
-$$C \sim m^{1.261}$$
+\begin{equation*}
+    C \sim m^{1.261}
+\end{equation*}
+
 implying cost $C$ is super-linearly impacted by mass, $m$.  Because for spacecraft systems
 
-$$m \sim \chi^n$$
+\begin{equation*}
+    m \sim \chi^n
+\end{equation*}
 
 where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, we can also say:
 
@@ -125,7 +129,9 @@ where $k = 1.261 + n > 2$
 
 Similar arguments can be derived from other cost scaling observations such as Meinel's Law \cite{meinel} for telescopes which states
 
-$$C \sim D_{ap}^{2.7}$$
+\begin{equation*}
+    C \sim D_{ap}^{2.7}
+\end{equation*}
 
 While there are certainly cases where mission requirements strictly necessitate large spacecraft or component dimensions (diffraction-limited resolution requirements are such an example), it is the authors' observation that in many cases mission imaging application requirements are not this black-and-white and that significantly better performance/cost ratios are achievable by driving to smaller systems.
 
@@ -148,15 +154,15 @@ Meanwhile the large commercial investment in imaging sensors driven by the consu
 
 \begin{itemize}
     \item Movement from CCD to CMOS detector technology
-    \item Drive to smaller pixels to enable compact cameras
+    \item Drive to smaller pixels to enable compact cameras \cite{isscc2016}
     \item Significant increase in detector read-out rates at low noise
 \end{itemize}
 
-\begin{figure}[h!]
-\includegraphics[width=0.45\textwidth]{figures/pixel_trend.png}
-\caption[]{Trends in commercial sensor pixel sizes from \cite{isscc2016}.  Note the ordinate is in units of microns}
-\label{fig:pix_trend}
-\end{figure}
+% \begin{figure}[h!]
+% \includegraphics[width=0.45\textwidth]{figures/pixel_trend.png}
+% \caption[]{Trends in commercial sensor pixel sizes from \cite{isscc2016}.  Note the ordinate is in units of microns}
+% \label{fig:pix_trend}
+% \end{figure}
 
 CCD-based sensors still hold some performance advantages over CMOS sensors, but the capability gap has narrowed almost entirely. The manufacturing and read-out rate advantages offered by CMOS have led to its wholesale adoption in the consumer / commercial world.
 
@@ -209,9 +215,9 @@ Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form 
 
 Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section \ref{sec:q}) because depending on the sampling or SNR regimes resolve-ability may first contstrained by sampling, diffraction or SNR.  Figures \ref{fig:snr_mtf_q1}, \ref{fig:snr_mtf_q2} illustrate this graphically.
 
-\includefigure{figures/SNR_mtf_Q1.pdf}{fig:snr_mtf_q1}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolvability for $Q=1$}
+\includefigure{figures/SNR_mtf_Q1.pdf}{fig:snr_mtf_q1}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=1$.  Note red-dotted line indicates the sampling frequency.}
 
-\includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolvability for $Q=2$}
+\includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=2$  Note red-dotted line indicates the sampling frequency.}
 
 More holistic image quality formulations typically refer back to \emph{resolve-ability} or the ability to distinguish objects or features of a given size in an image.
 
@@ -235,7 +241,7 @@ NIIRS rating is described by specific scene intepretation standards, examples of
 \label{table:NIIRS}
 \end{table}
 
-NIIRS is a logarithmic scale traditionally evaluated by trained human image interpreters.  However, much work has gone into developing semi-analytic regressions to predict NIIRS from basic image quality parameters such as sharpness, signal-to-noise ratio (SNR), etc. The Generalized Image Quality Equation (GIQE) is an example of such a function; we will use the 5th version, GIQE-5 which is defined in eq. \ref{eq:giqe5}.
+NIIRS is a logarithmic scale traditionally evaluated by trained human image interpreters.  However, much work has gone into developing semi-analytic regressions to predict NIIRS from basic image quality parameters such as sharpness, signal-to-noise ratio (SNR), etc. The Generalized Image Quality Equation (GIQE) is an example of such a function; we will use the 5th version, GIQE-5 which is defined in eq. \eqref{eq:giqe5}.
 
 \begin{dmath}
 NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\right]\log(RER_0)
@@ -271,18 +277,21 @@ Based on this definition, one can use GIQE-5 to define an effective ground resol
 Notice in Figure \ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$.
 
 \subsubsection{Dynamic Range ($DR$) and Signal-to-noise Ratio ($SNR$)}
+
 Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
 
 Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image:
 
-$$DR = \frac{S_{max}}{S_{min}}$$
+\begin{equation*}
+    DR = \frac{S_{max}}{S_{min}}
+\end{equation*}
 
 The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, quantization, etc.
 
 The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
 
 \begin{equation}
-    DR = \sqrt{N_s}\frac{N_{e^-}^{well}}{\sigma_{uncor}}
+    DR = \sqrt{N_s}\frac{N_{e^-}^{FWC}}{\sigma_{uncor}}
 \label{eq:DR_OS}
 \end{equation}
 
@@ -306,29 +315,44 @@ Dynamic range is a very important quality parameter for remote sensing systems b
 \end{figure}
 
 For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in section \ref{sec:hdr}.
+Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  $SNR$ is defined as:
 
-Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  In general $SNR$ is defined as:
+\begin{equation*}
+    SNR = \frac{s}{\sigma_{noise}}
+\end{equation*}
 
-$$SNR = \frac{s}{\sigma_{noise}}$$
+The noise, $\sigma_{noise}$ consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that:
 
-In general noise consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that:
+\begin{equation*}
+    SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}
+\end{equation*}
 
-$$SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}$$
+In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  
 
-In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  For a perfectly exposed scene with
+For a perfectly exposed scene with
 
-$$\alpha = \frac{L_{typ}}{L_{sat}}$$
+\begin{equation*}
+    alpha = \frac{L_{typ}}{L_{sat}}
+\end{equation*}
 ,
-$$SNR_{\alpha} = \frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}$$
 
-where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.  This relation, like $DR$, can be expanded to include multiple digital exposures such that
+\begin{equation}
+    SNR_{\alpha} = \frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
+\label{eq:SNR_multiframe}
+\end{equation}
+
+where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.
+
+The high dynamic range in natural overhead scenes presents a challenge in achieving high $SNR$.  The $SNR$ for a target at $L_{typ}$ will scale inversely with $L_{sat}$ forcing the designer to trade highlight dynamic range against $SNR$ in much of the scene.  High Dynamic Range (HDR) imaging, discussed further in Section \ref{sec:hdr}, provides the opportunity to achieve higher SNR over the full dynamic range of a scene.
+
+Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expanded to include multiple digital exposures such that
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe}
 SNR_{\alpha} = \sqrt{N_s}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
 \end{equation}
 
-For most modern detectors, uncorrelated noise sources are small compared with well depth so we can approximate eq. \ref{eq:snr_alpha_multiframe}
+For most modern detectors, uncorrelated noise sources are small compared with well depth so we can approximate eq. \eqref{eq:snr_alpha_multiframe}
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe_simp}
@@ -341,7 +365,9 @@ For a spacecraft, system collection capacity is constrained by a delicate balanc
 
 Image collection capacity in turn depends on a number of parameters including time over land, ACS agility, and area collection rate,
 
-$$ACR = V_{gnd}W_{ct}$$
+\begin{equation}
+    ACR = V_{gnd}W_{ct}
+\end{equation}
 
 where $W_{ct}$ is the swath width or cross-track field of view projected to the ground
 
@@ -353,9 +379,11 @@ We will define a collection duty cycle metric that captures all of the impacts o
 
 where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targetted spacecraft), attitude control bandwidth, etc.
 
-For targeting remote sensing systems constrained by sun and time-over-land, typically $\beta < 0.1$ as shown in Fig. \ref{fig:beta}
+For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For targeting remote sensing systems constrained tasking slews as well as sun and time-over-land, typically $\beta < 0.1$.  Figure \ref{fig:beta} shows how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targetted high resolution spacecraft.
 
 \includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$, for various cross-track target spacings for a reasonably agile spacecraft}
+
+Figure \ref{fig:beta} is an upper bound in the sense that it assumes there will always be a desirable target to collect when the spacecraft has slewed cross-track which is likely not true for most real-world target collection decks.  
 
 We can similarly define a downlink duty cycle
 
@@ -390,9 +418,11 @@ such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when 
 
 Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
 
-$$I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}}$$
+\begin{equation}
+    I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}}
+\end{equation}
 
-Where we assume an output product to consist of the fused, corrected but un-rectified L1b product. For a typical imaging pipeline that includes compression we must choose exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
+Where we assume an output product to consist of the fused, corrected but un-rectified product. For a typical imaging pipeline that includes compression we must choose exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
 
 \begin{equation}
     \label{eq:compression}
@@ -407,7 +437,9 @@ For a digitally oversampling system
 
 Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ because for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
 
-$${\eta}_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}$$
+\begin{equation}
+    eta_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2}
+\end{equation}
 
 such that
 
@@ -416,7 +448,7 @@ such that
     I_D = {\eta}_{rs} N_s N_{bpp}^{comp.}
 \end{equation}
 
-We can also define a collect-area normalized data intensity, $I_A = \frac{I_{D}}{GSD^2}$.  Given eq. \ref{eq:I_D}
+We can also define a collect-area normalized data intensity, $I_A = \frac{I_{D}}{GSD^2}$.  Given eq. \eqref{eq:I_D}
 
 \begin{equation}
     I_A = \frac{N_s N_{bpp}^{comp.}}{GSD_{L0}^2}
@@ -428,14 +460,14 @@ Finally, it is worth noting that for a system with well-matched analog and digit
     N_{bpp}^{raw} \sim \textrm{log}_2(DR^{raw})
 \end{equation*}
 
-and from this we can see that $I_D$ scales as
+Given a required dynamic range, $DR_{req}$, we can see that $I_D$ scales as
 
 \begin{equation}
     \label{eq:I_D_scaling}
-    I_D \sim \left[\frac{DR}{N_{e^-}^{FWC}}\right]^2 \textrm{log}_2 (DR)
+    I_D \sim \left[\frac{DR_{req}}{N_{e^-}^{FWC}}\right]^2 \textrm{log}_2 (DR_{req})
 \end{equation}
 
-Equation \ref{eq:I_D_scaling} is important because it captures the inverse relationship of pixel full well capacity and data intensity.  Stated differently, in order to utilize smaller pixels with associated smaller full-well capacity (Figure \ref{fig:p_fwc}) the application must either tolerate less dynamic range in the output imagery or the system must oversample digitally and be capable of handling a higher data intensity.
+Equation \eqref{eq:I_D_scaling} is important because it captures the inverse relationship of pixel full well capacity and data intensity.  Stated differently, in order to utilize smaller pixels with associated smaller full-well capacity (Figure \ref{fig:p_fwc}) the application must either tolerate less dynamic range in the output imagery or the system must oversample digitally and be capable of handling a higher data intensity.
 
 \subsection{Etendue and Photon Efficiency}
 \label{sec:entendue}
@@ -475,7 +507,7 @@ so that we can say
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L
 \end{equation}
 
-$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.
+$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section \ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
 
 \section{Collection Modalities}
 \label{sec:modalities}
@@ -491,7 +523,9 @@ However it also presents large challenges in developing an imaging system that c
 
 For blur- or TDI-stage-limited integration times, in can be shown that \cite{shaw}
 
-$$SNR \propto \frac{D_{ap} GSD^{3/2}}{\sqrt{V_{gnd}}}$$
+\begin{equation*}
+    SNR \propto \frac{D_{ap} GSD^{3/2}}{\sqrt{V_{gnd}}}
+\end{equation*}
 
 Or if $SNR$ is a fixed requirement, relative ground velocity must scale with GSD such that:
 
@@ -550,7 +584,7 @@ s = \alpha N_{e^-}^{FWC}
 \label{eq:well_limited}
 \end{equation}
 
-Noting that the exposure time for a single stage of a TDI system is extrinsically related to the linerate, $LR$ $t_{int}^{line} = \frac{1}{LR}$, and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \ref{eq:s} to obtain an expression for optimal number of TDI stages:
+Noting that the exposure time for a single stage of a TDI system is extrinsically related to the linerate, $LR$ $t_{int}^{line} = \frac{1}{LR}$, and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \eqref{eq:s} to obtain an expression for optimal number of TDI stages:
 
 \begin{equation}
 N_{TDI} =\frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}}\frac{LR}{QE} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{D_{ap}^2 GSD^3 L_{sat}}
@@ -650,13 +684,15 @@ The remote-sensing trade space is largely constrained by four mission needs:
 
 where is $ACR$ is Area-Collection-Rate in land area per time.
 
-Equation \ref{eq:acr_scaling} very effectively demonstrates the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.
+Equation \eqref{eq:acr_scaling} very effectively demonstrates the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.
 
 \subsection{Pixel Size and Q}
 
 The first technology observation we made regarded pixel size or pitch, $p_{px}$ and its impact on image quality, collection capacity and system characteristic size and, hence, cost.  We will study the effect of pixel size through the lens of $Q$ recognizing that
 
-$$Q = \frac{\lambda f}{D_{ap} p_{px}}$$
+\begin{equation*}
+    Q = \frac{\lambda f}{D_{ap} p_{px}}
+\end{equation*}
 
 and then show why driving Q with pixel size is preferable to focal length, $f$ or diameter, D.
 
@@ -699,7 +735,7 @@ Smaller pixels typically store less charge, both in the photodector and storage 
 N_{e^-}^{FWC} \propto p^2
 \end{equation}
 
-\includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while scaling generally follows eq. \ref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
+\includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while scaling generally follows eq. \eqref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
 
 and while there are process optimizations that can improve this, these typically are second order to simple area scaling.  Fig \ref{fig:p_fwc} shows that this trend is reasonably well supported although several recent pixel architectures are significant outliers.
 
@@ -714,7 +750,9 @@ One way to conceptualize $\eta_{ph}$ for the different modalities is as the time
 
 In order to quantify this it can be shown that
 
-$$A_{fov} = \left(\frac{D_{ap}F^\#}{2}\right)^2 \Omega = \frac{f^2 \Omega}{4} $$
+\begin{equation*}
+    A_{fov} = \left(\frac{D_{ap}F^\#}{2}\right)^2 \Omega = \frac{f^2 \Omega}{4} 
+\end{equation*}
 
 or 
 
@@ -800,7 +838,7 @@ Arrays of smaller off-the-shelf detectors at first seem an attractive alternativ
 
 Whether the solution is monolithic or a tiled array, it is clear that minimizing the physical dimension of the detector array is important in constraining system size and cost.
 
-Expanding eq. \ref{eq:A_fov}, it can be shown that, for a circular aperture, the illuminated focal plane radius is
+Expanding eq. \eqref{eq:A_fov}, it can be shown that, for a circular aperture, the illuminated focal plane radius is
 
 \begin{equation}
     \label{eq:r_fp}
@@ -809,7 +847,7 @@ Expanding eq. \ref{eq:A_fov}, it can be shown that, for a circular aperture, the
 
 For a detector to span the full width of the illuminated area, it thus must span $2 r_{fp}$. 
 
-Eq. \ref{eq:r_fp} clearly illustrates how important pixel pitch, $p_{px}$ is to minimizing the physical size of detector arrays and motivates the large push towards smaller pixels that has occured in commercial products.
+Eq. \eqref{eq:r_fp} clearly illustrates how important pixel pitch, $p_{px}$ is to minimizing the physical size of detector arrays and motivates the large push towards smaller pixels that has occured in commercial products.
 
 \begin{observation}[Smaller Pixel]
 \label{obs:small_pix}
@@ -819,15 +857,15 @@ Smaller pixels enable driving system size down and $Q$ up but require hybrid sta
 \subsection{Detector technology}
 \label{sec:detector_tech}
 
-Per eq. \ref{eq:eta_ph_fwc}, we note that 
+Per eq. \eqref{eq:eta_ph_fwc}, we note that 
 
 \begin{equation}
     \eta_{ph}^{FWC} \propto h_{px}N_{e^-}^{FWC}LR
 \end{equation}
 
-High efficiency FWC-limited systems must either have larger full-well capacities or higher line-rates.  We observed earlier (Observation \ref{obs:small_pix}) that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \ref{eq:lr_framing}).
+High efficiency FWC-limited systems must either have larger full-well capacities or higher line-rates.  We observed earlier (Observation \ref{obs:small_pix}) that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in eq. \eqref{eq:lr_framing}).
 
-We also showed in eq. \ref{eq:I_D_scaling} that data pixel FWC is very important to dynamic range and data intensity.
+We also showed in eq. \eqref{eq:I_D_scaling} that data pixel FWC is very important to dynamic range and data intensity.
 
 In light of these observations we define a sensor figure of merit
 
@@ -859,6 +897,16 @@ Table \ref{table:modalities} summarizes qualitatively the relative advantages an
 \caption{Relative advantages, disadvantages of the modalities. $DR$ is dynamic range, $SNR$ is signal-to-noise ratio}
 \label{table:modalities}
 \end{table}
+
+\subsection{High Dynamic Range Imaging}
+\label{sec:hdr}
+
+\section{Design Case Studies}
+\label{sec:case_studies}
+
+\subsection{40cm Resolution Small-sat}
+
+\subsection{1m Resolution large-area collector}
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -907,10 +955,14 @@ Q = \frac{\lambda F^\#}{p}
 \label{eq:Q}
 \end{equation}
 and is essentially a measure pixel sampling in the spatial domain relative to the Nyquist criterion.  Nyquist says that to completely reconstruct a band-limited system, the spatial sampling frequency. 
-$$\rho_s = 1/p \geq 2 BW_{opt}$$
+\begin{equation*}
+    rho_s = 1/p \geq 2 BW_{opt}
+\end{equation*}
 
 Because we always sample to DC, the optical bandwidth $BW_{opt}$ is replaced by the diffraction cutoff frequency.
-$$\rho_c = \frac{1}{\lambda F^\#}$$
+\begin{equation*}
+    rho_c = \frac{1}{\lambda F^\#}
+\end{equation*}
 
 Thus $Q$ is a measure of Nyquist sampling where $Q=2$ is critically sampled.  Most systems, however, operate at $Q < 2$ and hence incur some spatial aliasing.  There is little reason to operate at $Q > 2$ as the optics do not pass spatial frequency information there so the additional sampling is essentially wasted.
 
@@ -962,27 +1014,31 @@ SNR = \frac{s}{\sigma_{rd} + \sqrt{s}}
 
 where $s$ is the signal magnitude in photoelectrons and $\sigma_{rd}$ is read noise in RMS photoelectrons.
 
-Finally, we come to a very useful relationship for a single exposure in eq. \ref{eq:s} -
+Finally, we come to a very useful relationship for a single exposure in eq. \eqref{eq:s} -
 \begin{equation}
 s = \alpha k_{pe}L_{sat} \frac{t_{int}QE}{Q^2}
 \label{eq:s}
 \end{equation}
 
 Note that in several of the modalities, digital over-sampling is utilized.  In that case, the effective output signal level for a ground sample is 
-$$s^{eff} = N_s s$$
+\begin{equation*}
+    s^{eff} = N_s s
+\end{equation*}
+
 where $N_s$ is the oversampling ratio.
 
 
 \subsection{Detector Line Rate}
 For satelite remote sensing systems, the detector line rate, $LR$ is an important performance parameter because it limits the number of ground samples that can be captured.  For a push-broom system, $LR$ is simply defined as the number of in-track lines (or rows) that can be read from the detector per second:
-
-$$LR = \frac{\Delta L}{\Delta t}$$
+\begin{equation*}
+LR = \frac{\Delta L}{\Delta t}
+\end{equation*}
 
 For a framing detector (reads out more than one in-track line per sampling period), we can define an equivalent $LR$ as
-\begin{equation}
-\label{eq:lr_framing}    
-LR = \left(\frac{v_{pix}}{t_{frame}}\right)_{det}
-\end{equation}
+% \begin{equation}
+% \label{eq:lr_framing}    
+% LR = \left(\frac{v_{pix}}{t_{frame}}\right)_{det}
+% \end{equation}
 
 A necessary condition for the collection of contiguous, gapless imagery along the satellite's ground track is:
 
