@@ -91,9 +91,9 @@ class telescope(object):
         Compute and return edge response
         '''
         psf = self.psf()
-        edge = np.zeros([psf.shape[0]*10, psf.shape[1]*10])
-        edge[:, psf.shape[1]*5:] = 1
-        print psf.shape, edge.shape
+        edge = np.zeros([psf.shape[0]*6, psf.shape[1]*6])
+        edge[:, psf.shape[1]*3:] = 1
+        #print psf.shape, edge.shape
         er = fftconvolve(edge, psf)
         er -= np.min(er)
         er /= np.max(er)
