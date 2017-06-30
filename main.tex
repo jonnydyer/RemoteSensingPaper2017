@@ -255,7 +255,7 @@ GIQE-5 is fairly well validated again human interpreters \cite{giqe5} and nicely
 Based on this definition, one can use GIQE-5 to define an effective ground resolve-ability distance $GRD_{eff}$:
 
 \begin{equation}
-    GRD_{eff}(m) = 10^{4.4 - \frac{NIIRS}{3.32}}
+    GRD_{eff}(m) = 10^{\frac{4.4 - NIIRS}{3.32}}
 \end{equation}
 
 % \cite{auelmann_iq} shows that:
@@ -332,12 +332,12 @@ In order to state an $SNR$, the signal, $s$, must be constrained by other system
 For a perfectly exposed scene with
 
 \begin{equation*}
-    alpha = \frac{L_{typ}}{L_{sat}}
+    \alpha = \frac{L_{typ}}{L_{sat}}
 \end{equation*}
 ,
 
 \begin{equation}
-    SNR_{\alpha} = \frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
+    SNR_{\alpha} = \frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}}
 \label{eq:SNR_multiframe}
 \end{equation}
 
@@ -349,14 +349,14 @@ Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expand
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe}
-SNR_{\alpha} = \sqrt{N_s}\frac{\alpha N_{e^-}^{well}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{well}}}
+SNR_{\alpha} = \sqrt{N_s}\frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}}
 \end{equation}
 
 For most modern detectors, uncorrelated noise sources are small compared with well depth so we can approximate eq. \eqref{eq:snr_alpha_multiframe}
 
 \begin{equation}
 \label{eq:snr_alpha_multiframe_simp}
-SNR_{\alpha} \approx \sqrt{N_s \alpha N_{e^-}^{well}}
+SNR_{\alpha} \approx \sqrt{N_s \alpha N_{e^-}^{FWC}}
 \end{equation}
 
 \subsection{Collection Capacity}
@@ -504,6 +504,7 @@ It can be shown that the total photo-electron generation rate, $\dot{N}_{e^-} \p
 so that we can say
 
 \begin{equation}
+\label{eq:acr_snr_gsd}
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L
 \end{equation}
 
@@ -587,13 +588,13 @@ s = \alpha N_{e^-}^{FWC}
 Noting that the exposure time for a single stage of a TDI system is extrinsically related to the linerate, $LR$ $t_{int}^{line} = \frac{1}{LR}$, and noting that $t_{int} = N_{TDI}t_{int}^{line}$, we can combine with equation \eqref{eq:s} to obtain an expression for optimal number of TDI stages:
 
 \begin{equation}
-N_{TDI} =\frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}}\frac{LR}{QE} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{D_{ap}^2 GSD^3 L_{sat}}
+N_{TDI} =\frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}}\frac{LR}{QE} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{GSD}
 \label{eq:n_tdi}
 \end{equation}
 
 Figure \ref{fig:n_tdi} below shows this trade.
 
-\includefigure{figures/N_tdi.pgf}{fig:n_tdi}{Optimal TDI stages vs. resolution and Q}
+\includefigure{figures/LR_req.pgf}{fig:n_tdi}{Optimal TDI stages vs. resolution for different pixel well depths}
 
 While extremely powerful and well-proven over many missions, TDI detectors present challenges for low-cost, high resolution missions.
 
@@ -625,7 +626,7 @@ More specifically, the issues hybrid stabilization addresses are:
 
 \begin{itemize}
     \item Analog stabilization allows operation in FWC-constrained regime, thus extracting the most from optics ($A\Omega$) and detectors ($\psi_{det}$)
-    \item Digital oversampling allows for increased dynamic range beyond the sensor's raw capability
+    \item Digital oversampling enables HDR and "flatter" $SNR$ over dynamic range as discussed in Section \ref{sec:hdr}
     \item Digital oversampling allows for resolution-enhancement techniques such as superresolution
     \item Hybrid imaging systems inherently un-constrain other elements of the system in both development and operation allowing for image quality, area collection rate, data intensity, ACS stability required and more to be traded throughout the lifecycle of the system
 \end{itemize}
@@ -644,7 +645,7 @@ where, for staring sensors
 
 \begin{equation}
 \label{eq:lr_framing}    
-LR = \left(y_{pix}FPS\right)_{det}
+LR = \left(v_{pix}FPS\right)_{det}
 \end{equation}
 
 Analog stabilization in a staring sensor system can be accomplished in one of three ways
@@ -673,18 +674,23 @@ The remote-sensing trade space is largely constrained by four mission needs:
 \item Cost
 \end{enumerate}
 
-\emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100nm$) collection in the near-visible spectrum ($\sim 400nm$ to $\sim 1000nm$) but will also point out where the trends in questions impact the ability to perform other phenomenology (e.g. SWIR or HSI).
+\emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100nm$) collection in the near-visible spectrum ($\sim 400nm$ to $\sim 1000nm$) but will also point out where the trends in questions impact the ability to perform other phenomenology (e.g. SWIR or HSI).  It is also worth pointing out that staring sensors enable video-mode collection, a phenomenology new to space-based remote sensing.
 
-\emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  We will discuss each and their relation to each other in more detail later, but to motivate the tradeoffs, we follow \cite{shaw} and note that for fixed focal plane and aperture size:
+\emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Refer to Equation \eqref{eq:acr_snr_gsd}, for fixed $\eta_{ph} A_{ap} \Omega$ in the full-well capacity constrained regime
 
 \begin{equation}
     \label{eq:acr_scaling}
+    ACR \propto \frac{GSD^2}{SNR^2}
+\end{equation}
+
+Additionally in the blur-limited regime $GSD$ has an even stronger impact on $ACR$ as shown in \cite{shaw}:
+
+\begin{equation}
+\label{eq:acr_scaling_blur_limited}
     ACR \propto \frac{GSD^4}{SNR^2}
 \end{equation}
 
-where is $ACR$ is Area-Collection-Rate in land area per time.
-
-Equation \eqref{eq:acr_scaling} very effectively demonstrates the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.
+Equation \eqref{eq:acr_scaling}, \eqref{eq:acr_scaling_blur_limited} very effectively demonstrates the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.
 
 \subsection{Pixel Size and Q}
 
@@ -870,7 +876,7 @@ We also showed in eq. \eqref{eq:I_D_scaling} that data pixel FWC is very importa
 In light of these observations we define a sensor figure of merit
 
 \begin{equation}
-    \psi_{px} = \frac{h_{px}N_{e^-}^{FWC}LR}{p_{px}}
+    \psi_{px} = h_{px}N_{e^-}^{FWC}LR%\frac{h_{px}N_{e^-}^{FWC}LR}{p_{px}}
 \end{equation}
 
 $\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plotted in Fig. \ref{fig:psi_px}.
@@ -880,6 +886,9 @@ $\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plo
 \begin{observation}[CMOS detectors coupled with analog stabilization are enabling]
 The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
 \end{observation}
+
+\subsection{High Dynamic Range Imaging}
+\label{sec:hdr}
 
 \subsection{Comparison of Modalities}
 Table \ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
@@ -898,15 +907,47 @@ Table \ref{table:modalities} summarizes qualitatively the relative advantages an
 \label{table:modalities}
 \end{table}
 
-\subsection{High Dynamic Range Imaging}
-\label{sec:hdr}
-
 \section{Design Case Studies}
 \label{sec:case_studies}
 
-\subsection{40cm Resolution Small-sat}
+In this section we take the earlier results and apply them to two systems: a very high resolution small satellite for point-collection and a high resolution large area collector for mapping.  For both case studies, we use the following assumptions:
 
-\subsection{1m Resolution large-area collector}
+\begin{itemize}
+    \item Goal is to meet requirements while minimizing overall system size which is driven by things like aperture diameter and focal length
+    \item Imaging performance is defined by GIQE-based $GRD_{eff}$ or NIIRS
+\end{itemize}
+
+Additionally we need some pre-defined requirements to constrain the other free-parameters:
+
+\begin{table}[]
+\centering
+\resizebox{0.9\linewidth}{!}{%
+\begin{tabular}{@{}ccl@{}}
+\toprule
+\textbf{Requirement} & \textbf{Value}                                                                       & \textbf{Note}              \\ \midrule
+Altitude           & 500 km                                                                               &                            \\ \midrule
+$\lambda$          & \begin{tabular}[c]{@{}c@{}}450 nm to\\ 800 nm\end{tabular}                           &                            \\ \midrule
+$\lambda_c$        & 525nm                                                                                &                            \\ \midrule
+$L$                & \begin{tabular}[c]{@{}c@{}}200 W/m$^2$-sr (sat.)\\ 10 W/m$^2$-sr (typ.)\end{tabular} & \begin{tabular}[c]{@{}c@{}} Over $\lambda$, see \cite{morfitt2015landsat}\\$\alpha = 0.05$ \end{tabular}\\ \midrule
+$SNR$        & 70                                                                                   & at $L_{typ}$               \\ \midrule
+$DR$         & 90dB                                                                                 &                            \\ \bottomrule
+\end{tabular}%
+}
+\caption{Case study requirements and assumptions }
+\label{table:case_study_reqs}
+\end{table}
+
+Using the $SNR$ requirement at $L_{typ}$ and saturation at $L_{sat}$ from Table \ref{table:case_study_reqs} as well as Equation \eqref{eq:snr_alpha_multiframe_simp} we can immediately determine that for any system meeting these requirements.
+
+\begin{equation}
+    N_sN_{e^-}^{FWC} = \frac{SNR_{req}^2}{\alpha} = 9.8\times 10^4 \, e^-
+\end{equation}
+
+One design choice would be to use an analog-stabilized detector that does not allow digital oversampling (TDI push-broom or staring sensor with $LR < 2\frac{V_{gnd}}{GSD}$) and require $N_{e^-}^{FWC} = 9.8\times 10^4 \, e^-$.
+
+\subsection{50cm Resolution Small-sat}
+
+\subsection{1m Resolution Large-area Collector}
 
 \section{Conclusions}
 \label{sec:conclusions}
@@ -956,12 +997,12 @@ Q = \frac{\lambda F^\#}{p}
 \end{equation}
 and is essentially a measure pixel sampling in the spatial domain relative to the Nyquist criterion.  Nyquist says that to completely reconstruct a band-limited system, the spatial sampling frequency. 
 \begin{equation*}
-    rho_s = 1/p \geq 2 BW_{opt}
+    \rho_s = 1/p \geq 2 BW_{opt}
 \end{equation*}
 
 Because we always sample to DC, the optical bandwidth $BW_{opt}$ is replaced by the diffraction cutoff frequency.
 \begin{equation*}
-    rho_c = \frac{1}{\lambda F^\#}
+    \rho_c = \frac{1}{\lambda F^\#}
 \end{equation*}
 
 Thus $Q$ is a measure of Nyquist sampling where $Q=2$ is critically sampled.  Most systems, however, operate at $Q < 2$ and hence incur some spatial aliasing.  There is little reason to operate at $Q > 2$ as the optics do not pass spatial frequency information there so the additional sampling is essentially wasted.
