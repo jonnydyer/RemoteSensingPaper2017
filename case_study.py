@@ -67,7 +67,8 @@ systems = {
         'DR_req' : 90.,      # dB
         'Q' : 1.3,
         'x_ct' : 8e3,      # m
-        'N_sensors' : 5
+        'N_sensors' : 5,
+        'N_bands' : 5,
     },
     '1m Resolution Large Area' : {
         'grd_eff' : 1.0,
@@ -75,7 +76,8 @@ systems = {
         'DR_req' : 90.,      # dB
         'Q' : 1.0,
         'x_ct' : 18e3,       # m
-        'N_sensors' : 5
+        'N_sensors' : 5,
+        'N_bands' : 5
     }
 }
 
@@ -94,19 +96,23 @@ for i, (n, s) in enumerate(systems.items()):
     LR = Vgnd / gsd
     hpx = s['x_ct'] / gsd / s['N_sensors']
     p_px = np.linspace(2e-6, 10e-6, 30)
-    psi_px = NsNe_fwc * hpx * Vgnd / gsd / p_px
+    psi_px = NsNe_fwc * hpx * Vgnd / gsd * s['N_bands'] # p_px
     f = p_px / gsd * alt
+    print '\tGSD: %.3f m' % (gsd)
+    print '\t D_ap = %0.3f' % d
+    print '\tpsi_px required: %.1e' % psi_px
     
-    print '%d cross-track pixels required' % hpx
+    print '\t%d cross-track pixels required' % hpx
     
     plt.figure(i+1)
-    ax = plt.subplot(211)
-    plt.plot(p_px*1e6, psi_px)
-    plt.ylabel(r'$\psi_{px}$ Required')
+    #ax = plt.subplot(211)
+    #plt.plot(p_px*1e6, psi_px)
+    #plt.ylabel(r'$\psi_{px}$ Required')
     
-    plt.subplot(212, sharex=ax)
+    #plt.subplot(212, sharex=ax)
     plt.plot(p_px*1e6, f / d)
     plt.xlabel('Pixel pitch (um)')
+    plt.ylabel(r'$F^{\#}$')
     plt.title(n)
     plt.tight_layout()
     
