@@ -64,20 +64,28 @@ systems = {
     '50cm Resolution Point' : {
         'grd_eff' : 0.5,
         'snr_req' : 70.,
-        'DR_req' : 90.,      # dB
+        'DR_req' : 75.,      # dB
         'Q' : 1.3,
         'x_ct' : 8e3,      # m
-        'N_sensors' : 5,
         'N_bands' : 5,
+        'p_px' : 3.45e-6,  # m'
+        'hpx_det' : 4096,
+        'vpx_det' : 3000,
+        'Ne_FWC_det' : 10e3,
+        'rd_noise' : 5.
     },
     '1m Resolution Large Area' : {
         'grd_eff' : 1.0,
         'snr_req' : 70.,
-        'DR_req' : 90.,      # dB
+        'DR_req' : 75.,      # dB
         'Q' : 1.0,
         'x_ct' : 18e3,       # m
-        'N_sensors' : 5,
-        'N_bands' : 5
+        'N_bands' : 5,
+        'p_px' : 3.45e-6,    # m
+        'hpx_det' : 4096,
+        'vpx_det' : 3000,
+        'Ne_FWC_det' : 10e3,
+        'rd_noise' : 5.
     }
 }
 
@@ -94,28 +102,25 @@ for i, (n, s) in enumerate(systems.items()):
     
     d, gsd = find_min_d(niirs, s['Q'], snr_delta_rho, alt)
     LR = Vgnd / gsd
-    hpx = s['x_ct'] / gsd / s['N_sensors']
-    p_px = np.linspace(2e-6, 10e-6, 30)
+    hpx = s['x_ct'] / gsd
     psi_px = NsNe_fwc * hpx * Vgnd / gsd * s['N_bands'] # p_px
-    f = p_px / gsd * alt
+    f = s['p_px'] / gsd * alt
+    N_sensors = floor(hpx/s['hpx_det'])
+    FPS_req = psi_px / s['Ne_FWC_det'] / hpx / N_sensors / s['vpx_det']
+    DR_lin = 10**(s['DR_req'] / 20.)
+    Ns_req = DR_lin**2 / (s['Ne_FWC_det']**2 / s['rd_noise'])
+    Ns = floor(gsd / Vgnd * s['vpx_det'] * FPS_req / s['N_bands'])
+    I_D_raw = Ns * np.log2(DR_lin)
     print '\tGSD: %.3f m' % (gsd)
-    print '\t D_ap = %0.3f' % d
-    print '\tpsi_px required: %.1e' % psi_px
-    
-    print '\t%d cross-track pixels required' % hpx
-    
-    plt.figure(i+1)
-    #ax = plt.subplot(211)
-    #plt.plot(p_px*1e6, psi_px)
-    #plt.ylabel(r'$\psi_{px}$ Required')
-    
-    #plt.subplot(212, sharex=ax)
-    plt.plot(p_px*1e6, f / d)
-    plt.xlabel('Pixel pitch (um)')
-    plt.ylabel(r'$F^{\#}$')
-    plt.title(n)
-    plt.tight_layout()
-    
-
-plt.show()
+    print '\tD_ap = %0.3f m' % d
+    print '\tf = %.3f m' % f
+    print '\tF# = %0.1f' % (f/d)
+    print '\t%0.1fmm focal plane width' % (hpx * s['p_px'] * 1e3)
+    print '\t%d Cross-track pixels required' % hpx
+    print '\t%d Cross track sensors' % (N_sensors)
+    print '\tRequired framerate %0.1f' % (FPS_req)
+    print '\tpsi_px required: %.1e' % (psi_px / N_sensors)
+    print '\tRequired Ns for DR_req : %0.1f' % (Ns_req)
+    print '\tActual Ns : %d' % Ns
+    print '\tI_D = %0.1f bit / pix raw' % (I_D_raw)
     
