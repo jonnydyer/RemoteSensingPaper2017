@@ -64,7 +64,6 @@ systems = {
     '50cm Resolution Point' : {
         'grd_eff' : 0.5,
         'snr_req' : 70.,
-        'DR_req' : 75.,      # dB
         'Q' : 1.3,
         'x_ct' : 8e3,      # m
         'N_bands' : 5,
@@ -72,12 +71,11 @@ systems = {
         'hpx_det' : 4096,
         'vpx_det' : 3000,
         'Ne_FWC_det' : 10e3,
-        'rd_noise' : 5.
+        'rd_noise' : 3.5
     },
     '1m Resolution Large Area' : {
         'grd_eff' : 1.0,
         'snr_req' : 70.,
-        'DR_req' : 75.,      # dB
         'Q' : 1.0,
         'x_ct' : 18e3,       # m
         'N_bands' : 5,
@@ -85,7 +83,7 @@ systems = {
         'hpx_det' : 4096,
         'vpx_det' : 3000,
         'Ne_FWC_det' : 10e3,
-        'rd_noise' : 5.
+        'rd_noise' : 3.5
     }
 }
 
@@ -94,10 +92,8 @@ for i, (n, s) in enumerate(systems.items()):
     niirs = -3.32 * np.log10(s['grd_eff']) + 4.4
     NsNe_fwc = s['snr_req']**2 / alpha
     print '\tNsNe_fwc = %.1f ke-' % (NsNe_fwc/1e3)
-    snr_delta_rho = SNR_GIQE(NsNe_fwc, 5.)
-    print '\tSNR (GIQE, 5e- rd.) = %.1f' % snr_delta_rho
-    snr_delta_rho = SNR_GIQE(NsNe_fwc, 15.)
-    print '\tSNR (GIQE, 15e- rd.) = %.1f' % snr_delta_rho
+    snr_delta_rho = SNR_GIQE(NsNe_fwc, s['rd_noise'])
+    print '\tSNR (GIQE, %.1fe- rd.) = %.1f' % (s['rd_noise'], snr_delta_rho)
     print '\tNIIRS = %.2f' % niirs
     
     d, gsd = find_min_d(niirs, s['Q'], snr_delta_rho, alt)
@@ -107,10 +103,10 @@ for i, (n, s) in enumerate(systems.items()):
     f = s['p_px'] / gsd * alt
     N_sensors = floor(hpx/s['hpx_det'])
     FPS_req = psi_px / s['Ne_FWC_det'] / hpx / N_sensors / s['vpx_det']
-    DR_lin = 10**(s['DR_req'] / 20.)
-    Ns_req = DR_lin**2 / (s['Ne_FWC_det']**2 / s['rd_noise'])
     Ns = floor(gsd / Vgnd * s['vpx_det'] * FPS_req / s['N_bands'])
-    I_D_raw = Ns * np.log2(DR_lin)
+    DR = sqrt(Ns) * s['Ne_FWC_det'] / s['rd_noise']
+    I_D_raw = Ns * np.log2(DR)
+    
     print '\tGSD: %.3f m' % (gsd)
     print '\tD_ap = %0.3f m' % d
     print '\tf = %.3f m' % f
@@ -120,7 +116,7 @@ for i, (n, s) in enumerate(systems.items()):
     print '\t%d Cross track sensors' % (N_sensors)
     print '\tRequired framerate %0.1f' % (FPS_req)
     print '\tpsi_px required: %.1e' % (psi_px / N_sensors)
-    print '\tRequired Ns for DR_req : %0.1f' % (Ns_req)
     print '\tActual Ns : %d' % Ns
     print '\tI_D = %0.1f bit / pix raw' % (I_D_raw)
+    print '\tDR = %.1f dB' % (20. * np.log10(DR))
     
