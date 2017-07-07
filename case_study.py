@@ -37,14 +37,14 @@ def find_min_d(niirs_req, Q, snr_giqe, alt, obsc=0.3):
             [0.0,   # piston
              0.0,   # tip
              0.0,   # tilt
-             0.03,  # focus
+             0.08,   # focus
              0.0,   # astig x
-             0.05,  # astig y
-             0.05,  # coma x
+             0.07,  # astig y
+             0.07,  # coma x
              0.0,   # coma y
              0.0,   # astig 2 x
              0.0,   # astig 2 y
-             0.0], # spherical
+             0.07], # spherical
              ifov = lam_c / d / Q,
              lam = lam_c,
              obsc=obsc,
@@ -64,8 +64,8 @@ systems = {
     '25cm Resolution Point' : {
         'grd_eff' : 0.3,
         'snr_req' : 50.,
-        'Q' : 1.5,
-        'x_ct' : 7.5e3,      # m
+        'Q' : 1.3,
+        'x_ct' : 5e3,      # m
         'N_bands' : 5,
         'p_px' : 5.5e-6,  # m'
         'hpx_det' : 4608,
@@ -91,11 +91,11 @@ systems = {
         'Q' : 1.3,
         'x_ct' : 20e3,       # m
         'N_bands' : 5,
-        'p_px' : 4.5e-6,    # m
-        'hpx_det' : 5120,
-        'vpx_det' : 5120.,
-        'Ne_FWC_det' : 12e3,
-        'rd_noise' : 14.
+        'p_px' : 4.6e-6,    # m
+        'hpx_det' : 4608.,
+        'vpx_det' : 2592.,
+        'Ne_FWC_det' : 40e3,
+        'rd_noise' :5,
     }
 }
 
@@ -124,7 +124,7 @@ for i, (n, s) in enumerate(systems.items()):
     print '\tD_ap = %0.3f m' % d
     print '\tf = %.3f m' % f
     print '\tF# = %0.1f' % (f/d)
-    print '\t%0.1fmm focal plane width' % (hpx * s['p_px'] * 1e3)
+    print '\t%0.1fmm focal plane width' % (N_sensors * s['hpx_det'] * s['p_px'] * 1e3)
     print '\t%d Cross-track pixels required' % hpx
     print '\t%d Cross track sensors' % (N_sensors)
     print '\t%.3f km actual ct FOV' % (N_sensors * s['hpx_det'] * gsd / 1e3)
