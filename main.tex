@@ -820,6 +820,49 @@ $\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plo
 The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
 \end{observation}
 
+Of course, this additional information does come at the cost of increased data intensity. Indeed, as expected, Figure~\ref{fig:psi_vs_id} demonstrates that $\psi$ is very closely correlated with data intensity across all types of sensors. Systems that are downlink-constrained, therefore, will likely be unable to take advantage of the greater information throughput of newer sensors. Therefore, using a lower-framerate sensor (generally with a higher FWC) allows a greater utilization of limited bandwidth. One way around this limitation is to shift more of the data reduction onto the spacecraft, for example by performing on-board stacking of digitally-oversampled data. As shown in Figure~\ref{fig:psi_vs_id_summed}, stacking redundant samples prior to downlinking the data reduces the data intensity for a given quantity of information, with detectors that rely more heavily on framerate rather than well capacity realizing a more significant improvement. The combination of high-frame-rate sensors and robust on-board processing offers the potential to dramatically increase the usable data that can be obtained from bandwidth-limited systems.
+
+\begin{figure}
+  % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/psi_vs_id.pgf}
+  \caption{Detector figure of merit is closely correlated with Data Intensity, with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are preferable for bandwidth-starved systems.
+  \label{fig:psi_vs_id}}
+\end{figure}
+
+
+\begin{figure}
+  % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/psi_vs_id_summed.pgf}
+  \caption{If digitally-oversampled images can be combined on-board, then the data intensity can be greatly reduced (with systems that rely heavily on digital oversampling benefitting the most from this improvement). Note that, in the above plot, some CMOS systems can provide substantially more useful information for the same amount of downlinked data as the best CCD systems.
+  \label{fig:psi_vs_id_summed}}
+\end{figure}
+
+\subsection{Spectral Bands}
+\label{sec:spec}
+
+There are a number of system parameters that can be tuned to take advantage of the additional information content available from high-framerate sensors. It can be used to increase area collection capacity (by increasing the ground scan speed of the boresight), improve dynamic range and signal-to-noise (see \ref{sec:hdr}), or add diagnostic capability through additional spectral bands. A standard architecture for collecting multi-spectral data is to use a multi-stripe filter over the sensor, dividing it into a number of regions of approximately equal in-track extent. Each ground point is sampled as it moves through each of the spectral bands. This technique can be used for both TDI and push-framing sensors. For a system where SNR is FWC-constrained, the number of spectral bands that can be collected with a minimum signal-to-noise ratio $SNR_{min}$ at $L_{typ}$ is
+
+\begin{equation}
+    \label{eq:nbands}
+    N_{bands} = \frac{\text{floor}\left(\frac{N_{rows}\times GSD\times LR}{V_{gnd}}\right)} {\text{ceil}\left(\frac{SNR_{min}^{2}\times\alpha}{FWC}\right)}
+\end{equation}
+
+This is a fundamental characteristic of the system that depends on the selection of high-level system parameters (dynamic range, SNR and GSD) as well as details of the orbit and the sensor. Figure \ref{fig:nbands_1m} shows the number of bands available in a 1m GSD system at 500 km. It is evident that only high-framerate sensors are capable of capturing true multispectral imagery at high resolution in this geometry. For a medium-resolution system, however, this constraint does not apply; as seen in Figure \ref{fig:nbands_4m}, a number of CCDs are capable of reading out quickly enough to capture up to 10 spectral bands.
+
+\begin{figure}
+  % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/nbands_1m.pgf}
+  \caption{In this case, we assume a system with an orbital altitude of 500km, a GSD of 1m, and a FWC-constrained SNR. The focal plane is split into spectral bands of equal in-track extent, where the height of each spectral band is set such that the system is able to achieve an SNR of 100 at Ltyp, with alpha (Lsat/Ltyp) = 5 for each ground point. Note that most systems (CCDs and CMOS sensors) require some amount of digital oversampling to achieve the SNR requirement. Most CCDs struggle to sample each point in more than a single channel, while CMOS sensors offer the possibility of truly multispectral coverage. \label{fig:nbands_1m}}
+\end{figure}
+
+\begin{figure}
+  % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/nbands_4m.pgf}
+  \caption{Note that, for a GSD of 4m, CCDs are a much more appropriate choice, as there are a number that are capable of multispectral imaging. While the plot suggests that the greater capacity of CMOS sensors may be leveraged by building hyperspectral imagers, in practice this approach requires bandpass filtering that may take the system out of the FWC-limited regime.
+  \label{fig:nbands_4m}}
+\end{figure}
+
+
 \subsection{High Dynamic Range Imaging}
 \label{sec:hdr}
 
@@ -837,15 +880,33 @@ Using different integration times resolves the above dilemma: Shorter integratio
   \caption{SNR and dynamic range for different integration times. The nominal 1x integration time captures a range of bright levels up to 1.0.  Longer integration times capture smaller ranges of brightness, but with higher SNR. Combining the three image exposures gives the saw-tooth-shaped SNR profile. \label{fig:hdr_snr_example}}
 \end{figure}
 
+
 Combining the three exposures from Figure~\ref{fig:hdr_snr_example} yields an effective SNR profile as shown by the saw-tooth dashed line in the figure. This composite SNR assumes a straightforward maximum-likelihood approach to combining images taken with different integration times, and does not include any advanced processing such as super-resolution, deblurring, or noise reduction. Note that in this hypothetical case, some darker regions in a scene have \emph{higher} SNR than some brighter regions of the scene, and is quite distinct from the SNR behavior of simple shot noise.
 
-Allowing different integration times allows considerable flexibility in tuning image quality.  Figure~\ref{fig:hdr_snr_flatter} shows the result of choosing integration times to maximize ``flatness'' of the SNR curve when combining 16 images, and compares that to the case of combining 16 images of fixed integration time. The trade-off in this example was to sacrifice SNR in the brightest regions, where less data resides and where the SNR was already relative high, in exchange for higher SNR in the low-lights, where more of the scene content likely resides. There are many other possible criteria one might use to optimize integration times.
+More than simply increasing the dynamic range of the output data product, allowing different integration times grants considerable flexibility in tuning image quality. Figure~\ref{fig:snr_vs_L} illustrates the power of this approach. In a typical scene, the majority of the content has a luminosity much lower than the saturation value, and $\alpha$ is between 4-16. For a single-shot image, the signal-to-noise ratio for most of the pixels of interest is therefore 2-4 times lower than the FWC-limited SNR of the sensor. Even a relatively small amount of digital oversampling, using a sensor with a much smaller FWC, allows a system to achieve a higher SNR in the luminance range where most of the content lies. Figure~\ref{fig:hist_vs_snr} shows the resulting distribution of SNR for all the pixels in the image. The simple HDR system produces a uniform, high SNR for the bulk of the pixels in the scene, while the single-shot image suffers from saturation of highlights and underexposure (low SNR) for much of the scene. Indeed, this is a best-case scenario for single-shot (or TDI) system, in that we have assumed that the integration time has been tuned perfectly to the desired saturation radiance; if there are errors in the exposure model, the SNR distribution will be shifted to produce either more severe saturation or more underexposure. The HDR scheme can be configured to optimize SNR over an extremely wide range of luminance values.
 
 \begin{figure}
-  % Note:  This figure was generated from Matlab script hdr_jonny_paper.m, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/hdr-design-compare-snr.png}
-  \caption{Example SNR profiles of combining 16 images, with comparison of combining (1)~fixed integrations times, and (2)~variable integration times.\label{fig:hdr_snr_flatter}}
+  % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/snr_vs_L.pgf}
+  \caption{The SNR as a function of scene luminosity for a TDI-based system using a CCD with a FWC of 5e4 electrons, and for a digitally-oversampled system using 4 different HDR integration times on a CMOS sensor with a FWC of 2e4 electrons. Also shown is the luminosity histogram for a typical scene. In region A (relatively low luminosity), the stabilized HDR system is able to achieve a substantially higher SNR than the TDI system thanks to the ability to take long integrations. In region B (relatively high luminosity), the TDI system has higher SNR; however, there is minimal practical advantage, since there is relatively little scene content in this regime, and the extra SNR is above the “good enough” level that the HDR system can capture. In region C (highlights and specular reflections), the TDI system is saturated and reports no useful signal, while the HDR system is still able to discriminate contrast within the highlights. \label{fig:snr_vs_L}}
 \end{figure}
+
+
+\begin{figure}
+  % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
+  \includegraphics[width=\columnwidth]{figures/hist_vs_snr.pgf}
+  \caption{Histogram of SNR values assuming the scene luminosity histogram and luminosity-to-SNR mapping of the two systems in Figure A. Note the HDR system observes the bulk of the scene in the “sweet spot” of high SNR, while the TDI system has a lower mean SNR along with a substantial “blind spot” for highlights.  \label{fig:hist_vs_snr}}
+\end{figure}
+
+
+%Figure~\ref{fig:hdr_snr_flatter} shows the result of choosing integration times to maximize ``flatness'' of the SNR curve when combining 16 images, and compares that to the case of combining 16 images of fixed integration time. The trade-off in this example was to sacrifice SNR in the brightest regions, where less data resides and where the SNR was already relative high, in exchange for higher SNR in the low-lights, where more of the scene content likely resides. There are many other possible criteria one might use to optimize integration times.
+
+%\begin{figure}
+%  % Note:  This figure was generated from Matlab script hdr_jonny_paper.m, included here in sharelatex
+%  \includegraphics[width=\columnwidth]{figures/hdr-design-compare-snr.png}
+%  \caption{Example SNR profiles of combining 16 images, with comparison of combining (1)~fixed integrations times, and (2)~variable integration times.\label{fig:hdr_snr_flatter}}
+%\end{figure}
+
 
 
 \subsection{Comparison of Modalities}
