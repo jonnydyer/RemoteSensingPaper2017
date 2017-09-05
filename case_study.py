@@ -61,7 +61,7 @@ def find_min_d(niirs_req, Q, snr_giqe, alt, obsc=0.3):
     return dmin, gsd
 
 systems = {
-    '25cm Resolution Point' : {
+    '30cm Resolution Point' : {
         'grd_eff' : 0.3,
         'snr_req' : 50.,
         'Q' : 1.3,

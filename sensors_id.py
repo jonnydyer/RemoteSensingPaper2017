@@ -15,6 +15,7 @@ import pandas as pd
 scaler=2.5
 rc('figure', figsize=(3.5,3))
 rc('legend', fontsize='x-small')
+#rc('figure', grid=True)
 rc('font', family='serif')
 rc('font', size=7)
 rc('lines', markersize=3.0)
@@ -26,10 +27,11 @@ def LoadSensorData():
     sheet of sensor properties
     """
     sensors = pd.read_csv('figures/sensors.csv')
-    
+    # JD Note: changed this to match my updated KPI which doesn't put p_px in 
+    # denominator because I don't think that made sense.
     sensors['kpi1'] = sensors['FWC'] * sensors['Width'] * sensors['Height'] * \
-                       sensors['FPS'] / \
-                       sensors['Pixel Size']
+                       sensors['FPS']# / \
+                 #      sensors['Pixel Size']
     
     bits = 12 # Could use log2(DR) but why penalize sensors with good noise characteristics?
     
@@ -70,8 +72,8 @@ def PlotPsiVsId(sensors):
     plt.loglog(ccds['I_d'], ccds['kpi1'], 'r^', label='CCD')
     plt.loglog(cmos['I_d'], cmos['kpi1'], 'go', label='CMOS (Global)')
     plt.loglog(cmos_rolling['I_d'], cmos_rolling['kpi1'], 'bs', label='CMOS (Rolling)')
-    plt.xlabel(r'$I_{d}$ [bits/sec]')
-    plt.ylabel(r'$\psi_{px} = \frac{h_{px}N_{e^-}^{FWC} LR}{p_{px}}$')
+    plt.xlabel(r'$BW_{det}$ [bits/sec]')
+    plt.ylabel(r'$\psi_{px} = h_{px}N_{e^-}^{FWC} LR$')
     #plt.xlim(2, 8)
     #plt.ylim(0, 50)
     plt.tight_layout()
@@ -84,8 +86,8 @@ def PlotPsiVsId(sensors):
     plt.loglog(ccds['I_d_sum'], ccds['kpi1'], 'r^', label='CCD')
     plt.loglog(cmos['I_d_sum'], cmos['kpi1'], 'go', label='CMOS (Global)')
     plt.loglog(cmos_rolling['I_d_sum'], cmos_rolling['kpi1'], 'bs', label='CMOS (Rolling)')
-    plt.xlabel(r'$I_{d}$ [bits/sec]')
-    plt.ylabel(r'$\psi_{px} = \frac{h_{px}N_{e^-}^{FWC} LR}{p_{px}}$')
+    plt.xlabel(r'$BW_{det}$ [bits/sec]')
+    plt.ylabel(r'$\psi_{px} = h_{px}N_{e^-}^{FWC} LR$')
     #plt.xlim(2, 8)
     #plt.ylim(0, 50)
     plt.tight_layout()
@@ -126,13 +128,13 @@ def PlotNBands(sensors):
     ax.legend()
     labelx = 6.2
     ax.add_patch(patches.Rectangle((2,-1),6,4,facecolor='grey', alpha=0.2))
-    ax.text(labelx, 0, "SNR<100",fontdict=font)
+    ax.text(labelx, 0.2, "SNR<100",fontdict=font)
     ax.add_patch(patches.Rectangle((2,3),6,4,facecolor='grey', alpha=0.1))
     ax.text(labelx, 4, "Panchromatic",fontdict=font)
     #ax.add_patch(patches.Rectangle((2,6),6,3,facecolor='red', alpha=0.1))
     #ax.text(6.8, 7, "False color",fontdict=font)
     ax.add_patch(patches.Rectangle((2,7),6,5,facecolor='green', alpha=0.1))
-    ax.text(labelx, 9, "Multispectral",fontdict=font)
+    ax.text(labelx, 9.5, "Multispectral",fontdict=font)
     ax.add_patch(patches.Rectangle((2,12),6,5,facecolor='blue', alpha=0.1))
     ax.text(labelx, 13, "Hyperspectral",fontdict=font)
     #f.savefig('figures/p_kpi.pgf')
@@ -152,7 +154,7 @@ def PlotNBands(sensors):
     ax.legend()
     labelx = 6.2
     ax.add_patch(patches.Rectangle((2,-1),6,4,facecolor='grey', alpha=0.2))
-    ax.text(labelx, 0, "SNR<100",fontdict=font)
+    ax.text(labelx, 0.2, "SNR<100",fontdict=font)
     ax.add_patch(patches.Rectangle((2,3),6,4,facecolor='grey', alpha=0.1))
     ax.text(labelx, 4, "Panchromatic",fontdict=font)
     #ax.add_patch(patches.Rectangle((2,6),6,3,facecolor='red', alpha=0.1))
@@ -160,7 +162,7 @@ def PlotNBands(sensors):
     ax.add_patch(patches.Rectangle((2,7),6,5,facecolor='green', alpha=0.1))
     ax.text(labelx, 9, "Multispectral",fontdict=font)
     ax.add_patch(patches.Rectangle((2,12),6,6,facecolor='blue', alpha=0.1))
-    ax.text(labelx, 13, "Hyperspectral",fontdict=font)
+    ax.text(labelx, 15, "Hyperspectral",fontdict=font)
 
     return(fig1,fig2)
 

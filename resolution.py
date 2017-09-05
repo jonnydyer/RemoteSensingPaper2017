@@ -4,7 +4,7 @@ from matplotlib import rc
 import matplotlib.pyplot as plt
 from optimal_Q import giqe5, rer_approx
 
-rc('figure', figsize=(3.5,3.2))
+rc('figure', figsize=(3.5,3.0))
 rc('legend', fontsize='x-small')
 rc('font', family='serif')
 
@@ -35,7 +35,7 @@ alt=%d km, " % (D, h/1e3) + \
 r"$\lambda$ = %d nm" % (lam * 1e9)
 ax1.plot([0.5, 2], [GRD, GRD], label=r'$\frac{\lambda R}{D}$')
 #ax1.plot(Q, GSD, label=r'$GSD$')
-ax1.set_xlabel(r'Q$\left[\frac{\lambda F^\#}{p_{px}}\right]$')
+ax1.set_xlabel(r'$\frac{\lambda F^\#}{p_{px}}$')
 ax1.set_ylabel('(m)')
 ax1.set_ylim(0.35, 2.)
 ax1.set_xlim(0.5, 2.0)
@@ -43,6 +43,6 @@ ax1.set_xlim(0.5, 2.0)
 ax1.plot(Q, GSD, label='GSD')
 plt.title(titl, fontsize='small')
 plt.legend()
-plt.tight_layout()
-plt.gcf().savefig('figures/resolution_q.pgf')
+f.set_tight_layout(True)
+f.savefig('figures/resolution_q.pgf')
 plt.show()

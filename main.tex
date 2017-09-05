@@ -16,7 +16,6 @@
 \usepackage{breqn}
 \usepackage[noadjust]{cite}
 \usepackage{hyperref}
-
 \usepackage{cleveref}
 
 \bibliographystyle{IEEEtran}
@@ -46,7 +45,7 @@
 
 % Don't allow these words to by broken (hyphenated) across lines/pages
 \hyphenation{NIIRS}
-\hyphenation{GIQE-5}
+%\hyphenation{GIQE-5}
 
 \begin{document}
 
@@ -57,14 +56,13 @@
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
 \makeatother
 
-\author{Jonathan~Dyer,~\IEEEmembership{Member,~IEEE,}
-        Paul~Boerner,~\IEEEmembership{Member,~IEEE}
-        Dirk~Robinson,~\IEEEmembership{Member,~IEEE,}
-        and~Matthew~Messana,~\IEEEmembership{Member,~IEEE,}
-        and~Mark~Robertson%
+\author{Jonathan~Dyer\thanks{Former Chief Engineer, Skybox Imaging, Terra Bella},~\IEEEmembership{Member,~IEEE,}
+        Paul~Boerner\thanks{Imaging Systems Engineer, Planet, Inc.},~\IEEEmembership{Member,~IEEE}
+        Dirk~Robinson\thanks{Former Imaging Systems Lead, Skybox Imaging, Terra Bella},~\IEEEmembership{Member,~IEEE,}
+        and~Mark~Robertson\thanks{Former Lead Image Processing, Skybox Imaging, Terra Bella}%
 }
 
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2015}%
+\markboth{Journal of Remote Sensing .... BLAH BLAH}%
 {}
         
         
@@ -74,9 +72,8 @@ Many of the technology and investment trends that ushered in the so-called ``Sma
 
 The authors identify the trends in imaging and micro-electronics driven by other industries' investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and, in some cases, performance improvements but also come with technical shortcomings and challenges that must be addressed at the system-level.
 
-We argue that a) commercial technology trends enable a level of imaging performance / cost heretofore impossible, b) system size reduction is key to realizing these improvements, c) new imaging architectures and technologies are required to fully realize these improvements and d) embrace of the COTS/SmallSat mindset will accelerate performance/cost trends in the coming years.
+We argue that a) system size reduction is key to realizing cost reduction and constellation scaling, b) commercial technology trends in imaging enable a level of imaging performance / cost heretofore impossible, c) new imaging architectures and technologies are required to fully realize these improvements and d) the exciting trends identified here have not yet been fully realized.
 \end{abstract}
-
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
@@ -116,23 +113,18 @@ There is significant evidence indicating that mission cost is non-linearly corre
 \begin{equation*}
     C \sim m^{1.261},
 \end{equation*}
-implying cost $C$ is super-linearly impacted by mass, $m$.  Because for spacecraft systems
-\begin{equation*}
-    m \sim \chi^n,
-\end{equation*}
-where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, we can also say:
+implying cost $C$ is super-linearly impacted by mass, $m$.  Because for spacecraft systems $m \sim \chi^n$ where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, we can also say
 \begin{equation}
-C \sim \chi^k,
+C \sim \chi^{3+}
 \end{equation}
-where $k = 1.261 + n > 2$.
 
 Similar arguments can be derived from other cost scaling observations such as Meinel's Law \cite{meinel} for telescopes which states
-\begin{equation*}
+\begin{equation}
     C \sim D_{ap}^{2.7},
-\end{equation*}
+\end{equation}
 where $D_{ap}$ is aperture diameter.
 
-While there are certainly cases where mission requirements strictly necessitate large spacecraft or component dimensions (diffraction-limited resolution requirements are such an example), it is the authors' observation that in many cases mission imaging application requirements are not this black-and-white and that significantly better performance/cost ratios are achievable by driving to smaller systems.
+This polynomial relationship between size and cost indicates that there are significant savings available in shrinking system size down subject, of course to fundamental physical limits such as diffraction-limited resolution.  
 
 \subsection{Sensor Technology}
 \label{sec:sensor_trends}
@@ -193,7 +185,9 @@ Historically there has been resistance to the utilization of commercial electron
     \item Pervasive integration of hardware single-event protection driven by sea-level single-event susceptibility of modern high integration devices
 \end{itemize}
 
-For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-averse) systems.  Furthermore the ability to incorporate high performance compute, storage and communications in space- and power-constrained systems invalidates some of the long-held constraints on other spacecraft systems.
+For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-averse) systems.  
+
+Furthermore the ability to incorporate high performance compute, storage and communications in space- and power-constrained systems invalidates some of the long-held constraints on other spacecraft systems such as the ability to perform near-real-time on-board image processing.
 
 \section{Remote Sensing Metrics}
 \label{sec:Metrics}
@@ -208,7 +202,7 @@ Image quality is a complex, multi-faceted subject and while there is no perfect 
 Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance, $GSD$ is used as a proxy for resolution under the assumption of near-critical sampling.
 Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form of the diffraction-limited optical resolution such that given by the Rayleigh Criterion:
 \begin{equation}
-    GRD = 1.22 \frac{\lambda R}{D_{ap}}
+    GRD = 1.22 \frac{\lambda R}{D_{ap}},
 \end{equation}
 
 Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figures~\ref{fig:snr_mtf_q1}, \ref{fig:snr_mtf_q2} illustrate this graphically.
@@ -219,7 +213,7 @@ Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems
 
 More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
-High resolution systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.
+High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.
 
 NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
@@ -229,7 +223,7 @@ NIIRS rating is described by specific scene intepretation standards, examples of
 \toprule
 \textbf{NIIRS} & \textbf{GRD}          & \textbf{Description}                                                                                                                             \\ \toprule
 3     & 2.5m - 4.5m  & \begin{tabular}[c]{@{}l@{}}Identify a road as divided or undivided\\ Detect rows of automobiles in a parking lot\end{tabular}           \\ \midrule
-4     & 1.2m - 2.5m  & \begin{tabular}[c]{@{}l@{}}Detect barriers/obstacles (barrels) on runways\\ Distinguish between locomotives and railcars\end{tabular}   \\ \midrule
+4    & 1.2m - 2.5m  & \begin{tabular}[c]{@{}l@{}}Detect barriers/obstacles (barrels) on runways\\ Distinguish between locomotives and railcars\end{tabular}   \\ \midrule
 5     & 0.75m - 1.2m & \begin{tabular}[c]{@{}l@{}}Identify individual lines painted on paved roads,  parking lots\\ Identify fallen utility poles\end{tabular} \\ \midrule
 6     & 0.4m - 0.75m & \begin{tabular}[c]{@{}l@{}}Detect individuals, when not in a group\\ Detect small road signs in an urban area\end{tabular}              \\ \bottomrule
 \end{tabular}%
@@ -243,16 +237,16 @@ NIIRS is a logarithmic scale traditionally evaluated by trained human image inte
 
 \begin{dmath}
 NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\right]\log(RER_0)
-- 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear}
+- 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear},
 \label{eq:giqe5}
 \end{dmath}
 where $GSD_{m}$\footnote{GSD units must be paid close attention to -- many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
 
 GIQE-5 is fairly well validated again human interpreters~\cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
 
-Based on this definition, one can use GIQE-5 to define an effective ground resolvability distance $GRD_{eff}$:
+Based on this definition, one can use GIQE-5 to define an effective ground resolvability distance $GRD_{eff}$
 \begin{equation}
-    GRD_{eff}(m) = 10^{\frac{4.4 - NIIRS}{3.32}}
+    GRD_{eff}(m) = 10^{\frac{4.4 - NIIRS}{3.32}}.
     \label{eq:grd_eff}
 \end{equation}
 
@@ -278,22 +272,22 @@ Notice in Figure~\ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diff
 
 Dynamic range and signal-to-noise ratio are closely related by subtly different measures of radiometric performance.
 
-Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image:
+Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image
 
 \begin{equation*}
-    DR = \frac{S_{max}}{S_{min}}
+    DR = \frac{S_{max}}{S_{min}}.
 \end{equation*}
 
 The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, quantization, etc.
 
-The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples:
+The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio.  Oversampling also affects $s_{min}$ and it can be shown that, for equally exposed samples
 
 \begin{equation}
-    DR = \sqrt{N_s}\frac{N_{e^-}^{FWC}}{\sigma_{uncor}}
+    DR = \sqrt{N_s}\frac{N_{e^-}^{FWC}}{\sigma_{uncor}}.
 \label{eq:DR_OS}
 \end{equation}
 
-Dynamic range is a very important quality parameter for remote sensing systems because the dynamic range of terrestrial natural scenes can be quite high.  
+Dynamic range is a very important quality parameter for remote sensing systems because the dynamic range of terrestrial natural scenes can be quite high. 
 
 \begin{figure}[h!]
 \centering
@@ -313,32 +307,30 @@ Dynamic range is a very important quality parameter for remote sensing systems b
 \end{figure}
 
 For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in Section~\ref{sec:hdr}.
-Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  $SNR$ is defined as:
+Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  $SNR$ is defined as
 
 \begin{equation*}
-    SNR = \frac{s}{\sigma_{noise}}
+    SNR = \frac{s}{\sigma_{noise}}.
 \end{equation*}
 
-The noise, $\sigma_{noise}$ consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that:
+The noise, $\sigma_{noise}$ consists of the same sources discussed for $DR$ but also the shot-noise associated with the signal, $s$.  Because arrival rate of incoming photons obey Poisson statistics, it can be shown that $\sigma_{shot} = \sqrt{s}$ such that
 
 \begin{equation*}
-    SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}
+    SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}.
 \end{equation*}
 
 In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  
 
 For a perfectly exposed scene with
-\begin{equation*}
+\begin{equation}
     \alpha = \frac{L_{typ}}{L_{sat}},
-\end{equation*}
+\end{equation}
 ${SNR}$ can be expressed as
 \begin{equation}
     SNR_{\alpha} = \frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}},
 \label{eq:SNR_multiframe}
 \end{equation}
 where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.
-
-The high dynamic range in natural overhead scenes presents a challenge in achieving high $SNR$.  The $SNR$ for a target at $L_{typ}$ will scale inversely with $L_{sat}$ forcing the designer to trade highlight dynamic range against $SNR$ in much of the scene.  High Dynamic Range (HDR) imaging, discussed further in Section~\ref{sec:hdr}, provides the opportunity to achieve higher SNR over the full dynamic range of a scene.
 
 Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expanded to include multiple digital exposures such that
 \begin{equation}
@@ -352,15 +344,70 @@ For most modern detectors, uncorrelated noise sources are small compared with we
 SNR_{\alpha} \approx \sqrt{N_s \alpha N_{e^-}^{FWC}}.
 \end{equation}
 
+The high dynamic range in natural overhead scenes presents a challenge in achieving high $SNR$.  The $SNR$ for a target at $L_{typ}$ will scale inversely with $L_{sat}$ forcing the designer to trade highlight dynamic range against $SNR$ in much of the scene.  Indeed $DR$ and $SNR$ requirements, taken together, become significant drivers of sensor performance requirements.
+
+As mentioned earlier and discussed further in Section~\ref{sec:hdr}, digital oversampling allows the collection of so-called High Dynamic Range (HDR) images.  HDR enables a system to achieve higher SNR over the full dynamic range of a scene.
+
+\subsection{Data Intensity}
+\label{sec:data_intensity}
+Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
+\begin{equation}
+    I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}},
+\end{equation}
+where we assume an output product (``L1b'') to consist of the fused, corrected but un-rectified product. For a typical imaging pipeline that includes compression we must choose exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
+\begin{equation*}
+    \label{eq:compression}
+    C \equiv \frac{N_{bpp}^{raw}}{N_{bpp}^{comp.}}.
+\end{equation*}
+
+Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ because for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
+\begin{equation*}
+    \eta_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2},
+\end{equation*}
+such that
+\begin{equation}
+    \label{eq:I_D}
+    I_D = {\eta}_{rs} N_s N_{bpp}^{comp.}.
+\end{equation}
+
+%We can also define a collect-area normalized data intensity, $I_A = \frac{I_{D}}{GSD^2}$.  Given eq. \eqref{eq:I_D},
+%\begin{equation}
+%    I_A = \frac{N_s N_{bpp}^{comp.}}{GSD_{L0}^2}.
+%\end{equation}
+In traditional remote sensing systems, $I_D$ is largely driven by the balance of image quality requirements (driving smaller quantization steps and less compression) and data storage and downlink constraints (driving larger quantization steps and more compression).
+
+For systems with well-matched analog and digital (quantization) dynamic ranges
+\begin{equation}
+	\label{eq:N_bpp_raw}
+    N_{bpp}^{raw} = \textrm{log}_2(DR^{px}) = \textrm{log}_2\left(\frac{N_{e^-}^{FWC}}{\sigma_{uncorr.}}\right).
+\end{equation}
+
+Dynamic range requirements are typically 60-75 $dB$ ($\sim 1000:1$ to $\sim 5000:1$ ) driving $N_{bpp}^{raw}$ of 10-12 bits.  And industry experience has shown that modern image compression (such as JPEG2000) can achieve near visually loss-less performance at a compression ratios of between 3:1 and 6:1.  Thus it is reasonable to expect $I_D$ between \textbf{2 bit/px} and \textbf{4 bit/px} for non-oversampling systems.
+
+As noted previously, digital oversampling allows for system dynamic range performance superior to the inherent dynamic range of the sensor.  However, the cost is in higher data intensity as shown in \eqref{eq:I_D_oversampled}.  
+\begin{equation}
+	\label{eq:I_D_oversampled}
+    I_D = N_s N_{bpp}^{comp.} 
+\end{equation}
+
+Given a required dynamic range, $DR_{req}$, we can combine Equation \eqref{eq:N_bpp_raw}, \eqref{eq:DR_OS} to show that
+\begin{equation}
+    \label{eq:I_D_scaling}
+    I_D^{raw} = \left[\frac{DR_{req}\times \sigma_{uncorr.}}{N_{e^-}^{FWC}}\right]^2 \textrm{log}_2 (DR_{req}).
+\end{equation}
+
+Equation \eqref{eq:I_D_scaling} is important because it captures the inverse relationship of pixel full well capacity and data intensity in a digitally over-sampled system - a key result in defining pixel performance metric in Section \ref{sec:eta_ph}.
+
 \subsection{Collection Capacity}
 \label{sec:capacity}
-For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$, and communications bandwidth (which we won't go into here).  
+For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$ (defined in Section \ref{sec:data_intensity}), and communications bandwidth.  
 
 Image collection capacity in turn depends on a number of parameters including time over land, ACS agility, and area collection rate,
 \begin{equation}
+	\label{eq:acr_def}
     ACR = V_{gnd}W_{ct},
 \end{equation}
-where $W_{ct}$ is the swath width or cross-track field of view projected to the ground.
+where $W_{ct}$ is the swath width or cross-track field of view projected to the ground and $V_{gnd}$ is the apparent relative velocity of the ground in the imaging instrument's frame.
 
 We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the system $ACR$ as
 \begin{equation}
@@ -368,9 +415,11 @@ We will define a collection duty cycle metric that captures all of the impacts o
 \end{equation} 
 where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targeted spacecraft), attitude control bandwidth, etc.
 
-For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For targeting remote sensing systems constrained tasking slews as well as sun and time-over-land, typically $\beta < 0.1$.  Figure~\ref{fig:beta} shows how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
+For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For targeting remote sensing systems constrained tasking slews as well as sun and time-over-land, typically $\beta < 0.1$.  In order to generate intuition, Figure~\ref{fig:beta} captures how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
 
-\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$, for various cross-track target spacings for a reasonably agile spacecraft}
+\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$ for a reasonably agile spacecraft.  Note the different lines correspond to target cross-track spacing.}
+
+For small cross-track spacing, $\beta$ largely depends on collection size and the relative ground-scan rate that the imaging system is capable of because imaging time dominates slew time.  For larger cross-track spacing or smaller target size, the time to slew between targets becomes more important and spacecraft agility influences $\beta$ more heavily..
 
 Figure~\ref{fig:beta} is an upper bound in the sense that it assumes there will always be a desirable target to collect when the spacecraft has slewed cross-track which is likely not true for most real-world target collection decks.  
 
@@ -386,65 +435,20 @@ There are two primary capacity regimes that a spacecraft may operate in:
 \item Collection-constrained regime
 \end{enumerate}
 
-For a downlink bandwidth $BW_{d/l}$, we can define a capacity constraint metric, $k_{cap}$
+For a specified downlink bandwidth $BW_{d/l}$, we can define a capacity constraint metric, $k_{cap}$
 \begin{equation}
+\label{eq:k_cap}
 k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{\beta I_D ACR},
 \end{equation}
-such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.
+such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.  The system is well balanced for $k_{cap}$ near unity.  
+
+Equation \eqref{eq:k_cap} is also  important because it directly exposes the tradeoffs inherent in collection capacity ($ACR$), image quality ($GSD$ and $I_D$) and system data bandwidth ($BW_{d/l}$).
 
 % For a commercial system with multiple ground stations and a dense target deck, a reasonable rule-of-thumb is that $\frac{\gamma}{\beta} \approx 3$ so that a well balanced system has:
 
 % \begin{equation}
 %     BW_{d/l} \approx \frac{I_D ACR}{3 GSD^2}
 % \end{equation}
-
-\subsection{Data Intensity}
-
-Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
-\begin{equation}
-    I_D \equiv \frac{N_{bit}}{N_{px}^{L1b}},
-\end{equation}
-where we assume an output product (``L1b'') to consist of the fused, corrected but un-rectified product. For a typical imaging pipeline that includes compression we must choose exactly where in the system $N_{bit}$ is defined.  We will use the post-compression image data because it impacts the most system interfaces (storage, downlink, processing) and is generally directly proportional to the raw pixel data rate through the compression ratio, $C$
-\begin{equation}
-    \label{eq:compression}
-    C \equiv \frac{N_{bpp}^{raw}}{N_{bpp}^{comp.}}.
-\end{equation}
-
-For a digitally oversampling system,
-\begin{equation}
-    I_D = N_s N_{bpp}^{comp.} = \frac{N_s N_{bpp}^{raw}}{C}.
-\end{equation}
-
-Note also that any resampling operations (including image reconstruction techniques such as super-resolution) impact $I_D$ because for non-unity resampling ratios the number of output pixels is affected.  Thus we include a resampling factor
-\begin{equation}
-    \eta_{rs} = \frac{GSD_{L1b}^2}{GSD_{L0}^2},
-\end{equation}
-such that
-\begin{equation}
-    \label{eq:I_D}
-    I_D = {\eta}_{rs} N_s N_{bpp}^{comp.}.
-\end{equation}
-
-We can also define a collect-area normalized data intensity, $I_A = \frac{I_{D}}{GSD^2}$.  Given eq. \eqref{eq:I_D},
-\begin{equation}
-    I_A = \frac{N_s N_{bpp}^{comp.}}{GSD_{L0}^2}.
-\end{equation}
-
-Finally, it is worth noting that for a system with well-matched analog and digital (quantization) dynamic range
-\begin{equation*}
-    N_{bpp}^{px} = \textrm{log}_2(DR^{px}) = \textrm{log}_2\left(\frac{N_{e^-}^{FWC}}{\sigma_{uncorr.}}\right)
-    \label{eq:N_bpp_raw}.
-\end{equation*}
-
-For systems capable of digital oversampling, the system can capture a higher dynamic range than the native pixel alone.  Given a required dynamic range, $DR_{req}$, we can combine Equation \eqref{eq:N_bpp_raw}, \eqref{eq:DR_OS} to see that
-\begin{equation}
-    \label{eq:I_D_scaling}
-    I_D^{raw} = \left[\frac{DR_{req}\times \sigma_{uncorr.}}{N_{e^-}^{FWC}}\right]^2 \textrm{log}_2 (DR_{req}).
-\end{equation}
-
-Equation \eqref{eq:I_D_scaling} is important because it captures the inverse relationship of pixel full well capacity and data intensity in a digitally over-sampled system.
-
-Stated differently, digital oversampling enables high $SNR$ and $DR$ with small pixels.  However, in order to utilize smaller pixels with associated smaller full-well capacity (Figure~\ref{fig:p_fwc}) the application must either tolerate less dynamic range in the output imagery (less or no oversampling) or the system must oversample digitally and be capable of handling a higher data intensity.
 
 \subsection{Etendue and Photon Efficiency}
 \label{sec:entendue}
@@ -471,18 +475,17 @@ It can be shown that the total photo-electron generation rate, $\dot{N}_{e^-} \p
 \begin{equation}
     \dot{N}_{e^-} = \frac{ACR \times SNR^2}{GSD^2},
 \end{equation}
-so that we can say
+so that
 \begin{equation}
 \label{eq:acr_snr_gsd}
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L.
 \end{equation}
 
-$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
+\textbf{$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric}.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
 
 \section{Collection Modalities}
 \label{sec:modalities}
 Large orbital velocity is a large advantage of spacecraft for remote sensing over other platforms as it gives:
-
 
 \begin{itemize}
 \item Daily global access
@@ -491,22 +494,19 @@ Large orbital velocity is a large advantage of spacecraft for remote sensing ove
 
 However it also presents large challenges in developing an imaging system that can collect sufficient light at the high relative scene velocity without incurring unreasonable blur.
 
-For blur- or TDI-stage-limited integration times, it can be shown that~\cite{shaw}
-\begin{equation*}
-    SNR \propto \frac{D_{ap} GSD^{3/2}}{\sqrt{V_{gnd}}}.
-\end{equation*}
+Equation \eqref{eq:acr_snr_gsd} shows that $\eta_{ph} A \Omega$ (and thus cost) is driven directly by $ACR$ and therefore $V_{gnd}$ (Equation \eqref{eq:acr_def}).
 
-Or if $SNR$ is a fixed requirement, relative ground velocity must scale with GSD such that
-\begin{equation}
-V_{gnd} \propto GSD^3,
-\end{equation}
-which has many system-level impacts, the largest of which is its impact on area collection rate, $ACR$.
+For systems whose integration times are limited by velocity (such as blur-limited or TDI systems with a fixed number of stages) ~\cite{shaw} shows the   even stronger dependence of achievable image quality and ground velocity
+
+\begin{equation*}
+V_{gnd} \propto \frac{GSD^4}{SNR^2}.
+\end{equation*}
 
 This is a major challenge for high-resolution systems, and historically there have been many solutions to compensate for scene motion on spacecraft.  These date back to the earliest film-based systems that used the film motion through the camera itself to compensate.  Other mechanical solutions included gimbaled cameras, ``back-scan'' of the entire spacecraft bus and full-aperture scan mirrors, among others.
 
 Indeed for systems with resolutions better than a few meters, some form of stabilization is essentially required to obtain sufficient $SNR$ without significant bus back-scan to reduce relative ground velocity.
 
-We will classify modern stabilization strategies into three major buckets:
+We will classify modern stabilization strategies into three  buckets
 
 \begin{enumerate}
 \item Analog electronic charge transfer or time-delayed integration (TDI) stabilization
@@ -514,7 +514,7 @@ We will classify modern stabilization strategies into three major buckets:
 \item Analog optomechanical stabilization
 \end{enumerate}
 
-Digital imaging spacecraft have traditionally used a ``push-broom'' architecture where a line-array sensor is pushed along the ground by the spacecraft's motion.  Stabilization by charge transfer between rows synchronous with scene velocity allows for so-called Time Delayed Integration, TDI.  
+Digital imaging spacecraft have traditionally used a ``push-broom'' architecture where a line-array sensor is pushed along the ground by the spacecraft's motion.  Analog stabilization by charge transfer between rows synchronous with scene velocity allows for so-called Time Delayed Integration, TDI.  
 
 Development of large format CCD and CMOS framing detectors allows for ``step-and-stare'' architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.  If the framing rate is high enough, the scene can be digitally oversampled such that a single point on the ground is captured with multiple exposures of the focal plane.
 
@@ -526,7 +526,7 @@ Development of large format CCD and CMOS framing detectors allows for ``step-and
 
 Analog optomechanical stabilization relies on an optomechanical component with the ability to dynamically steer the payload line of sight repetitively so as to remove relative scene motion during integration.  Fast scan mirrors (FSM) or excited dynamic motion of the entire instrument are two ways to achieve this \cite{patent:jonny}, \cite{patent:dirk}.
 
-The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling is not as constrained by $FWC$ beause each exposure resets the pixel and thus the $FWC$ can be effectively expanded by as many redundant samples as can be obtained.
+The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling is not as constrained by $FWC$ because each exposure resets the pixel and thus the $FWC$ can be effectively expanded by as many redundant samples as can be obtained.
 
 Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure~\ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom, and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10 m.
 
@@ -544,7 +544,7 @@ Typical TDI sensors will have anywhere from 4 to 256 ``stages,'' each consisting
 
 \includefigure{figures/tdi.pgf}{fig:tdi}{TDI t-x diagram.  Red row indicates one in-track ground sample.}
 
-In general TDI system's photon collection efficacy is ``well-depth limited'' meaning that the duration of integration is typically limited by pixel well saturation before other factors such as number of TDI stages, dark current, or charge transfer efficiency.  For an appropriately exposed scene, the well-limited signal level is quite simple:
+In general TDI system's photon collection efficacy is ``well-depth limited'' meaning that the duration of integration is typically limited by pixel well saturation before other factors such as number of TDI stages, dark current, or charge transfer efficiency.  For an appropriately exposed scene, the well-limited signal level is:
 \begin{equation}
 s = \alpha N_{e^-}^{FWC}
 \label{eq:well_limited}.
@@ -555,9 +555,9 @@ Noting that the exposure time for a single stage of a TDI system is extrinsicall
 N_{TDI} =\frac{N_{e^-}^{FWC} Q^2}{k_{pe} L_{sat}}\frac{LR}{QE} \propto \frac{N_{e^-}^{FWC}V_{gnd}}{GSD}
 \label{eq:n_tdi}.
 \end{equation}
-Figure~\ref{fig:n_tdi} below shows this trade.
+%Figure~\ref{fig:n_tdi} below shows this trade.
 
-\includefigure{figures/LR_req.pgf}{fig:n_tdi}{Optimal TDI stages vs. resolution for different pixel well depths}
+%\includefigure{figures/LR_req.pgf}{fig:n_tdi}{TDI linerate required vs. resolution for different pixel well depths}
 
 While extremely powerful and well-proven over many missions, TDI detectors present challenges for low-cost, high resolution missions.
 
@@ -574,12 +574,11 @@ Step and stare relies on a high speed framing CMOS sensor to capture multiple, o
 
 Figure~\ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels and a very high framing rate whereas in reality most modern framing sensors are $>$ 1000 pixels high and frames at about 1/6 of the rate shown.  Figure~\ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate.
 
-It is worth noting in this diagram that the photon collection duty cycle, $\phi_{int}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integrations.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is typically blur-limited (see~\ref{sec:eta_ph}).  This is a problematic limitation and severe enough that systems $GSD$ below about 3~m must reduce $V_{gnd}$ with a bus ``back-nod'' in order to get sufficient signal without incurring substantial blur.
+It is worth noting in this diagram that the photon collection duty cycle, $\phi_{int}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integration windows.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is typically blur-limited (see~\ref{sec:eta_ph}).  This is a problematic limitation and severe enough that systems $GSD$ below about 3~m must reduce $V_{gnd}$ with a bus ``back-nod'' in order to get sufficient signal without incurring substantial blur.
 
 \includefigure{figures/step_stare_real.pgf}{fig:step_stare_real}{Step-and-stare t-x diagram with realistic array height and framerate.}
 
 However digital oversampling through step-and-stare IS NOT limited by small pixel FWC, as the well is read out in each independent integration and then summed digitally.  This means that, in principle, much higher dynamic range can be achieved with small pixels and at high SNR.  To realize this requires analog stabilization to move into the FWC-constrained regime as will be discussed in Section~\ref{sec:eta_ph}.
-
 
 \subsection{Hybrid Stabilization}
 
@@ -636,19 +635,7 @@ The remote-sensing trade space is largely constrained by four mission needs:
 
 \emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100 nm$) collection in the near-visible spectrum ($\sim 400 nm$ to $\sim 1000 nm$) but will also point out where the trends in questions impact the ability to perform other phenomenology (e.g. SWIR or HSI).  It is also worth pointing out that staring sensors enable video-mode collection, a phenomenology new to space-based remote sensing.
 
-\emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Refer to Equation \eqref{eq:acr_snr_gsd}, for fixed $\eta_{ph} A_{ap} \Omega$ in the full-well capacity constrained regime
-\begin{equation}
-    \label{eq:acr_scaling}
-    ACR \propto \frac{GSD^2}{SNR^2}.
-\end{equation}
-
-Additionally in the blur-limited regime $GSD$ has an even stronger impact on $ACR$ as shown in~\cite{shaw}:
-\begin{equation}
-\label{eq:acr_scaling_blur_limited}
-    ACR \propto \frac{GSD^4}{SNR^2}.
-\end{equation}
-
-Equations~\eqref{eq:acr_scaling}, \eqref{eq:acr_scaling_blur_limited} very effectively demonstrate the deep relationship of image quality ($GSD$ and $SNR$) and collection capacity for a set of other system parameters.
+As discussed in Section \ref{sec:modalities} and \ref{sec:entendue} \emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Equation ~\eqref{eq:acr_snr_gsd} demonstrates this deep relationship for a set of other system parameters.  In this section we develop this result as it pertains to more granular system parameters.  
 
 \subsection{Pixel Size and Q}
 
@@ -668,17 +655,11 @@ One thing demonstrated in parametric study of the GIQE-5 is that image quality i
 
 The first is that for CCD-based TDI systems, pixels with sufficient full well capacity ($FWC$), and hence $SNR$ performance have required $p_{px} >> 10um$.
 
-The second is that given other system constraints (detector line rate, $SNR$ required, focal plane dimension) [TODO: verify this relationship is right!!]
+The second is that given other system constraints (detector line rate, $SNR$ required, focal plane dimension)
 
 \begin{equation}
     ACR \propto \frac{1}{Q^2}
 \end{equation}
-
-Finally, other constraints being equal
-\begin{equation}
-    SNR \propto \frac{1}{Q},
-\end{equation}
-if pixel pitch of FWC is considered (see Section~\ref{sec:FWC_px}).
 
 Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poorer image quality in exchange for manageable optical focal lengths, increased area collection capacity and acceptable $SNR$ / $DR$.
 
@@ -686,20 +667,18 @@ Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poore
 Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems were pixel-size limited, historical systems typically have been developed at $Q<1$.
 \end{observation}
 
-Happily, the trend towards smaller pixels in commercial image detectors (Figure~\ref{fig:pix_trend}) opens up the opportunity of driving to towards higher $Q$'s where image quality is optimized without increasing system size.
+Happily, the trend towards capable commercial image detectors with smaller pixels opens up the opportunity of driving to towards higher $Q$'s where image quality is optimized without increasing system size.
 
 Smaller pixels typically store less charge, both in the photodector and storage node. In fact to first order~\cite{jerram}
 \begin{equation}
   \label{eq:pix_fwc_scaling}  
 N_{e^-}^{FWC} \propto p^2,
 \end{equation}
-and while there are process optimizations that can improve this, these typically are second order to simple area scaling.  Figure~\ref{fig:p_fwc} shows that this trend is reasonably well supported although several recent pixel architectures are significant outliers.
+and while there are process optimizations that can improve this, these typically are second order to simple area scaling.  Figure~\ref{fig:p_fwc} shows that Equation \eqref{eq:pix_fwc_scaling} describes the upper frontier reasonably well although several recent pixel architectures are significant outliers.
 
-\includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while scaling generally follows Eq.~\eqref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
+\includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while the upper frontier generally follows Eq.~\eqref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
 
 This leaves the challenge of achieving acceptable $SNR$ and $DR$ and we will show in Section~\ref{sec:modalities} that the high data sampling rates of modern CMOS pixels coupled with analog stabilization enables this at high $Q$ and with small pixels.
-
-And so we also argue that:
 
 \subsection{$\eta_{ph}$}
 \label{sec:eta_ph}
@@ -719,8 +698,8 @@ where $\theta_{fov}$ is the half-cone angle of the field of view in the small an
 
 From this, we can derive $\eta_{ph}$ for systems in two regimes: blur constrained and full-well capacity constrained.  The domains are separated by the following criteria:
 \begin{align*}
-    N_{e^-}^{FWC} &>& \frac{k_{pe}L_{sat}QE N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{Blur-constrained} \\
-    N_{e^-}^{FWC} &\leq& \frac{k_{pe}L_{sat}QE N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
+    N_{e^-}^{FWC} &>& \frac{k_{pe}L_{sat}(QE) N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{Blur-constrained} \\
+    N_{e^-}^{FWC} &\leq& \frac{k_{pe}L_{sat}(QE) N_{bl} GSD}{Q^2 V_{gnd}} & \rightarrow &  \textbf{FWC-constrained}
 \end{align*}
 Figure~\ref{fig:eta_regime} is a regime map for a set of reasonable parameters.
 
@@ -820,22 +799,32 @@ $\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plo
 The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
 \end{observation}
 
-Of course, this additional information does come at the cost of increased data intensity. Indeed, as expected, Figure~\ref{fig:psi_vs_id} demonstrates that $\psi$ is very closely correlated with data intensity across all types of sensors. Systems that are downlink-constrained, therefore, will likely be unable to take advantage of the greater information throughput of newer sensors. Therefore, using a lower-framerate sensor (generally with a higher FWC) allows a greater utilization of limited bandwidth. One way around this limitation is to shift more of the data reduction onto the spacecraft, for example by performing on-board stacking of digitally-oversampled data. As shown in Figure~\ref{fig:psi_vs_id_summed}, stacking redundant samples prior to downlinking the data reduces the data intensity for a given quantity of information, with detectors that rely more heavily on framerate rather than well capacity realizing a more significant improvement. The combination of high-frame-rate sensors and robust on-board processing offers the potential to dramatically increase the usable data that can be obtained from bandwidth-limited systems.
+Of course, this additional information does come at the cost of increased data intensity as shown in Equation \eqref{eq:I_D_phi} and, empirically across all types of sensors, in Figure~\ref{fig:psi_vs_id}.
+
+\begin{equation}
+\label{eq:I_D_phi}
+I_D \propto \frac{\psi_{px}}{ACR \left(N_{e^-}^{FWC}\right)^3}
+\end{equation}
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/psi_vs_id.pgf}
-  \caption{Detector figure of merit is closely correlated with Data Intensity, with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are preferable for bandwidth-starved systems.
+  \includegraphics[]{figures/psi_vs_id.pgf}
+  \caption{Detector figure of merit is closely correlated with Data Intensity (as expected from Equation \eqref{eq:I_D_phi}), with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are applicable for bandwidth-starved systems that cannot do on-board data fusion.
   \label{fig:psi_vs_id}}
 \end{figure}
 
+Systems that are downlink-constrained, therefore, will likely be unable to take advantage of the greater information throughput of newer sensors. Equation \eqref{eq:I_D_phi}  indicates that in these cases, choosing a sensor with lower framerates and marginally larger pixel FWC is a good trade even if the overall $\psi_{px}$ is substantially lower.  Indeed if downlink bandwidth is the largest constraint, Equation \eqref{eq:I_D_phi} suggests that $N_{e^-}^{FWC}$ is probably the most important sensor metric.
+
+One way around this limitation is to shift more of the data reduction onto the spacecraft, for example by performing on-board stacking of digitally-oversampled data. As shown in Figure~\ref{fig:psi_vs_id_summed}, stacking redundant samples prior to downlinking the data reduces the data intensity for a given quantity of information, with detectors that rely more heavily on framerate rather than well capacity realizing a more significant improvement.
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/psi_vs_id_summed.pgf}
+  \includegraphics[]{figures/psi_vs_id_summed.pgf}
   \caption{If digitally-oversampled images can be combined on-board, then the data intensity can be greatly reduced (with systems that rely heavily on digital oversampling benefitting the most from this improvement). Note that, in the above plot, some CMOS systems can provide substantially more useful information for the same amount of downlinked data as the best CCD systems.
   \label{fig:psi_vs_id_summed}}
 \end{figure}
+
+The combination of high-frame-rate sensors and robust on-board processing offers the potential to dramatically increase the usable data that can be obtained from bandwidth-limited systems and enable full utilization of high $\phi_{px}$ sensors.
 
 \subsection{Spectral Bands}
 \label{sec:spec}
@@ -851,13 +840,13 @@ This is a fundamental characteristic of the system that depends on the selection
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/nbands_1m.pgf}
+  \includegraphics[]{figures/nbands_1m.pgf}
   \caption{In this case, we assume a system with an orbital altitude of 500km, a GSD of 1m, and a FWC-constrained SNR. The focal plane is split into spectral bands of equal in-track extent, where the height of each spectral band is set such that the system is able to achieve an SNR of 100 at Ltyp, with alpha (Lsat/Ltyp) = 5 for each ground point. Note that most systems (CCDs and CMOS sensors) require some amount of digital oversampling to achieve the SNR requirement. Most CCDs struggle to sample each point in more than a single channel, while CMOS sensors offer the possibility of truly multispectral coverage. \label{fig:nbands_1m}}
 \end{figure}
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/nbands_4m.pgf}
+  \includegraphics[]{figures/nbands_4m.pgf}
   \caption{Note that, for a GSD of 4m, CCDs are a much more appropriate choice, as there are a number that are capable of multispectral imaging. While the plot suggests that the greater capacity of CMOS sensors may be leveraged by building hyperspectral imagers, in practice this approach requires bandpass filtering that may take the system out of the FWC-limited regime.
   \label{fig:nbands_4m}}
 \end{figure}
@@ -880,24 +869,23 @@ Using different integration times resolves the above dilemma: Shorter integratio
   \caption{SNR and dynamic range for different integration times. The nominal 1x integration time captures a range of bright levels up to 1.0.  Longer integration times capture smaller ranges of brightness, but with higher SNR. Combining the three image exposures gives the saw-tooth-shaped SNR profile. \label{fig:hdr_snr_example}}
 \end{figure}
 
-
 Combining the three exposures from Figure~\ref{fig:hdr_snr_example} yields an effective SNR profile as shown by the saw-tooth dashed line in the figure. This composite SNR assumes a straightforward maximum-likelihood approach to combining images taken with different integration times, and does not include any advanced processing such as super-resolution, deblurring, or noise reduction. Note that in this hypothetical case, some darker regions in a scene have \emph{higher} SNR than some brighter regions of the scene, and is quite distinct from the SNR behavior of simple shot noise.
-
-More than simply increasing the dynamic range of the output data product, allowing different integration times grants considerable flexibility in tuning image quality. Figure~\ref{fig:snr_vs_L} illustrates the power of this approach. In a typical scene, the majority of the content has a luminosity much lower than the saturation value, and $\alpha$ is between 4-16. For a single-shot image, the signal-to-noise ratio for most of the pixels of interest is therefore 2-4 times lower than the FWC-limited SNR of the sensor. Even a relatively small amount of digital oversampling, using a sensor with a much smaller FWC, allows a system to achieve a higher SNR in the luminance range where most of the content lies. Figure~\ref{fig:hist_vs_snr} shows the resulting distribution of SNR for all the pixels in the image. The simple HDR system produces a uniform, high SNR for the bulk of the pixels in the scene, while the single-shot image suffers from saturation of highlights and underexposure (low SNR) for much of the scene. Indeed, this is a best-case scenario for single-shot (or TDI) system, in that we have assumed that the integration time has been tuned perfectly to the desired saturation radiance; if there are errors in the exposure model, the SNR distribution will be shifted to produce either more severe saturation or more underexposure. The HDR scheme can be configured to optimize SNR over an extremely wide range of luminance values.
 
 \begin{figure}
   % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/snr_vs_L.pgf}
+  \includegraphics[]{figures/snr_vs_L.pgf}
   \caption{The SNR as a function of scene luminosity for a TDI-based system using a CCD with a FWC of 5e4 electrons, and for a digitally-oversampled system using 4 different HDR integration times on a CMOS sensor with a FWC of 2e4 electrons. Also shown is the luminosity histogram for a typical scene. In region A (relatively low luminosity), the stabilized HDR system is able to achieve a substantially higher SNR than the TDI system thanks to the ability to take long integrations. In region B (relatively high luminosity), the TDI system has higher SNR; however, there is minimal practical advantage, since there is relatively little scene content in this regime, and the extra SNR is above the “good enough” level that the HDR system can capture. In region C (highlights and specular reflections), the TDI system is saturated and reports no useful signal, while the HDR system is still able to discriminate contrast within the highlights. \label{fig:snr_vs_L}}
 \end{figure}
 
+More than simply increasing the dynamic range of the output data product, allowing different integration times grants considerable flexibility in tuning image quality. Figure~\ref{fig:snr_vs_L} illustrates the power of this approach. In a typical scene, the majority of the content has a luminosity much lower than the saturation value, and $\alpha$ is between 4-16. For a single-shot image, the signal-to-noise ratio for most of the pixels of interest is therefore 2-4 times lower than the FWC-limited SNR of the sensor. Even a relatively small amount of digital oversampling, using a sensor with a much smaller FWC, allows a system to achieve a higher SNR in the luminance range where most of the content lies. 
 
 \begin{figure}
   % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
-  \includegraphics[width=\columnwidth]{figures/hist_vs_snr.pgf}
+  \includegraphics[]{figures/hist_vs_snr.pgf}
   \caption{Histogram of SNR values assuming the scene luminosity histogram and luminosity-to-SNR mapping of the two systems in Figure A. Note the HDR system observes the bulk of the scene in the “sweet spot” of high SNR, while the TDI system has a lower mean SNR along with a substantial “blind spot” for highlights.  \label{fig:hist_vs_snr}}
 \end{figure}
 
+Figure~\ref{fig:hist_vs_snr} shows the resulting distribution of SNR for all the pixels in the image. The simple HDR system produces a uniform, high SNR for the bulk of the pixels in the scene, while the single-shot image suffers from saturation of highlights and underexposure (low SNR) for much of the scene. Indeed, this is a best-case scenario for single-shot (or TDI) system, in that we have assumed that the integration time has been tuned perfectly to the desired saturation radiance; if there are errors in the exposure model, the SNR distribution will be shifted to produce either more severe saturation or more underexposure. The HDR scheme can be configured to optimize SNR over an extremely wide range of luminance values.
 
 %Figure~\ref{fig:hdr_snr_flatter} shows the result of choosing integration times to maximize ``flatness'' of the SNR curve when combining 16 images, and compares that to the case of combining 16 images of fixed integration time. The trade-off in this example was to sacrifice SNR in the brightest regions, where less data resides and where the SNR was already relative high, in exchange for higher SNR in the low-lights, where more of the scene content likely resides. There are many other possible criteria one might use to optimize integration times.
 
@@ -908,9 +896,17 @@ More than simply increasing the dynamic range of the output data product, allowi
 %\end{figure}
 
 
-
 \subsection{Comparison of Modalities}
-Table~\ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities with detailed analysis of each in the following sections.
+In summary, we have shown that the hybrid stabilization imaging modality has some strong advantages over pure analog or digital stabilization.  Specifically hybrid stabilization
+
+\begin{enumerate}
+\item Leverages the high $\phi_{px}$ of newer sensors 
+\item Enables operation in the FWC-limited regime 
+\item Expands dynamic range and $SNR$ beyond the native sensor capacity 
+\item Provides the designer with additional parameters that can be used to trade image quality, capacity and data intensity through the entire system lifecycle (even in operation)
+\end{enumerate}
+
+Table~\ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities.
 
 \begin{table}[ht]
 \resizebox{.45\textwidth}{!}{%
@@ -996,7 +992,7 @@ This design point is for a minimum-size (low-cost) 50cm $GRD_{eff}$ spacecraft w
 $GRD_{eff}$ & 0.5 m  & at Nadir\\ \midrule
 NIIRS & 5.4 & From Eq. \eqref{eq:grd_eff} \\ \midrule
 $x_{ct}$ & 7.5 km & \\ \midrule
-$Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $\I_D$ \\ \midrule
+$Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $I_D$ \\ \midrule
 $N_sN_{e^-}^{FWC}$   & 98 k$e^{-}$ & From $SNR_{\alpha}$, $\alpha$  \\ \bottomrule
 \end{tabular}%
 }
@@ -1057,7 +1053,7 @@ For this case study, the design point goal is a 1-m class $GRD_{eff}$ with a lar
 $GRD_{eff}$ & 1.0 m  & at Nadir\\ \midrule
 NIIRS & 4.4 & From Eq. \eqref{eq:grd_eff} \\ \midrule
 $x_{ct}$ & $\geq$ 20 km & \\ \midrule
-$Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $\I_D$ \\ \midrule
+$Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $I_D$ \\ \midrule
 $N_sN_{e^-}^{FWC}$   & 98 $ke^{-}$ & From $SNR_{\alpha}$, $\alpha$  \\ \bottomrule
 \end{tabular}%
 }
@@ -1117,20 +1113,22 @@ $DR$ & 82.8 dB & \\\bottomrule
 \label{table:1m_parameters}
 \end{table}
 
-\subsection{30-cm Point Collector} 
+% \subsection{30-cm Point Collector} 
 
 \section{Conclusions}
 \label{sec:conclusions}
 
-We show that
+In summary, we have shown that
 
 \begin{enumerate}
-    \item Trend to SmallSats driven by demand for more spacecraft at lower cost and innovation in COTS components (Section~\ref{sec:smallsat})
-    \item Small pixel, high data rate commercial CMOS detectors enable small, high performance spacecraft (Section~\ref{sec:detector_tech})
-    \item Analog stabilization with staring sensors requires new optical stabilization techniques
-    \item Digital stabilization with staring sensors is made possible due to high performance COTS electronics
-    \item To realize potential of small pixel detectors, a combination of analog and digital stabilization (hybrid stabilization) is required (Section~\ref{sec:eta_ph})
+    \item The trend in space-based remote sensing is to smaller sized system due to cost and scalability
+    \item Small pixel, high data rate commercial CMOS detectors enable high performance systems at reduced size \& cost
+    \item To realize potential of modern area detectors, a combination of analog and digital stabilization (hybrid stabilization) is required
+    \item Hybrid stabilization with high speed CMOS sensors enables High Dynamic Range imaging in high resolution systems
+    \item Hybrid stabilization with high-speed CMOS sensors enable higher spectral dimensionality systems (multi- or hyper- spectral)
 \end{enumerate}
+
+The potential of the trends identified here have yet to be fully realized and the authors are excited to see this potential realized.
 
 \section{Appendix A: Definitions}
 \label{sec:appendix_a}
@@ -1238,7 +1236,6 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 
 where $N_s$ is the oversampling ratio.
 
-
 \subsection{Detector Line Rate}
 For satelite remote sensing systems, the detector line rate, $LR$ is an important performance parameter because it limits the number of ground samples that can be captured.  For a push-broom system, $LR$ is simply defined as the number of in-track lines (or rows) that can be read from the detector per second:
 \begin{equation*}
@@ -1264,6 +1261,13 @@ If $LR$ is high enough, it enables digital oversampling of a single ground locat
 \begin{equation}
     N_s = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
 \end{equation}
+
+\onecolumn
+\section{Appendix B: Sensor Table}
+\label{sec:appendix_b}
+\input{sensor_table}
+
+\twocolumn
 
 \bibliography{IEEEabrv,main}
 

@@ -16,6 +16,7 @@ rc('figure', figsize=(3.5,3))
 rc('legend', fontsize='small')
 rc('font', family='serif')
 rc('font', size=7)
+rc('lines', markersize=4.0)
 
 sensors = pd.read_csv('figures/sensors.csv')
 
