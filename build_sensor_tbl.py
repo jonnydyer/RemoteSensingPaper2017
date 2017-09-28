@@ -11,7 +11,7 @@ sensors = pd.read_csv('figures/sensors.csv')
 tbl = '''
 \\begin{table}[t]
 \\centering
-\\resizebox{0.96\\linewidth}{!}{%
+\\resizebox{0.96 \\linewidth}{!}{%
 \\begin{tabular}{cccccccccc}
 \\toprule
 \\textbf{Model} & \\textbf{Type} & \\textbf{Shutter} & \\textbf{Width} 
