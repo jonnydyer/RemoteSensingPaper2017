@@ -22,7 +22,7 @@
 
 \author{Jonathan Dyer}
 \date{\today}
-\title{Imaging Trends and the \\ Future of Satellite Remote Sensing}
+\title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
  pdfauthor={Jonathan Dyer},
  pdftitle={EO Modalities},
@@ -56,9 +56,9 @@
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
 \makeatother
 
-\author{Jonathan~Dyer\thanks{Former Chief Engineer, Skybox Imaging, Terra Bella},~\IEEEmembership{Member,~IEEE,}
-        Paul~Boerner\thanks{Imaging Systems Engineer, Planet, Inc.},~\IEEEmembership{Member,~IEEE}
-        and~Mark~Robertson\thanks{Former Lead Image Processing, Skybox Imaging, Terra Bella}%
+\author{Jonathan~Dyer\IEEEauthorrefmark{1}\thanks{\IEEEauthorrefmark{1}Former~Chief~Engineer, Skybox~Imaging,~Terra~ Bella},~\IEEEmembership{Member,~IEEE,}
+        Paul~Boerner\IEEEauthorrefmark{2}\thanks{\IEEEauthorrefmark{2}Imaging Systems Engineer, Planet, Inc.},~\IEEEmembership{Member,~IEEE}
+        and~Mark~Robertson\IEEEauthorrefmark{3}\thanks{\IEEEauthorrefmark{3}Former Lead Image Processing, Skybox Imaging, Terra Bella}%
 }
 
 \markboth{IEEE Transactions on Geoscience and Remote Sensing}%
@@ -69,12 +69,12 @@
 \begin{abstract}
 Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution'' will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  While these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complementary such that interest and investment will continue to grow.
 
-The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures.
+The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-IEEE, remote sensing, satellite, spacecraft, high resolution, CMOS, image sensor, image stabilization, TDI.
+IEEE, Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.
 \end{IEEEkeywords}}
 
 % make the title area
@@ -91,7 +91,7 @@ The last 15 years have seen a massive upheaval in digital imaging culminating in
 
 Satellite remote sensing systems underwent a similar revolution roughly 40 years earlier as film-based systems were phased out in favor of CCD-based electronic line scanners.  While the specific demanding requirements of satellite remote sensing drove much of the early technology investment and development in digital electronic imaging, far more investment is now being applied in the commercial arena than in further refinement of now mature CCD-based line scan sensors.
 
-We assert that the future of the satellite remote-sensing industry will be in leveraging the massive investment in commercial digital and computational imaging technologies rather than continued large-scale investment in standalone technologies for these systems and that this shift presents both opportunities and challenges to new systems.
+We believe that the future of the satellite remote-sensing industry will be in leveraging the massive investment in commercial digital and computational imaging technologies rather than continued large-scale investment in standalone technologies for these systems and that this shift presents both opportunities and challenges to new systems.
 
 \section{Trends}
 In order to motivate the subsequent discussion, we identify and discuss the ``SmallSat'' philosophical trend and two technology trends uniquely enabling it in remote sensing systems.
@@ -274,12 +274,12 @@ Dynamic range and signal-to-noise ratio are closely related by subtly different 
 Dynamic range is defined as the ratio of maximum-to-minimum signal level that the system can capture or represent in an image
 
 \begin{equation*}
-    DR = \frac{S_{max}}{S_{min}}.
+    DR = \frac{s_{max}}{s_{min}}.
 \end{equation*}
 
 The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, quantization, etc.
 
-The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{well}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{well}$ where $N_s$ is the oversampling ratio
+The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{FWC}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{FWC}$ where $N_s$ is the oversampling ratio
 
 
 \begin{equation}
@@ -339,7 +339,7 @@ ${SNR}$ can be expressed as
     SNR_{\alpha} = \frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}},
 \label{eq:SNR_multiframe}
 \end{equation}
-where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value.
+where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value and $\sum{\sigma_i^2}$ is the RSS of noises other than shot noise.
 
 Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expanded to include multiple digital exposures such that
 \begin{equation}
@@ -424,9 +424,9 @@ We will define a collection duty cycle metric that captures all of the impacts o
 \end{equation} 
 where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targeted spacecraft), attitude control bandwidth, etc.
 
-For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For targeting remote sensing systems constrained tasking slews as well as sun and time-over-land, typically $\beta < 0.1$.  In order to generate intuition, Figure~\ref{fig:beta} captures how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
+For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For remote sensing systems constrained by slew as well as sun and time-over-land, typically $\beta < 0.1$.  In order to generate intuition, Figure~\ref{fig:beta} captures how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
 
-\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$ for a reasonably agile spacecraft.  Note the different lines correspond to target cross-track spacing.}
+\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$ for a reasonably agile spacecraft.  Note the different lines correspond to target cross-track spacing for a collect of 50km in-track length}
 
 For small cross-track spacing, $\beta$ largely depends on collection size and the relative ground-scan rate that the imaging system is capable of because imaging time dominates slew time.  For larger cross-track spacing or smaller target size, the time to slew between targets becomes more important and spacecraft agility influences $\beta$ more heavily..
 
@@ -476,7 +476,7 @@ where
 \begin{equation}
     \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int},
 \end{equation}
-where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of view at the focal plane and $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons.  
+where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of view at the focal plane, $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons and $L$ is incoming radiance.
 
 \subsubsection{Relationshp of $\eta_{ph}$ to $ACR$ and $IQ$}
 
