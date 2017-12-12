@@ -665,7 +665,7 @@ $Q$ is generally chosen as a trade between image quality, collection capacity an
 
 \includefigure{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$ and that $SNR \sim 1 / Q$}
 
-One thing demonstrated in parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Figure~\ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ} and is not unexpected considering that in a diffraction-limited system with $Q<2$, there is contrast passed by the optical system that is not sampled by the detector.  At first blush it seems obvious that, given the cost and difficulty of building larger optics, systems would be designed at $Q>1$.  
+One thing demonstrated in a parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Figure~\ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ}, \cite{auelmann_iq} and is not unexpected considering that in a diffraction-limited system with $Q<2$, there is contrast passed by the optical system that is not sampled by the detector.  At first blush it seems obvious that, given the cost and difficulty of building larger optics, systems would be designed at $Q>1$.  
 
 However, there are two other system impacts of $Q$ that argue against pushing it higher.
 
@@ -677,6 +677,8 @@ Smaller pixels typically store less charge, both in the photodector and storage 
 N_{e^-}^{FWC} \propto p^2,
 \end{equation}
 and while there are process optimizations that can improve this, these typically are second order to simple area scaling.  Figure~\ref{fig:p_fwc} shows that Equation \eqref{eq:pix_fwc_scaling} describes the upper frontier reasonably well although several recent pixel architectures are significant outliers.
+
+$Q$ can be increased with longer focal lengths as well but this is often practically limited by packaging and size constraints at the spacecraft level.
 
 \includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while the upper frontier generally follows Eq.~\eqref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
 

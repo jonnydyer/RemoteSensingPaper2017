@@ -75,9 +75,9 @@ ax.set_axis_off()
 
 rot = transforms.Affine2D().rotate_deg(270)
 ax = plt.subplot(gs[1:, 0])
-ax.plot(10*SNR_v[:, 0], transform = rot + ax.transData)
+ax.plot(10*np.log10(SNR_v[:, 0]), transform = rot + ax.transData)
 ax.axes.get_yaxis().set_visible(False)
-#ax.set_xticks(np.linspace(0, 20, 3))
+ax.set_xticks(np.linspace(0, 20, 3))
 ax.grid(True)
 ax.set_title('SNR (dB)', fontsize='small')
 
