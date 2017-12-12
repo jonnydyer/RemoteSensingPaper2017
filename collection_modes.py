@@ -28,7 +28,7 @@ def config_axis(ax):
 
 def step_stare_patches(ax, ti, tf, N_it, vg, gsd, N_patch=5):
     y0 = (N_it-1)
-    N_oversamp = 1
+    N_oversamp = 0
     for i in xrange(N_patch):
         for j in xrange(N_it):
             if abs(y0 - i * tf * vg - j * gsd) <= 0.5*gsd:
@@ -60,7 +60,7 @@ def step_stare_patches(ax, ti, tf, N_it, vg, gsd, N_patch=5):
 
 def stab_step_stare_patches(ax, ti, tf, N_it, vg, gsd, N_patch=5):
     y0 = (N_it-1) * gsd
-    N_oversamp = 1
+    N_oversamp = 0
     for i in xrange(N_patch):
         for j in xrange(N_it):
             if abs(y0 - i * tf * vg - j * gsd) <= 0.5*gsd:
