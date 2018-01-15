@@ -1,4 +1,4 @@
-\documentclass[]{spieman}  %10pt, sans, memo
+\documentclass[10pt,journal]{IEEEtran}  %10pt, sans, memo
 \usepackage{amsthm}
 
 \usepackage[utf8]{inputenc}
@@ -20,6 +20,8 @@
 
 \bibliographystyle{IEEEtran}
 
+\author{Jonathan Dyer}
+\date{\today}
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
  pdfauthor={Jonathan Dyer},
@@ -54,26 +56,31 @@
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
 \makeatother
 
-\author[a]{Jonathan Dyer}
-\author[b]{Paul Boerner}
-\author[a]{Mark Robertson}
-\affil[a]{Google, Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043}
-\affil[b]{Planet, 346 9th Street San Francisco, CA 94103}
-\markboth{IEEE Transactions on Geoscience and Remote Sensing}%
+\author{Jonathan~Dyer\IEEEauthorrefmark{1}\thanks{\IEEEauthorrefmark{1}Former~Chief~Engineer, Skybox~Imaging,~Terra~ Bella},~\IEEEmembership{Member,~IEEE,}
+        Paul~Boerner\IEEEauthorrefmark{2}\thanks{\IEEEauthorrefmark{2}Imaging Systems Engineer, Planet, Inc.},~\IEEEmembership{Member,~IEEE}
+        and~Mark~Robertson\IEEEauthorrefmark{3}\thanks{\IEEEauthorrefmark{3}Former Lead Image Processing, Skybox Imaging, Terra Bella}%
+}
 
-% make the title area
-\maketitle
+\markboth{IEEE Transactions on Geoscience and Remote Sensing}%
+{}
         
+        
+\IEEEtitleabstractindextext{%
 \begin{abstract}
 Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution'' will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  While these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complementary such that interest and investment will continue to grow.
 
 The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
 \end{abstract}
 
-\begin{spacing}{2}
-
 % Note that keywords are not normally used for peerreview papers.
-\keywords{Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.}
+\begin{IEEEkeywords}
+IEEE, Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.
+\end{IEEEkeywords}}
+
+% make the title area
+\maketitle
+
+\IEEEdisplaynontitleabstractindextext
 
 \tableofcontents
 
@@ -1294,11 +1301,12 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 
 where $N_s$ is the oversampling ratio.
 
+\onecolumn
 \section{Appendix B: Sensor Table}
 \label{sec:appendix_b}
 \input{sensor_table}
 
-\end{spacing}
+\twocolumn
 
 \bibliography{IEEEabrv,main}
 
