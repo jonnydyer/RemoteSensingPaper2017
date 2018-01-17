@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import rc
 
-rc('figure', figsize=(3.5,3))
+rc('figure', figsize=(5.5,3.5))
 rc('legend', fontsize='small')
 rc('font', family='serif')
-rc('font', size=7)
+rc('font', size=9)
 
 kpe = 2e5
 QE = 0.4
@@ -39,8 +39,8 @@ plt.grid(False)
 plt.title(r'$\eta_{ph}$ regime for $k_{pe}=2.5 \times 10^5$, $QE=%.1f$, ' % (QE) + \
           '\n' + \
           r'$L_{sat}=%d$, $N_{bl}=%.1f$, $Q=%.1f$, $N_e^{FWC}$ = %d ke-' % (Lsat, Nbl, Q, Ne_fwc/1e3))
-plt.text(6, 2, 'Blur-limited', fontdict={'color' : 'k', 'size' : 12})
-plt.text(1.5, 8, 'FWC-limited', fontdict={'color' : 'w', 'size' : 12})
+plt.text(6, 2, 'Blur-limited', fontdict={'color' : 'k', 'size' : 14})
+plt.text(1.5, 8, 'FWC-limited', fontdict={'color' : 'w', 'size' : 14})
 plt.tight_layout()
 f.savefig('figures/blur_fwc_regime.pgf')
 plt.show()

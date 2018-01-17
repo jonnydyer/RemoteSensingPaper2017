@@ -7,8 +7,6 @@
 \usepackage{tikzscale}
 \usepackage{pgfplots}
 
-\usepackage{subcaption}
-
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{mathtools}
@@ -17,8 +15,11 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{wrapfig}
+\usepackage{subfig}
+\usepackage{float}
+%\usepackage{subcaption}
 
-\bibliographystyle{IEEEtran}
+%\bibliographystyle{IEEEtran}
 
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
@@ -31,8 +32,8 @@
 
 \newcommand{\includefigure}[3]
 {
-  \begin{figure}[h!]
-  %\centering
+  \begin{figure}[h!tb]
+  \centering
   \includegraphics{#1}
   \caption[]{#3}
   \label{#2}
@@ -70,12 +71,12 @@ Many of the technology and investment trends that ushered in the so-called ``Sma
 The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
 \end{abstract}
 
-\begin{spacing}{2}
+%\begin{spacing}{2}
 
 % Note that keywords are not normally used for peerreview papers.
 \keywords{Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.}
 
-\tableofcontents
+% \tableofcontents
 
 \section{Introduction}
 \label{sec:introduction}
@@ -196,11 +197,19 @@ Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form 
 \end{equation}
 where $R$ is range to target (spacecraft altitude if Nadir-pointed),  $D_{ap}$ is the aperture diameter and $\lambda$ is the weighted center-wavelength of the sampled spectral band.
 
-Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figures~\ref{fig:snr_mtf_q1}, \ref{fig:snr_mtf_q2} illustrate this graphically.
+Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure ~\ref{fig:snr_mtf} illustrates this graphically.
 
-\includefigure{figures/SNR_mtf_Q1.pdf}{fig:snr_mtf_q1}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=1$.  Note red-dotted line indicates the sampling frequency.}
+\begin{figure}%
+	\centering
+	\subfloat[Q = 1]{\includegraphics[]{figures/SNR_mtf_Q1.pdf}}
+	\subfloat[Q = 2]{\includegraphics[]{figures/SNR_mtf_Q2.pdf}}
+	\label{fig:snr_mtf}
+	\caption{Visual resolvability vs SNR and MTF for two different values of $Q$.  Note that dashed red line indicates Nyquist criteria.}
+\end{figure}
 
-\includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=2$  Note red-dotted line indicates the sampling frequency.}
+%\includefigure{figures/SNR_mtf_Q1.pdf}{fig:snr_mtf_q1}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=1$.  Note red-dotted line indicates the sampling frequency.}
+%
+%\includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=2$  Note red-dotted line indicates the sampling frequency.}
 
 More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
@@ -209,7 +218,7 @@ High resolution space-based systems are typically evaluated by quantitative ``im
 NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
 \begin{table}[h!t]
-\resizebox{.45\textwidth}{!}{%
+\resizebox{.9\textwidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{NIIRS} & \textbf{GRD}          & \textbf{Description}                                                                                                                             \\ \toprule
@@ -220,7 +229,7 @@ NIIRS rating is described by specific scene intepretation standards, examples of
 \end{tabular}%
 }
 \centering
-\caption{NIIRS definitions}
+\caption{Example NIIRS definitions}
 \label{table:NIIRS}
 \end{table}
 
@@ -288,20 +297,11 @@ Oversampling also affects $s_{min}$ and it can be shown that, for equally expose
 
 Dynamic range is a very important quality parameter for remote sensing systems because the dynamic range of terrestrial natural scenes can be quite high. 
 
-\begin{figure}[h!]
-\centering
-\begin{subfigure}{0.31\linewidth}
-\centering
-\includegraphics[width = \textwidth]{figures/pb_bad_dr_low.png}
-\end{subfigure}
-\begin{subfigure}{0.31\linewidth}
-\centering
-\includegraphics[width = \textwidth]{figures/pb_bad_dr_high.png}
-\end{subfigure}
-\begin{subfigure}{0.31\linewidth}
-\centering
-\includegraphics[width = \textwidth]{figures/pb_good_dr.png}
-\end{subfigure}
+\begin{figure}[h!]%
+\centering\
+\subfloat{\includegraphics[width = 0.3\textwidth]{figures/pb_bad_dr_low.png}}
+\subfloat{\includegraphics[width = 0.3\textwidth]{figures/pb_bad_dr_high.png}}
+\subfloat{\includegraphics[width =0.3 \textwidth]{figures/pb_good_dr.png}}
 \caption{The first two images have relatively low dynamic range.  The first is under-exposed and the second over-.  Note the details lost in shadows in the first and highlights (parking lot) in the second when compared with the third image which has about 90dB of DR}
 \end{figure}
 
@@ -518,9 +518,10 @@ Digital imaging spacecraft have traditionally used a ``push-broom'' architecture
 Development of large format CCD and CMOS framing detectors allows for ``step-and-stare'' architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.  If the framing rate is high enough, the scene can be digitally oversampled such that a single point on the ground is captured with multiple exposures of the focal plane.
 
 \begin{figure}[h!t]
-\includegraphics[width=0.42\textwidth]{figures/modalities.png}
+\centering
+\includegraphics[width=0.7\textwidth]{figures/modalities.png}
 \caption{General satellite imaging modalities}
-\label{fig:modalities}
+\label{fig:modalities}\\
 \end{figure}
 
 Analog optomechanical stabilization relies on an optomechanical component with the ability to dynamically steer the payload line of sight repetitively so as to remove relative scene motion during integration.  Fast scan mirrors (FSM) or excited dynamic motion of the entire instrument are two ways to achieve this \cite{patent:jonny}, \cite{patent:dirk}.
@@ -815,6 +816,7 @@ Of course, this additional information does come at the cost of increased data i
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \centering
   \includegraphics[]{figures/psi_vs_id.pgf}
   \caption{Detector figure of merit is closely correlated with Data Intensity (as expected from Equation \eqref{eq:I_D_phi}), with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are applicable for bandwidth-starved systems that cannot do on-board data fusion.
   \label{fig:psi_vs_id}}
@@ -826,6 +828,7 @@ One way around this limitation is to shift more of the data reduction onto the s
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \centering
   \includegraphics[]{figures/psi_vs_id_summed.pgf}
   \caption{If digitally-oversampled images can be combined on-board, then the data intensity can be greatly reduced (with systems that rely heavily on digital oversampling benefitting the most from this improvement). Note that, in the above plot, some CMOS systems can provide substantially more useful information for the same amount of downlinked data as the best CCD systems.
   \label{fig:psi_vs_id_summed}}
@@ -847,12 +850,14 @@ This is a fundamental characteristic of the system that depends on the selection
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \centering
   \includegraphics[]{figures/nbands_1m.pgf}
   \caption{In this case, we assume a system with an orbital altitude of 500km, a GSD of 1m, and a FWC-constrained SNR. The focal plane is split into spectral bands of equal in-track extent, where the height of each spectral band is set such that the system is able to achieve an SNR of 100 at Ltyp, with alpha (Lsat/Ltyp) = 5 for each ground point. Note that most systems (CCDs and CMOS sensors) require some amount of digital oversampling to achieve the SNR requirement. Most CCDs struggle to sample each point in more than a single channel, while CMOS sensors offer the possibility of truly multispectral coverage. \label{fig:nbands_1m}}
 \end{figure}
 
 \begin{figure}
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
+  \centering
   \includegraphics[]{figures/nbands_4m.pgf}
   \caption{Note that, for a GSD of 4m, CCDs are a much more appropriate choice, as there are a number that are capable of multispectral imaging. While the plot suggests that the greater capacity of CMOS sensors may be leveraged by building hyperspectral imagers, in practice this approach requires bandpass filtering that may take the system out of the FWC-limited regime.
   \label{fig:nbands_4m}}
@@ -872,6 +877,7 @@ Using different integration times resolves the above dilemma: Shorter integratio
 
 \begin{figure}
   % Note:  This figure was generated from Matlab script hdr_jonny_paper.m, included here in sharelatex
+  \centering
   \includegraphics[width=\columnwidth]{figures/hdr-design-snr-hdr-examples.png}
   \caption{SNR and dynamic range for different integration times. The nominal 1x integration time captures a range of bright levels up to 1.0.  Longer integration times capture smaller ranges of brightness, but with higher SNR. Combining the three image exposures gives the saw-tooth-shaped SNR profile. \label{fig:hdr_snr_example}}
 \end{figure}
@@ -880,7 +886,8 @@ Combining the three exposures from Figure~\ref{fig:hdr_snr_example} yields an ef
 
 \begin{figure}
   % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
-  \includegraphics[]{figures/snr_vs_L.pgf}
+  \centering
+  \includegraphics[]{figures/snr_vs_L.pdf}
   \caption{The SNR as a function of scene luminosity for a TDI-based system using a CCD with a FWC of 5e4 electrons, and for a digitally-oversampled system using 4 different HDR integration times on a CMOS sensor with a FWC of 2e4 electrons. Also shown is the luminosity histogram for a typical scene. In region A (relatively low luminosity), the stabilized HDR system is able to achieve a substantially higher SNR than the TDI system thanks to the ability to take long integrations. In region B (relatively high luminosity), the TDI system has higher SNR; however, there is minimal practical advantage, since there is relatively little scene content in this regime, and the extra SNR is above the “good enough” level that the HDR system can capture. In region C (highlights and specular reflections), the TDI system is saturated and reports no useful signal, while the HDR system is still able to discriminate contrast within the highlights. \label{fig:snr_vs_L}}
 \end{figure}
 
@@ -888,7 +895,8 @@ More than simply increasing the dynamic range of the output data product, allowi
 
 \begin{figure}
   % Note:  This figure was generated from python script hdrfigs.py, included here in sharelatex
-  \includegraphics[]{figures/hist_vs_snr.pgf}
+  \centering
+  \includegraphics[]{figures/hist_vs_snr.pdf}
   \caption{Histogram of SNR values assuming the scene luminosity histogram and luminosity-to-SNR mapping of the two systems in Figure~\ref{fig:snr_vs_L}. Note the HDR system observes the bulk of the scene in the “sweet spot” of high SNR, while the TDI system has a lower mean SNR along with a substantial “blind spot” for highlights.  \label{fig:hist_vs_snr}}
 \end{figure}
 
@@ -916,7 +924,7 @@ In summary, we have shown that the hybrid stabilization imaging modality has som
 Table~\ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities.
 
 \begin{table}[ht]
-\resizebox{.45\textwidth}{!}{%
+%\resizebox{.9\textwidth}{!}{%
 \centering
 \begin{tabular}{@{}rccccc@{}}
 \multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & $\eta_{ph}$         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 

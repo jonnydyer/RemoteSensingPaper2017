@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
 
-rc('figure', figsize=(3.5,3))
+rc('figure', figsize=(5.5,3.5))
 #rc('figure', figsize=(9,7))
 rc('legend', fontsize='xx-small')
 rc('font', family='serif')
@@ -112,6 +112,6 @@ def plot_hdr():
 
 if __name__ == "__main__":
     fig1,fig2 = plot_hdr()
-    fig1.savefig("figures/snr_vs_L.pgf")
-    fig2.savefig("figures/hist_vs_snr.pgf")
+    fig1.savefig("figures/snr_vs_L.pdf")
+    fig2.savefig("figures/hist_vs_snr.pdf")
     plt.show()

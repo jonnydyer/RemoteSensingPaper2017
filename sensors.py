@@ -12,10 +12,10 @@ import matplotlib.patches as patches
 from matplotlib import rc
 import pandas as pd
 
-rc('figure', figsize=(3.5,3))
+rc('figure', figsize=(5.5,3.5))
 rc('legend', fontsize='small')
 rc('font', family='serif')
-rc('font', size=7)
+rc('font', size=9)
 rc('lines', markersize=4.0)
 
 sensors = pd.read_csv('figures/sensors.csv')

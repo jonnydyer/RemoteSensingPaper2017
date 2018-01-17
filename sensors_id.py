@@ -13,11 +13,11 @@ from matplotlib import rc
 import pandas as pd
 
 scaler=2.5
-rc('figure', figsize=(3.5,3))
-rc('legend', fontsize='x-small')
+rc('figure', figsize=(5.5,3.5))
+rc('legend', fontsize='small')
 #rc('figure', grid=True)
 rc('font', family='serif')
-rc('font', size=7)
+rc('font', size=9)
 rc('lines', markersize=3.0)
 
 
@@ -77,7 +77,7 @@ def PlotPsiVsId(sensors):
     #plt.xlim(2, 8)
     #plt.ylim(0, 50)
     plt.tight_layout()
-    plt.legend()
+    plt.legend(loc='best')
     
     # Information content vs data intensity assuming on-board summing of digital
     # oversamples. This (of course) favors CMOS detectors, shifting them to the
@@ -91,7 +91,7 @@ def PlotPsiVsId(sensors):
     #plt.xlim(2, 8)
     #plt.ylim(0, 50)
     plt.tight_layout()
-    plt.legend()
+    plt.legend(loc='best')
     
     return(fig1, fig2)
 
@@ -102,7 +102,7 @@ def PlotNBands(sensors):
     font = {'family': 'sans_serif',
             'color':  'darkred',
             'weight': 'normal',
-            'size': 7,
+            'size': 9,
             }
     # Some interpolated grids for plotting the number of bands on a non-linear
     # Y axis
@@ -125,10 +125,10 @@ def PlotNBands(sensors):
     ax.set_xlim(2, 8)
     ax.set_title("Channels available for GSD=1m, SNR=100")
     plt.tight_layout()
-    ax.legend()
-    labelx = 6.2
+    ax.legend(loc='best')
+    labelx = 2.2
     ax.add_patch(patches.Rectangle((2,-1),6,4,facecolor='grey', alpha=0.2))
-    ax.text(labelx, 0.2, "SNR<100",fontdict=font)
+    ax.text(labelx, 0.2, r"$SNR<100$",fontdict=font)
     ax.add_patch(patches.Rectangle((2,3),6,4,facecolor='grey', alpha=0.1))
     ax.text(labelx, 4, "Panchromatic",fontdict=font)
     #ax.add_patch(patches.Rectangle((2,6),6,3,facecolor='red', alpha=0.1))
@@ -151,18 +151,18 @@ def PlotNBands(sensors):
     ax.set_xlim(2, 8)
     ax.set_title("Channels available for GSD=4m, SNR=100")
     plt.tight_layout()
-    ax.legend()
-    labelx = 6.2
+    ax.legend(loc='best')
+    labelx = 2.2
     ax.add_patch(patches.Rectangle((2,-1),6,4,facecolor='grey', alpha=0.2))
-    ax.text(labelx, 0.2, "SNR<100",fontdict=font)
+    ax.text(labelx, 0.8, r"$SNR<100$",fontdict=font)
     ax.add_patch(patches.Rectangle((2,3),6,4,facecolor='grey', alpha=0.1))
     ax.text(labelx, 4, "Panchromatic",fontdict=font)
     #ax.add_patch(patches.Rectangle((2,6),6,3,facecolor='red', alpha=0.1))
     #ax.text(6.8, 7, "False color",fontdict=font)
     ax.add_patch(patches.Rectangle((2,7),6,5,facecolor='green', alpha=0.1))
-    ax.text(labelx, 9, "Multispectral",fontdict=font)
+    ax.text(labelx, 10, "Multispectral",fontdict=font)
     ax.add_patch(patches.Rectangle((2,12),6,6,facecolor='blue', alpha=0.1))
-    ax.text(labelx, 15, "Hyperspectral",fontdict=font)
+    ax.text(labelx, 16, "Hyperspectral",fontdict=font)
 
     return(fig1,fig2)
 

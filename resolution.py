@@ -4,8 +4,8 @@ from matplotlib import rc
 import matplotlib.pyplot as plt
 from optimal_Q import giqe5, rer_approx
 
-rc('figure', figsize=(3.5,3.0))
-rc('legend', fontsize='x-small')
+rc('figure', figsize=(5.5,3.5))
+rc('legend', fontsize='small')
 rc('font', family='serif')
 
 def alpha_eff(D, lam, Q):
@@ -41,7 +41,7 @@ ax1.set_ylim(0.35, 2.)
 ax1.set_xlim(0.5, 2.0)
 
 ax1.plot(Q, GSD, label='GSD')
-plt.title(titl, fontsize='small')
+plt.title(titl, fontsize='medium')
 plt.legend()
 f.set_tight_layout(True)
 f.savefig('figures/resolution_q.pgf')

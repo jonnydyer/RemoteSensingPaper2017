@@ -9,8 +9,8 @@ import numpy as np
 from matplotlib import rc
 import matplotlib.pyplot as plt
 
-rc('figure', figsize=(3.5,2.5))
-rc('legend', fontsize='x-small')
+rc('figure', figsize=(5.5,3.5))
+rc('legend', fontsize='small')
 rc('font', family='serif')
 
 def giqe5(gsd, rer, snr, blur):
