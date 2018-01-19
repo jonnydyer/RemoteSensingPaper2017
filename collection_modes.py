@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import rc
 
-rc('figure', figsize=(3.5,2.5))
-rc('legend', fontsize='x-small')
+rc('figure', figsize=(5.5,3.0))
+rc('legend', fontsize='small')
 rc('font', family='serif')
 
 fc = (0.7,0.7,1.0)
@@ -43,10 +43,10 @@ def step_stare_patches(ax, ti, tf, N_it, vg, gsd, N_patch=5):
                     [i * tf, i * tf * vg + (j+1) * gsd],
                     ], closed=True, fc=c, ec=ec, alpha=alpha, linewidth=lw)
             ax.add_patch(p)
-#    ax.plot([0,(N_patch-1) * tf + ti], [0, vg * ((N_patch-1) * tf + ti)], 
+#    ax.plot([0,(N_patch-1) * tf + ti], [0, vg * ((N_patch-1) * tf + ti)],
 #             'g--', linewidth=lw)
-#    ax.plot([0,(N_patch-1) * tf + ti], 
-#            [N_it * gsd, vg * ((N_patch-1) * tf + ti) + N_it * gsd], 
+#    ax.plot([0,(N_patch-1) * tf + ti],
+#            [N_it * gsd, vg * ((N_patch-1) * tf + ti) + N_it * gsd],
 #            'g--', linewidth=lw)
     ax.set_xlim(0, N_patch * tf)
     ax.set_ylim(0, N_it * gsd + N_patch * tf * vg)
@@ -75,19 +75,19 @@ def stab_step_stare_patches(ax, ti, tf, N_it, vg, gsd, N_patch=5):
                     [i * tf, i * tf * vg + (j+1) * gsd],
                     ], closed=True, fc=c, ec=ec, alpha=alpha, linewidth=lw)
             ax.add_patch(p)
-#    ax.plot([0,(N_patch-1) * tf + ti], [0, vg * ((N_patch-1) * tf + ti)], 
+#    ax.plot([0,(N_patch-1) * tf + ti], [0, vg * ((N_patch-1) * tf + ti)],
 #             'g--', linewidth=lw)
-#    ax.plot([0,(N_patch-1) * tf + ti], 
-#            [N_it * gsd, vg * ((N_patch-1) * tf + ti) + N_it * gsd], 
+#    ax.plot([0,(N_patch-1) * tf + ti],
+#            [N_it * gsd, vg * ((N_patch-1) * tf + ti) + N_it * gsd],
 #            'g--', linewidth=lw)
     ax.set_xlim(0, N_patch * tf)
     ax.set_ylim(0, N_it * gsd + N_patch * tf * vg)
-    
+
     titl = 'Stab. Step Stare $t_i(eff) = %.1f ms$\n$t_f = %d ms$, ' % \
                                    (ti*N_oversamp*1e3, tf*1e3)
     titl += '$v_g = %.1f km/s$, $GSD = %.1f m$, ' % (vg/1e3, gsd)
     titl += '$t_i = %.1f ms$' % (ti*1e3)
-    ax.set_title(titl, fontsize='small')    
+    ax.set_title(titl, fontsize='small')
     ax.set_xticks([])
     config_axis(ax)
 
@@ -107,9 +107,9 @@ def tdi_patches(ax, N_tdi, k_cc, vg, gsd, N_patch=5, color_patch=3):
                     [(i+j) * ti, (i+1) * gsd],
                     ], closed=True, fc=c, ec=ec, alpha=alpha, linewidth=lw)
             ax.add_patch(p)
-    
+
     #ax.plot([0,N_patch * ti], [0, vg * N_patch * ti], 'g--', linewidth=lw)
-#    ax.plot([N_tdi * ti,(N_patch + N_tdi) * ti], 
+#    ax.plot([N_tdi * ti,(N_patch + N_tdi) * ti],
 #            [0, vg * N_patch * ti], 'g--', linewidth=lw)
     ax.set_xlim(0, (N_patch + N_tdi) * ti)
     ax.set_ylim(0, vg * N_patch * ti)
@@ -147,7 +147,7 @@ f.savefig('figures/stab_step_stare.pgf')
 f = plt.figure()
 ax3 = plt.subplot()
 N_tdi = 12
-tdi_patches(ax3, N_tdi=N_tdi, k_cc=2.0/N_tdi, vg=3.5e3, gsd=1., 
+tdi_patches(ax3, N_tdi=N_tdi, k_cc=2.0/N_tdi, vg=3.5e3, gsd=1.,
             N_patch=32, color_patch=17)
 ax3.set_xlabel('Time')
 ax3.set_ylabel('In-Track Dimension')
