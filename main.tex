@@ -19,7 +19,7 @@
 \usepackage{float}
 %\usepackage{subcaption}
 
-%\bibliographystyle{IEEEtran}
+\bibliographystyle{IEEEtran}
 
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
@@ -66,9 +66,14 @@
 \maketitle
         
 \begin{abstract}
-Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution'' will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  While these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complementary such that interest and investment will continue to grow.
+%Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution'' will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  While these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complementary such that interest and investment will continue to grow.
 
-The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
+%The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
+    Remote sensing system design is an exercise in tradeoffs.  Three of the most important axes in this trade space are data quality, data volume (or bandwidth) and cost.  It is well-known for space-systems that cost is highly correlated with size\cite{bearden} and in high resolution remote sensing, there has been a demonstrable trend towards larger fleets of smaller, lest costly spacecraft.  The inevitable compromise is in some combination of reduced data quality and bandwidth, impacts that we would like to minimize.
+
+    In this paper we show that for electro-optical remote sensing systems there is a fundmanetal system capability metric, $\eta_{ph}\Omega A$ that encompases trade-offs between data quality and bandwidth and that the value goal for these systems should be to maximize this metric while minimizing system size and complexity to constrain cost.  
+
+    Finally we show that modern commercial imaging detector technology is key to accomplishing this optimization, but requires different imaging modalities than the traditional push-broom approach.  These new modalities also enable remote sensing systems to leverage the same computational imaging approaches that have been instrumental in enabling a revolution in consumer device imaging.
 \end{abstract}
 
 %\begin{spacing}{2}
@@ -81,113 +86,90 @@ The authors identify the trends in imaging and micro-electronics driven by inves
 \section{Introduction}
 \label{sec:introduction}
 
-The last 15 years have seen a massive upheaval in digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and movie industries.
+    The satellite world has seen a techtonic shift in the emergence of Sillicon Valley-inspired efforts to develop and deploy smaller (and thus cheaper) systems within tight time and budget constraints.  Fundamental to these approaches is the well-established observation that satellite system size is highly correlated with cost (see \ref{sec:appendix_a}) and, therefore, smaller, simpler systems can be developed and deployed more quickly and inexpensively.  Several systems such as the Planet Dove and Skysat (formerly Skybox Imaging) constellations serve as evidence that this approach can provide value.
+
+Simulatenously, the last 15 years have seen a massive upheaval in consumer digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and movie industries.
 
 Satellite remote sensing systems underwent a similar revolution roughly 40 years earlier as film-based systems were phased out in favor of CCD-based electronic line scanners.  While the specific demanding requirements of satellite remote sensing drove much of the early technology investment and development in digital electronic imaging, far more investment is now being applied in the commercial arena than in further refinement of now mature CCD-based line scan sensors.
 
-We believe that the future of the satellite remote-sensing industry will be in leveraging the massive investment in commercial digital and computational imaging technologies rather than continued large-scale investment in standalone technologies for these systems and that this shift presents both opportunities and challenges to new systems.
+The ``SmallSat'' remote sensing systems heavily leverage the developments in commercial and consumer imaging technology but there has not been a quantitative analysis in the open literature of the challenges and opportunities afforded by commercial, SmallSat approach.
 
-\section{Trends}
-In order to motivate the subsequent discussion, we identify and discuss the ``SmallSat'' philosophical trend and two technology trends uniquely enabling it in remote sensing systems.
+In this paper we develop several remote sensing system metrics that characterize the performance and cost tradespace.  We go on to show that modern commercial sensor and microelectronics technology are key to optimizing small, cost-constrained systems but that leveraging them requires rethinking the traditional remote sensing imaging modalities.  We discuss additional opportunities opened by the new modalities such as the application of computational photography to remote sensing.  Finally, we exercise this observation with a set of specific design exercises.  
 
-\subsection{Trend to Smaller Spacecraft}
+%\section{Trends}
+%In order to motivate the subsequent discussion, we identify and discuss the ``SmallSat'' philosophical trend and two technology trends uniquely enabling it in remote sensing systems.
+%
+%\subsection{Sensor Technology}
+%\label{sec:sensor_trends}
+%
+%Historically, space-based remote sensing systems have utilized CCD-based Time Delayed Integration (TDI) line-scan sensors.  Modern TDI sensors are a mature technology with several very desirable characteristics for high resolution remote sensing:
+%
+%\begin{itemize}
+%    \item Mechanism-free relative motion compensation through charge transfer
+%    \item High quantum efficiency and fill fractions
+%    \item Low noise
+%    \item Relatively high readout line-rates compatible with needs of high resolution systems
+%    \item Reasonable radiation tolerance
+%\end{itemize}
+%
+%However the unique requirements associated with space-based sensors implies that the sensors are niche, low volume and typically very expensive to develop, integrate and use.
+%
+%Meanwhile the large commercial investment in imaging sensors driven by the consumer photography/cinema, machine vision and smart phone industries has resulted in incredibly high performance image sensors available at high volume and low cost.  The big trends that have developed due to this investment are:
+%
+%\begin{itemize}
+%    \item Movement from CCD to CMOS detector technology
+%    \item Drive to smaller pixels to enable compact cameras \cite{isscc2016}
+%    \item Significant increase in detector read-out rates at low noise
+%\end{itemize}
+%
+%% \begin{figure}[h!]
+%% \includegraphics[width=0.45\textwidth]{figures/pixel_trend.png}
+%% \caption[]{Trends in commercial sensor pixel sizes from \cite{isscc2016}.  Note the ordinate is in units of microns}
+%% \label{fig:pix_trend}
+%% \end{figure}
+%
+%CCD-based sensors still hold some performance advantages over CMOS sensors, but the capability gap has narrowed almost entirely. The manufacturing and read-out rate advantages offered by CMOS have led to its wholesale adoption in the consumer / commercial world.
+%
+%When developing new remote sensing systems, the capabilities of modern commercial detectors promise the potential of smaller, less expensive systems with similar or better imaging performance to traditional TDI CCD-based systems.  However to realize this promise, the imaging system designer must consider the unique capabilities and shortcomings of the technology.
+%
+%\subsection{Non-Imaging Commercial Electronic Trends}
+%
+%In addition to the rapid advances in commercial imaging technology, Moore's law has continued to drive massive increase in microelectronic integration density with the associated performance, cost and device size improvements.
+%
+%Indeed in recent years much of the emphasis has been in large-scale functional integration into single die ``system-on-chip'' (SoC) devices that operate at very high performance/watt for the consumer devices industry.  Such devices are uniquely enabling for small spacecraft in that, just as with consumer devices, they enable massive functionality in a small, low power package and limit the amount of functional engineering ``glue'' required, shortening design cycles.  Stated more directly, the computational power most people have in their pockets today was unavailable in large, complex spacecraft ten years ago.
+%
+%Similar arguments can be made for:
+%
+%\begin{itemize}
+%    \item High density solid-state storage (Flash memory)
+%    \item Dedicated signal- and image-processing hardware for compression or computational imaging
+%    \item Digital modulation and radio technologies
+%    \item Inertial sensors
+%\end{itemize}
+%
+%Indeed, one can look at many of our personal consumer electronic devices and see the applicability to spacecraft in virtually every technology.  And these technologies have investment rates orders-of-magnitude higher than dedicated aerospace technologies.
+%
+%Historically there has been resistance to the utilization of commercial electronics technologies for space applications due to reliability concerns, both intrinsic and due to the space environment.  Again, several developments make such resistance less defensible:
+%
+%\begin{itemize}
+%    \item Demonstration of high uptime and reliable operation of COTS-based avionics in LEO \cite{careful_cots}.
+%    \item High demonstrated statistical reliability of commercially available components qualified to operate over thermal ranges much more severe than typical in-space environments, e.g. auto, industrial.
+%    \item Substantial improvement in CMOS latch-up susceptibility
+%    \item Pervasive integration of hardware single-event protection driven by sea-level single-event susceptibility of modern high integration devices
+%\end{itemize}
+%
+%For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-averse) systems.  
+%
+%Furthermore the ability to incorporate high performance compute, storage and communications in space- and power-constrained systems invalidates some of the long-held constraints on other spacecraft systems such as the ability to perform near-real-time on-board image processing.
 
-\label{sec:smallsat}
-There is a large and growing interest in what can be accomplished with much smaller spacecraft.  This trend is driven by 
-\begin{itemize}
-    \item Reduced appetite for the large and ballooning costs of traditional systems
-    \item Recognition of the mission level advantages offered by constellations of satellites (homogeneous or with sensor disaggregation) enabled by lower cost systems
-    \item Demonstration of high-performance remote sensing SmallSats developed at low cost by small, commercially funded teams
-\end{itemize} 
-
-There is significant evidence indicating that mission cost is non-linearly correlated with spacecraft size and complexity.  Indeed \cite{bearden} has shown with high correlation that 
-\begin{equation*}
-    C \sim m^{1.261},
-\end{equation*}
-implying cost $C$ is super-linearly impacted by mass, $m$.  Because for spacecraft systems $m \sim \chi^n$ where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, we can also say
-\begin{equation}
-C \sim \chi^{3+}
-\end{equation}
-
-Similar arguments can be derived from other cost scaling observations such as Meinel's Law \cite{meinel} for telescopes which states
-\begin{equation}
-    C \sim D_{ap}^{2.7},
-\end{equation}
-where $D_{ap}$ is aperture diameter.
-
-This polynomial relationship between size and cost indicates that there are significant savings available in shrinking system size down subject, of course to fundamental physical limits such as diffraction-limited resolution.  
-
-\subsection{Sensor Technology}
-\label{sec:sensor_trends}
-
-Historically, space-based remote sensing systems have utilized CCD-based Time Delayed Integration (TDI) line-scan sensors.  Modern TDI sensors are a mature technology with several very desirable characteristics for high resolution remote sensing:
-
-\begin{itemize}
-    \item Mechanism-free relative motion compensation through charge transfer
-    \item High quantum efficiency and fill fractions
-    \item Low noise
-    \item Relatively high readout line-rates compatible with needs of high resolution systems
-    \item Reasonable radiation tolerance
-\end{itemize}
-
-However the unique requirements associated with space-based sensors implies that the sensors are niche, low volume and typically very expensive to develop, integrate and use.
-
-Meanwhile the large commercial investment in imaging sensors driven by the consumer photography/cinema, machine vision and smart phone industries has resulted in incredibly high performance image sensors available at high volume and low cost.  The big trends that have developed due to this investment are:
-
-\begin{itemize}
-    \item Movement from CCD to CMOS detector technology
-    \item Drive to smaller pixels to enable compact cameras \cite{isscc2016}
-    \item Significant increase in detector read-out rates at low noise
-\end{itemize}
-
-% \begin{figure}[h!]
-% \includegraphics[width=0.45\textwidth]{figures/pixel_trend.png}
-% \caption[]{Trends in commercial sensor pixel sizes from \cite{isscc2016}.  Note the ordinate is in units of microns}
-% \label{fig:pix_trend}
-% \end{figure}
-
-CCD-based sensors still hold some performance advantages over CMOS sensors, but the capability gap has narrowed almost entirely. The manufacturing and read-out rate advantages offered by CMOS have led to its wholesale adoption in the consumer / commercial world.
-
-When developing new remote sensing systems, the capabilities of modern commercial detectors promise the potential of smaller, less expensive systems with similar or better imaging performance to traditional TDI CCD-based systems.  However to realize this promise, the imaging system designer must consider the unique capabilities and shortcomings of the technology.
-
-\subsection{Non-Imaging Commercial Electronic Trends}
-
-In addition to the rapid advances in commercial imaging technology, Moore's law has continued to drive massive increase in microelectronic integration density with the associated performance, cost and device size improvements.
-
-Indeed in recent years much of the emphasis has been in large-scale functional integration into single die ``system-on-chip'' (SoC) devices that operate at very high performance/watt for the consumer devices industry.  Such devices are uniquely enabling for small spacecraft in that, just as with consumer devices, they enable massive functionality in a small, low power package and limit the amount of functional engineering ``glue'' required, shortening design cycles.  Stated more directly, the computational power most people have in their pockets today was unavailable in large, complex spacecraft ten years ago.
-
-Similar arguments can be made for:
-
-\begin{itemize}
-    \item High density solid-state storage (Flash memory)
-    \item Dedicated signal- and image-processing hardware for compression or computational imaging
-    \item Digital modulation and radio technologies
-    \item Inertial sensors
-\end{itemize}
-
-Indeed, one can look at many of our personal consumer electronic devices and see the applicability to spacecraft in virtually every technology.  And these technologies have investment rates orders-of-magnitude higher than dedicated aerospace technologies.
-
-Historically there has been resistance to the utilization of commercial electronics technologies for space applications due to reliability concerns, both intrinsic and due to the space environment.  Again, several developments make such resistance less defensible:
-
-\begin{itemize}
-    \item Demonstration of high uptime and reliable operation of COTS-based avionics in LEO \cite{careful_cots}.
-    \item High demonstrated statistical reliability of commercially available components qualified to operate over thermal ranges much more severe than typical in-space environments, e.g. auto, industrial.
-    \item Substantial improvement in CMOS latch-up susceptibility
-    \item Pervasive integration of hardware single-event protection driven by sea-level single-event susceptibility of modern high integration devices
-\end{itemize}
-
-For small systems these trends are uniquely empowering and are more easily adoptable with lower cost (and hence less risk-averse) systems.  
-
-Furthermore the ability to incorporate high performance compute, storage and communications in space- and power-constrained systems invalidates some of the long-held constraints on other spacecraft systems such as the ability to perform near-real-time on-board image processing.
-
-\section{Remote Sensing Metrics}
+\section{Remote Sensing System Metrics}
 \label{sec:Metrics}
-In order to compare different remote sensing systems, we need quantitative metrics.  The metrics we will introduce are fundamentally related to the data produced by such systems and are in two categories - \emph{quality} and \emph{volume}.  In a value-based assessment, quality and volume would form the numerator of a global value metric with cost in the denominator.
+In order to compare different remote sensing systems, we need quantitative metrics.  The metrics we will introduce are fundamentally related to the data produced by such systems and are in two categories - \emph{quality} and \emph{volume}.  In a value-based assessment, quality and volume would form the numerator of a global value metric with cost in the denominator and as such we will also talk about cost.
 
 \subsection{Image Quality}
 \label{sec:iq}
 
-Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  Before jumping into integrated image quality models, we will define the geometric and radiometric components of image quality.
+Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  We start by introducing integrated image quality models and then expand on some of the subtleties around signal-to-noise ratio and dynamic range.
 
 \subsubsection{Resolution, NIIRS and GIQE}
 Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance, $GSD$ is used as a proxy for resolution under the assumption of near-critical sampling.
@@ -197,7 +179,7 @@ Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form 
 \end{equation}
 where $R$ is range to target (spacecraft altitude if Nadir-pointed),  $D_{ap}$ is the aperture diameter and $\lambda$ is the weighted center-wavelength of the sampled spectral band.
 
-Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure ~\ref{fig:snr_mtf} illustrates this graphically.
+Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure ~\ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
 \begin{figure}%
 	\centering
@@ -207,15 +189,7 @@ Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems
 	\caption{Visual resolvability vs SNR and MTF for two different values of $Q$.  Note that dashed red line indicates Nyquist criteria.}
 \end{figure}
 
-%\includefigure{figures/SNR_mtf_Q1.pdf}{fig:snr_mtf_q1}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=1$.  Note red-dotted line indicates the sampling frequency.}
-%
-%\includefigure{figures/SNR_mtf_Q2.pdf}{fig:snr_mtf_q2}{Image demonstrating the impact of SNR and MTF (diffraction / blur) on resolve-ability for $Q=2$  Note red-dotted line indicates the sampling frequency.}
-
-More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
-
-High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.
-
-NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
+High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.  NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
 \begin{table}[h!t]
 \resizebox{.9\textwidth}{!}{%
@@ -240,9 +214,9 @@ NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\
 - 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear},
 \label{eq:giqe5}
 \end{dmath}
-where $GSD_{m}$\footnote{GSD units must be paid close attention to -- many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
+where $GSD_{m}$\footnote{$GSD$ units must be paid close attention to -- many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
 
-GIQE-5 is fairly well validated again human interpreters~\cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
+GIQE-5 is fairly well validated in studies using human interpreters~\cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
 
 Based on this definition, one can use GIQE-5 to define an effective ground resolvability distance $GRD_{eff}$
 \begin{equation}
@@ -250,23 +224,9 @@ Based on this definition, one can use GIQE-5 to define an effective ground resol
     \label{eq:grd_eff}
 \end{equation}
 
-% \cite{auelmann_iq} shows that:
-
-% \begin{equation}
-%     GRD = \frac{R\times IFOV}{RER} = \frac{R\lambda_{mean}}{D_{ap} Q \times RER (Q)}
-% \label{eq:alpha_eff}
-% \end{equation}
-
-% and that a good approximation for the GIQE-based $GRD$ for diffraction limited systems is given by:
-
-% \begin{equation}
-%     GRD \approx \frac{R\lambda_{mean}}{D_{ap}}\left[1 + \frac{1}{Q^{1.35}}\right]^{1/1.35}
-% \label{eq:alpha_eff_approx}
-% \end{equation}
-
 \includefigure{figures/resolution_q.pgf}{fig:resolution_q}{Relationship of GRD and GSD as resolution metrics as a function of Q}
 
-Notice in Figure~\ref{fig:resolution_q} that GRD asymptotes at $Q=2$ due to diffraction but that GSD continues decreasing monotonically.  This is because optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$.
+Figure~\ref{fig:resolution_q} depicts how $GRD$ varies with $Q$ under the assumption of constant aperture size.  GIQE-based GRD asymptotes around $Q=2$ due to decreasing $SNR$ while $GSD$ (which doesn't depend on $SNR$) decreases monotonically.  Note that optical systems do not pass spatial frequency beyond the diffraction limit which is critically sampled at $Q=2$ and this is not fully captured in the empirical GIQE-based $GRD$ at high $SNR$.
 
 \subsubsection{Dynamic Range ($DR$) and Signal-to-Noise Ratio ($SNR$)}
 
@@ -401,55 +361,15 @@ Equation \eqref{eq:I_D_scaling} is important because it captures the inverse rel
 \label{sec:capacity}
 For a spacecraft, system collection capacity is constrained by a delicate balance between image collection capacity and the ability to get the collected data to the ground.  The latter is dictated entirely by data intensity, $I_D$ (defined in Section \ref{sec:data_intensity}), and communications bandwidth.  
 
-Image collection capacity in turn depends on a number of parameters including time over land, ACS agility, and area collection rate,
+Image collection capacity in turn depends on a number of parameters including time over land, ACS agility, and area collection rate, $ACR$.
+
 \begin{equation}
 	\label{eq:acr_def}
-    ACR = V_{gnd}W_{ct},
+    ACR = V_{gnd}W_{ct}
 \end{equation}
 where $W_{ct}$ is the swath width or cross-track field of view projected to the ground and $V_{gnd}$ is the apparent relative velocity of the ground in the imaging instrument's frame.
 
-We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the system $ACR$ as
-\begin{equation}
-    \beta = \frac{t_{collect}}{t_{per}},
-\end{equation} 
-where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targeted spacecraft), attitude control bandwidth, etc.
-
-For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For remote sensing systems constrained by slew as well as sun and time-over-land, typically $\beta < 0.1$.  In order to generate intuition, Figure~\ref{fig:beta} captures how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
-
-\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$ for a reasonably agile spacecraft.  Note the different lines correspond to target cross-track spacing for a collect of 50km in-track length}
-
-For small cross-track spacing, $\beta$ largely depends on collection size and the relative ground-scan rate that the imaging system is capable of because imaging time dominates slew time.  For larger cross-track spacing or smaller target size, the time to slew between targets becomes more important and spacecraft agility influences $\beta$ more heavily.
-
-Figure~\ref{fig:beta} is an upper bound in the sense that it assumes there will always be a desirable target to collect when the spacecraft has slewed cross-track which is likely not true for most real-world target collection decks.  
-
-We can similarly define a downlink duty cycle
-\begin{equation}
-    \gamma = \frac{t_{d/l}}{t_{per}},
-\end{equation}
-
-where $t_{d/l}$ is time per orbit spent in downlink.  $\gamma$ is typically $\sim 0.1$ for a single ground station well matched in latitude to the spacecraft's orbit inclination and can be increased with additional, geographically diverse ground stations.
-
-There are two primary capacity regimes that a spacecraft may operate in:
-
-\begin{enumerate}
-\item Downlink-constrained regime
-\item Collection-constrained regime
-\end{enumerate}
-
-For a specified downlink bandwidth $BW_{d/l}$, we can define a capacity constraint metric, $k_{cap}$
-\begin{equation}
-\label{eq:k_cap}
-k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{\beta I_D ACR},
-\end{equation}
-such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.  The system is well balanced for $k_{cap}$ near unity.  
-
-Equation \eqref{eq:k_cap} is also  important because it directly exposes the tradeoffs inherent in collection capacity ($ACR$), image quality ($GSD$ and $I_D$) and system data bandwidth ($BW_{d/l}$).
-
-% For a commercial system with multiple ground stations and a dense target deck, a reasonable rule-of-thumb is that $\frac{\gamma}{\beta} \approx 3$ so that a well balanced system has:
-
-% \begin{equation}
-%     BW_{d/l} \approx \frac{I_D ACR}{3 GSD^2}
-% \end{equation}
+We will focus on $ACR$ here as it is driven by imaging system performance.  The other impacts on capacity are driven by non-imaging spacecraft design and operations and are touched on in Section \ref{sec:appendix_b} for the interested reader.
 
 \subsection{Etendue and Photon Efficiency}
 \label{sec:entendue}
@@ -459,12 +379,13 @@ Optical Etendue or throughput, $A \Omega$, is a fundamental space-bandwidth capa
     P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda = A\Omega L.
 \end{equation}
 
-$A\Omega$ is also highly correlated with complexity and cost.  A reasonable design objective is, given some optical etendue, extract the most imaging performance from the optics as possible.
-Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Thus the effective usable photon power for imaging is
+$A\Omega$ is also highly correlated with complexity and cost.  A reasonable design objective is, given some optical etendue, extract the most information from the optics (maximize information bandwidth).  Because information is encoded in the incoming photons, this translates to maximizing the ability of the detector to capture and characterize (spatially, spectrally) photons.  The effective usable photon power for imaging is
 \begin{equation}
-    P_{img} = \eta_{ph} A \Omega L ,
+    P_{img} = \eta_{ph} A \Omega L
 \end{equation}
-where
+showing that the product $\eta_{ph}A_{ap}\Omega$ is a very important metric capturing the fundamental information collection bandwidth of the imaging system.
+
+Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Therefore
 \begin{equation}
     \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int},
 \end{equation}
@@ -472,17 +393,21 @@ where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of 
 
 \subsubsection{Relationshp of $\eta_{ph}$ to $ACR$ and $IQ$}
 
-It can be shown that the total photo-electron generation rate, $\dot{N}_{e^-} \propto L\eta_{ph}A_{ap}\Omega$ and for systems operating in the shot-limited noise regime
+Because the photo-electron generation rate, $\dot{N}_{e^-}$ is proportional to photon power, $\dot{N}_{e^-} \propto L\eta_{ph}A_{ap}\Omega$.  Furthermore, for systems operating in the shot-limited noise regime
 \begin{equation}
-    \dot{N}_{e^-} = \frac{ACR \times SNR^2}{GSD^2},
+    \dot{N}_{e^-} = \frac{ACR \times SNR^2}{GSD^2}.
 \end{equation}
-so that
+
+Combining these we see that $\eta_{ph} A_{ap}\Omega$ is directly related to collection bandwidth ($ACR$) and image quality parameters ($GSD$, $SNR$).  
+
 \begin{equation}
 \label{eq:acr_snr_gsd}
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L.
 \end{equation}
 
-\textbf{$\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric}.  Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
+\textbf{This shows that $\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric}.  
+
+Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
 
 \section{Collection Modalities}
 \label{sec:modalities}
@@ -497,7 +422,7 @@ However it also presents large challenges in developing an imaging system that c
 
 Equation \eqref{eq:acr_snr_gsd} shows that $\eta_{ph} A \Omega$ (and thus cost) is driven directly by $ACR$ and therefore $V_{gnd}$ (Equation \eqref{eq:acr_def}).
 
-For systems whose integration times are limited by velocity (such as blur-limited or TDI systems with a fixed number of stages) ~\cite{shaw} shows the   even stronger dependence of achievable image quality and ground velocity
+For systems whose integration times are limited by velocity (such as blur-limited or TDI systems with a fixed number of stages)~\cite{shaw} shows the   even stronger dependence of achievable image quality and ground velocity
 
 \begin{equation*}
 V_{gnd} \propto \frac{GSD^4}{SNR^2}.
@@ -1198,8 +1123,59 @@ In summary, we have shown that
 
 The potential of the trends identified here have yet to be fully realized and the authors are excited to see this potential realized.
 
-\section{Appendix A: Definitions}
+\section{Appendix A: Size and Cost}
 \label{sec:appendix_a}
+The drive to and interest in smaller satellite systems is driven by three things:
+\begin{itemize}
+    \item Reduced appetite for the large and ballooning costs of traditional systems
+    \item Recognition of the mission level advantages offered by constellations of satellites (homogeneous or with sensor disaggregation) enabled by lower cost systems
+    \item Demonstration of high-performance remote sensing SmallSats developed at low cost by small, commercially funded teams
+\end{itemize} 
+
+There is significant evidence indicating that mission cost is non-linearly correlated with spacecraft size and complexity.  Indeed \cite{bearden} has shown with high correlation that historic small spacecraft cost goes like $m^{1.261}$. Because for spacecraft systems $m \sim \chi^n$ where $\chi$ is a characteristic spacecraft dimension and $n$ is typically between 2 and 3, spacecraft cost is polynomial in dimension.
+
+Similar arguments can be derived from other cost scaling observations such as Meinel's Law \cite{meinel} for telescopes which states that telescope costs have historically scaled like $D_{ap}^{2.7}$.  Various claims of other exponents have been made but there is good consensus that space telescope cost scales polynomially with aperature dimension.
+
+Similar arguments can be made for other spacecraft systems.
+
+\section{Appendix B: Satellite Capacity Constraints}
+\label{sec:appendix_b}
+
+We will define a collection duty cycle metric that captures all of the impacts on collection capacity outside of the system $ACR$ as
+
+\begin{equation}
+    \beta = \frac{t_{collect}}{t_{per}},
+\end{equation} 
+where $t_{per}$ is the spacecraft orbital period and $t_{collect}$ is the collection time per orbit.  Note that $\beta$ is itself dependent on $V_{gnd}$ in addition to a wide variety of targeting-related parameters such as time per orbit over land and in the sun, average target cross-track spacing (for targeted spacecraft), attitude control bandwidth, etc.
+
+For continuous daytime collection over all land excluding Antartica, an absolute upper bound on $\beta$ becomes $\sim 0.12$.  For remote sensing systems constrained by slew as well as sun and time-over-land, typically $\beta < 0.1$.  In order to generate intuition, Figure~\ref{fig:beta} captures how $\beta$ varies as a function of cross-track target spacing and ground scan velocity for a typical, targeted high resolution spacecraft.
+
+\includefigure{figures/collection_dc.pgf}{fig:beta}{Collection Duty Cycle, $\beta$ for a reasonably agile spacecraft.  Note the different lines correspond to target cross-track spacing for a collect of 50km in-track length}
+
+For small cross-track spacing, $\beta$ largely depends on collection size and the relative ground-scan rate that the imaging system is capable of because imaging time dominates slew time.  For larger cross-track spacing or smaller target size, the time to slew between targets becomes more important and spacecraft agility influences $\beta$ more heavily.
+
+Figure~\ref{fig:beta} is an upper bound in the sense that it assumes there will always be a desirable target to collect when the spacecraft has slewed cross-track which is likely not true for most real-world target collection decks.  
+
+We can similarly define a downlink duty cycle
+\begin{equation}
+    \gamma = \frac{t_{d/l}}{t_{per}},
+\end{equation}
+
+where $t_{d/l}$ is time per orbit spent in downlink.  $\gamma$ is typically $\sim 0.1$ for a single ground station well matched in latitude to the spacecraft's orbit inclination and can be increased with additional, geographically diverse ground stations.
+
+There are two primary capacity regimes that a spacecraft may operate in - (1) Downlink-constrained and (2) Collection-constrained.
+
+For a specified downlink bandwidth $BW_{d/l}$, we can define a capacity constraint metric, $k_{cap}$
+\begin{equation}
+\label{eq:k_cap}
+k_{cap} = \frac{\gamma BW_{d/l} GSD^2}{\beta I_D ACR},
+\end{equation}
+such that when $k_{cap} < 1$ the system is \emph{downlink constrained} and when $k_{cap} \geq 1$, the system is \emph{collection constrained}.  The system is well balanced for $k_{cap}$ near unity.  
+
+Equation \eqref{eq:k_cap} is also  important because it directly exposes the tradeoffs inherent in collection capacity ($ACR$), image quality ($GSD$ and $I_D$) and system data bandwidth ($BW_{d/l}$).
+
+\section{Appendix C: Definitions}
+\label{sec:appendix_c}
 
 % \subsection{Remote Sensing Driving Requirements}
 % \label{sec:requirements}
@@ -1304,8 +1280,8 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 
 where $N_s$ is the oversampling ratio.
 
-\section{Appendix B: Sensor Table}
-\label{sec:appendix_b}
+\section{Appendix D: Sensor Table}
+\label{sec:appendix_d}
 \input{sensor_table}
 
 %\end{spacing}
