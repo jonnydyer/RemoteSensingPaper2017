@@ -86,7 +86,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-    The satellite world has seen a techtonic shift in the emergence of Sillicon Valley-inspired efforts to develop and deploy smaller (and thus cheaper) systems within tight time and budget constraints.  Fundamental to these approaches is the well-established observation that satellite system size is highly correlated with cost (see \ref{sec:appendix_a}) and, therefore, smaller, simpler systems can be developed and deployed more quickly and inexpensively.  Several systems such as the Planet Dove and Skysat (formerly Skybox Imaging) constellations serve as evidence that this approach can provide value.
+    The satellite world has seen a techtonic shift in the emergence of Sillicon Valley-inspired efforts to develop and deploy smaller (and thus cheaper) systems within tight time and budget constraints.  Fundamental to these approaches is the well-established observation that satellite system size is highly correlated with cost (see Section \ref{sec:appendix_a}) and, therefore, smaller, simpler systems can be developed and deployed more quickly and inexpensively.  Several systems such as the Planet Dove and Skysat (formerly Skybox Imaging) constellations serve as evidence that this approach can provide value.
 
 Simulatenously, the last 15 years have seen a massive upheaval in consumer digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and movie industries.
 
@@ -405,7 +405,7 @@ Combining these we see that $\eta_{ph} A_{ap}\Omega$ is directly related to coll
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L.
 \end{equation}
 
-\textbf{This shows that $\eta_{ph} A \Omega$ is a fundamental imaging system capacity metric}.  
+\textbf{This shows that $\eta_{ph} A \Omega$ is not only import, bus is in fact a fundamental imaging system capacity metric}.  
 
 Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
 
@@ -451,13 +451,13 @@ Development of large format CCD and CMOS framing detectors allows for ``step-and
 \label{fig:modalities}
 \end{figure}
 
-Analog optomechanical stabilization relies on an optomechanical component with the ability to dynamically steer the payload line of sight repetitively so as to remove relative scene motion during integration.  Fast scan mirrors (FSM) or excited dynamic motion of the entire instrument are two ways to achieve this \cite{patent:jonny}, \cite{patent:dirk}.
+Analog optomechanical stabilization relies on an optomechanical component with the ability to dynamically steer the payload line of sight repetitively so as to remove relative scene motion during integration.  Fast scan mirrors (FSM) or excited dynamic motion of the entire instrument are two ways to achieve this \cite{patent:jonny,patent:dirk}.
 
 The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling is not as constrained by $FWC$ because each exposure resets the pixel and thus the $FWC$ can be effectively expanded by as many redundant samples as can be obtained.
 
 Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure~\ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom, and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10 m.
 
-To date, analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is still immature -- see~\cite{jerram},\cite{rushton}.
+To date, analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is still immature~\cite{jerram, rushton}.
 
 Likewise digital oversampling is typically not practical using CCD sensors in high resolution systems due to the inherent limitations on read-out rate of CCD as compared with CMOS technology.
 
@@ -521,7 +521,7 @@ The final modality we will discuss is a hybrid of analog and digital oversamplin
 More specifically, the issues hybrid stabilization addresses are:
 
 \begin{itemize}
-    \item Analog stabilization allows operation in FWC-constrained regime, thus extracting the most from optics ($A\Omega$) and detectors ($\eta_{ph}$)
+    \item Analog stabilization allows operation in FWC-constrained (Section ~\ref{sec:eta_ph}) regime, thus extracting the most from optics ($A\Omega$) and detectors ($\eta_{ph}$)
     \item Digital oversampling enables HDR and ``flatter'' $SNR$ over dynamic range as discussed in Section~\ref{sec:hdr}
     \item Digital oversampling allows for resolution-enhancement techniques such as superresolution
     \item Hybrid imaging systems inherently un-constrain other elements of the system in both development and operation allowing for image quality, area collection rate, data intensity, required ACS stability and more to be traded throughout the lifecycle of the system
@@ -564,7 +564,7 @@ The remote-sensing trade space is largely constrained by four mission needs:
 \item Cost
 \end{enumerate}
 
-\emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100 nm$) collection in the near-visible spectrum ($\sim 400 nm$ to $\sim 1000 nm$) but will also point out where the trends in questions impact the ability to perform other phenomenology (e.g. SWIR or HSI).  It is also worth pointing out that staring sensors enable video-mode collection, a phenomenology new to space-based remote sensing.
+\emph{Phenomenology} refers to the study of the phenomenon being sensed and goes beyond Image Quality to include things like the spectral content of the sensed data.  We will largely discuss the trade space in terms of wide-bandwidth ($>100 nm$) collection in the near-visible spectrum ($\sim 400 nm$ to $\sim 1000 nm$).  It is also worth pointing out that staring sensors enable video-mode collection, a phenomenology new to space-based remote sensing.
 
 As discussed in Section \ref{sec:modalities} and \ref{sec:entendue} \emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Equation ~\eqref{eq:acr_snr_gsd} demonstrates this deep relationship for a set of other system parameters.  In this section we develop this result as it pertains to more granular system parameters.  
 
@@ -608,16 +608,16 @@ The second challenge in pushing $Q$ higher is that given other system constraint
 
 Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poorer image quality in exchange for manageable optical focal lengths, increased area collection capacity and acceptable $SNR$ and $DR$.
 
-\begin{observation}[$Q > 1$]
-Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems were pixel-size limited, historical systems typically have been developed at $Q<1$.
-\end{observation}
+%\begin{observation}[$Q > 1$]
+%Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems were pixel-size limited, historical systems typically have been developed at $Q<1$.
+%\end{observation}
 
 Happily, the trend towards capable commercial framing image detectors with smaller pixels and large read-out rates opens up the opportunity of driving towards higher $Q$'s where image quality is optimized without significantly impacting system size.
 
-\subsection{Modality effect on $\eta_{ph}$}
+\subsection{Imaging Modality Effect on $\eta_{ph}$}
 \label{sec:eta_ph}
 
-One way to conceptualize the effect of modality on $\eta_{ph}$ is as the time-average (or integral over time) of the blue areas in Figures~\ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and~\ref{fig:stab_step_stare}.  Increasing in-track height of the blue bars with taller arrays helps improve this integral and reducing the gaps between them horizontally (in time) improves this.  TDI has a time-duty cycle of 1 (no horizontal gaps) while step-and-stare typically have much taller arrays.
+One way to conceptualize the effect of the imaging modalities presented in Section \ref{sec:modalities} on $\eta_{ph}$ is as the time-average (or integral over time) of the blue areas in Figures~\ref{fig:tdi}, \ref{fig:step_stare}, \ref{fig:step_stare_real} and~\ref{fig:stab_step_stare}.  Increasing in-track height of the blue bars with taller arrays helps improve this integral and reducing the gaps between them horizontally (in time) improves this.  TDI has a time-duty cycle of 1 (no horizontal gaps) while step-and-stare typically have much taller arrays.
 
 In order to quantify this it can be shown that
 \begin{equation*}
@@ -674,16 +674,14 @@ and we note that
 \end{equation}
 indicating that $\eta_{ph}$ is highly sensitive to $GSD$ when there is a non-FWC-based integration time constraint.
 
-\begin{observation}[Design for FWC-limited regime]
-Operation in the FWC-limited regime results in higher $\eta_{ph}$ and thus should be a design goal.
-\end{observation}
+%\begin{observation}[Design for FWC-limited regime]
+Operation in the FWC-limited regime results in a weaker coupling of $\eta_{ph}$ to resolution and thus should be a design goal.  However, in order to operate in the FWC-constrained regime for some resolution, effective scan speed, $V_{gnd}$ must be reduced.  While bus back-nod accomplishes this, it does so at the expense of $ACR$.
 
-In order to operate in the FWC-constrained regime for some resolution, effective scan speed, $V_{gnd}$ must be reduced.  While bus back-nod accomplishes this, it does so at the expense of $ACR$.
+%\begin{observation}[The need for analog stabilization]
+In such cases, analog stabilization -- defined as the dynamic cancellation of ground scan speed, $V_{gnd}$ -- is likely required to operate in the FWC-limited regime for high-resolution satellite remote sensing.
+%\end{observation}
 
-\begin{observation}[The need for analog stabilization]
-Analog stabilization -- defined as the dynamic cancellation of ground scan speed, $V_{gnd}$ -- is likely required to operate in the FWC-limited regime for high-resolution satellite remote sensing.
-\end{observation}
-
+%TODO: Merge focal plane dimension section with the Q and pixel size section above.
 \subsection{Focal Plane Dimensions}
 \label{sec:fp_dimensions}
 The required physical dimension of the imaging detector is a critical system-driver for a number of reasons.  First, the larger required detector dimension implies either a physically large semiconductor or an array of smaller detectors.  
@@ -709,6 +707,7 @@ Eq. \eqref{eq:r_fp} clearly illustrates how important pixel pitch, $p_{px}$ is t
 Smaller pixels enable driving system size down and $Q$ up but require hybrid stabilization (digital + analog) to make practical due to inherently lower signal, $S$, obtained during exposure.
 \end{observation}
 
+%TODO: Reword this section and take out the observations
 \subsection{Detector Technology}
 \label{sec:detector_tech}
 
