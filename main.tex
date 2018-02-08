@@ -19,7 +19,7 @@
 \usepackage{float}
 %\usepackage{subcaption}
 
-\bibliographystyle{IEEEtran}
+%\bibliographystyle{IEEEtran}
 
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
@@ -179,8 +179,6 @@ Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form 
 \end{equation}
 where $R$ is range to target (spacecraft altitude if Nadir-pointed),  $D_{ap}$ is the aperture diameter and $\lambda$ is the weighted center-wavelength of the sampled spectral band.
 
-Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure ~\ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
-
 \begin{figure}%
 	\centering
 	\subfloat[Q = 1]{\includegraphics[]{figures/SNR_mtf_Q1.pdf}}
@@ -188,6 +186,8 @@ Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems
 	\label{fig:snr_mtf}
 	\caption{Visual resolvability vs SNR and MTF for two different values of $Q$.  Note that dashed red line indicates Nyquist criteria.}
 \end{figure}
+
+Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure \ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
 High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.  NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
@@ -278,9 +278,8 @@ The noise, $\sigma_{noise}$ consists of the same sources discussed for $DR$ but 
     SNR = \frac{s}{\sqrt{\sum{\sigma_i^2} + s}}.
 \end{equation*}
 
-In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  
+In order to state an $SNR$, the signal, $s$, must be constrained by other system parameters and some exposure.  Typically $SNR$ is specified with respect to a specific target reflectance or top-of-atmosphere (TOA) radiance and a maximum or saturation reflectance or TOA radiance.  For a perfectly exposed scene with
 
-For a perfectly exposed scene with
 \begin{equation}
     \alpha = \frac{L_{typ}}{L_{sat}},
 \end{equation}
@@ -405,24 +404,14 @@ Combining these we see that $\eta_{ph} A_{ap}\Omega$ is directly related to coll
     \frac{ACR \times SNR^2}{GSD^2} \propto \eta_{ph} A_{ap}\Omega L.
 \end{equation}
 
-\textbf{This shows that $\eta_{ph} A \Omega$ is not only import, bus is in fact a fundamental imaging system capacity metric}.  
-
-Various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
+This shows that $\eta_{ph}A \Omega$ is in fact a \textbf{fundamental imaging system capacity metric} and that various system trades can be made between image quality and area collection rate but these trades are all constrained within the boundaries of this fundamental system capacity.  In Section~\ref{sec:detector_tech} we define a sensor metric related to $\eta_{ph}$.
 
 \section{Collection Modalities}
 \label{sec:modalities}
-Large orbital velocity is a large advantage of spacecraft for remote sensing over other platforms as it gives:
 
-\begin{itemize}
-\item Daily global access
-\item High collection rates
-\end{itemize}
+The high orbital velocity of a spacecraft is a large advantage for remote sensing as it provides daily access to most of the Earth and very high collection rates.  However it also presents large challenges in developing an imaging system that can collect sufficient light at the high relative scene velocity without incurring unreasonable blur.
 
-However it also presents large challenges in developing an imaging system that can collect sufficient light at the high relative scene velocity without incurring unreasonable blur.
-
-Equation \eqref{eq:acr_snr_gsd} shows that $\eta_{ph} A \Omega$ (and thus cost) is driven directly by $ACR$ and therefore $V_{gnd}$ (Equation \eqref{eq:acr_def}).
-
-For systems whose integration times are limited by velocity (such as blur-limited or TDI systems with a fixed number of stages)~\cite{shaw} shows the   even stronger dependence of achievable image quality and ground velocity
+Equation \eqref{eq:acr_snr_gsd} shows that $\eta_{ph} A \Omega$ (and thus cost) is driven directly by $ACR$ and therefore $V_{gnd}$.  For systems whose integration times are limited by velocity (such as blur-limited or TDI systems with a fixed number of stages) \cite{shaw} shows the   even stronger dependence of achievable image quality and ground velocity
 
 \begin{equation*}
 V_{gnd} \propto \frac{GSD^4}{SNR^2}.
@@ -515,6 +504,7 @@ It is worth noting in this diagram that the photon collection duty cycle, $\phi_
 However digital oversampling through step-and-stare IS NOT limited by small pixel FWC, as the well is read out in each independent integration and then summed digitally.  This means that, in principle, much higher dynamic range can be achieved with small pixels and at high SNR.  To realize this requires analog stabilization to move into the FWC-constrained regime as will be discussed in Section~\ref{sec:eta_ph}.
 
 \subsection{Hybrid Stabilization}
+\label{sec:hybrid_stabilization}
 
 The final modality we will discuss is a hybrid of analog and digital oversampling.  This combination eliminates the shortcomings each have alone and provides a great range of flexibility in both the design and operational space of imaging system.
 
@@ -568,28 +558,41 @@ The remote-sensing trade space is largely constrained by four mission needs:
 
 As discussed in Section \ref{sec:modalities} and \ref{sec:entendue} \emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Equation ~\eqref{eq:acr_snr_gsd} demonstrates this deep relationship for a set of other system parameters.  In this section we develop this result as it pertains to more granular system parameters.  
 
-\subsection{Q and Pixel Size}
+\subsection{Pixel Size}
 
 We will study the effect of pixel size through the lens of $Q$ recognizing that \cite{fiete}
 \begin{equation*}
-    Q = \frac{\lambda f}{D_{ap} p_{px}}.
+    Q = \frac{\lambda f}{D_{ap} p_{px}},
 \end{equation*}
 
-%and then show why driving Q with pixel size is preferable to focal length, $f$ or diameter, D.
+and noting that $Q$ is a system parameter generally chosen as a trade between image quality, collection capacity and system size.  
 
-$Q$ is generally chosen as a trade between image quality, collection capacity and system size.  
+%and then show why driving Q with pixel size is preferable to focal length, $f$ or diameter, D.
 
 %In~\ref{sec:iq} we show that the NIIRS as predicted by the Generalized Image Quality Equation (GIQE-5) is a useful image quality metric for remote sensing systems.
 
 \includefigure{figures/Q_iq.pgf}{fig:q_iq}{Parametric study of GIQE-5 shows how optimal image quality depends on Q.  Note that this plot assumes $RER_0 = 0.3$ and $GSD = 1m$ for $Q=1$ and that $SNR \sim 1 / Q$.  $RER_0$ is also scaled with $Q$ based on an assumption that $Q$ is varied by changing pixel size with fixed optics.}
 
-One thing demonstrated in a parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Figure~\ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ}, \cite{auelmann_iq} and is not unexpected considering that in a diffraction-limited system with $Q<2$, there is contrast passed by the optical system that is not sampled by the detector.  At first blush it seems obvious that, given the cost and difficulty of building larger optics, systems would be designed at $Q>1$.  
+One thing demonstrated in a parametric study of the GIQE-5 is that image quality is often maximized at $Q>1$ (Figure~\ref{fig:q_iq}).  This has also been validated in human-interpreter studies \cite{fiete_Q_IQ, auelmann_iq} and is not unexpected considering that in a diffraction-limited system with $Q<2$, there is contrast passed by the optical system that is not sampled by the detector.  $Q$ can be increased with longer focal lengths but this is often practically limited by packaging and size constraints at the spacecraft level.  It can also be increased by moving to smaller pixels, a path that has the added benefit of reducing the physical size of the detector array.
+
+Expanding Eq.~\eqref{eq:A_fov}, it can be shown that, for a circular aperture, the illuminated focal plane radius is
+\begin{equation}
+    \label{eq:r_fp}
+    r_{fp} = \frac{f\theta_{fov}}{2} = \frac{p_{px}R\theta}{2 (GSD)}
+\end{equation}
+and for a detector or detector array to span the full width of the illuminated area, it must thus span $2 r_{fp}$.   The required physical dimension of the imaging detector is a critical system cost-driver for a number of reasons.  
+
+First the larger required detector dimension implies either a physically large semiconductor or an array of smaller detectors.  Very few large monolithic detectors are produced commercially because typically applications requiring them are very specialized.  They are also expensive due to yield issues associated with large semiconductor dies and often have low frame rates due to poor perimeter/area ratios.  Therefore many high resolution systems have turned to tiled arrays of smaller sensors, an approach that appears at the surface both scalable and efficient.
+
+However, such tiled arrays suffer from several shortcomings.  There is overhead in packaging and electrical connection such that it is difficult in practice to get high effective tiling fill fractions.  This may lead to solutions requiring additional optical components such as mirrors to allow for reasonable physical layout of the detectors.  The arrays must also be individually optically aligned to the optics which can be costly and time consuming.
+
+The second difficulty with a large detector dimension is that it thermo-mechanical stability and alignment become problematic as physical dimension grows.  This often leads to complex packaging, thermal management and mounting requirements for the detector or array.
+
+Whether the solution is monolithic or a tiled array, it is clear that minimizing the physical dimension of the detector array is important in constraining system size and cost.   Eq. \eqref{eq:r_fp} clearly illustrates how important pixel pitch, $p_{px}$ is to minimizing the physical size of detector arrays and provides the second motivation for the large push towards smaller pixels.  At first blush it seems obvious that, given the cost and difficulty of building larger optics, systems would be adopting smaller pixels to drive to higher $Q$.
 
 \includefigure{figures/p_fwc.pgf}{fig:p_fwc}{Relationship of $N_{e^-}^{FWC}$ to pixel size, $p_{px}$.  Note that while the upper frontier generally follows Eq.~\eqref{eq:pix_fwc_scaling}, there are notable outliers especially in some of the new CMOS architectures}
 
-However, there are two other system impacts of $Q$ that argue against pushing it higher.
-
-The first is that for CCD-based TDI systems operating in the FWC-limited regime, pixels with sufficient full well capacity ($FWC$) to meet dynamic range and $SNR$ requirements have required relatively large pixels compared with commercial state-of-the-art (see Figure~\ref{fig:p_fwc}).
+However, there are two other system impacts of $Q$ that argue against pushing it higher.  The first is that for CCD-based TDI systems operating in the FWC-limited regime, pixels with sufficient full well capacity to meet dynamic range and $SNR$ requirements have traditionally required relatively large pixels compared with commercial state-of-the-art (see Figure~\ref{fig:p_fwc}).
 
 Smaller pixels typically store less charge, both in the photodector and storage node. In fact to first order~\cite{jerram}
 \begin{equation}
@@ -598,21 +601,22 @@ N_{e^-}^{FWC} \propto p^2,
 \end{equation}
 and while there are process optimizations that can improve this, these typically are second order to simple area scaling.  Figure~\ref{fig:p_fwc} shows that Equation \eqref{eq:pix_fwc_scaling} describes the upper frontier reasonably well although several recent pixel architectures are significant outliers.
 
-$Q$ can be increased with longer focal lengths as well but this is often practically limited by packaging and size constraints at the spacecraft level.
-
 The second challenge in pushing $Q$ higher is that given other system constraints (e.g. $SNR$ required, focal plane dimension)
 
 \begin{equation}
     ACR \propto \frac{1}{Q^2}.
 \end{equation}
 
-Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poorer image quality in exchange for manageable optical focal lengths, increased area collection capacity and acceptable $SNR$ and $DR$.
+Thus designers have tended to accept lower $Q$, and hence larger $GSD$ and poorer image quality in exchange for manageable optical focal lengths and detector sizes, increased area collection capacity and acceptable $SNR$ and $DR$.  We will show that by adopting hybrid stabilization imaging (Section \ref{sec:hybrid_stabilization}), smaller pixels can be adopted while still achieving acceptable $SNR$, $DR$ and area collection capacities.
 
 %\begin{observation}[$Q > 1$]
 %Image Quality is optimized for $Q>1$ but because $ACR \sim 1/Q^2$ and systems were pixel-size limited, historical systems typically have been developed at $Q<1$.
 %\end{observation}
 
-Happily, the trend towards capable commercial framing image detectors with smaller pixels and large read-out rates opens up the opportunity of driving towards higher $Q$'s where image quality is optimized without significantly impacting system size.
+%\begin{observation}[Smaller Pixel]
+%\label{obs:small_pix}
+%Smaller pixels enable driving system size down and $Q$ up but require hybrid stabilization (digital + analog) to make practical due to inherently lower signal, $S$, obtained during exposure.
+%\end{observation}
 
 \subsection{Imaging Modality Effect on $\eta_{ph}$}
 \label{sec:eta_ph}
@@ -650,12 +654,13 @@ which we can simplify to observe
     \eta_{ph}^{FWC} \propto N_{e^-}^{FWC} LR.
 \end{equation}
 
-For high resolution systems without analog stabilization or TDI systems with a fixed number of stages, integration time is typically constrained by the high apparent motion in the focal plane rather than the limited FWC of the pixel (Figure~\ref{fig:eta_regime}).  For digital step-and-stare systems without analog stabilization,
+%TODO: Clean this up to merge blur-limited and stage-limited TDI...
+For high resolution systems without analog stabilization or TDI systems with a fixed number of stages, integration time is typically constrained by the high apparent motion in the focal plane rather than the limited FWC of the pixel (Figure~\ref{fig:eta_regime}).  For digital step-and-stare systems without analog stabilization operating in the blur-limited regime
 \begin{equation}
     \label{eq:eta_ph_blur}
     \eta_{ph}^{bl} = \frac{4\lambda^2 h_{px}N_{bl}(LR)(GSD)}{\pi D_{ap}^2\theta_{fov}^2 Q^2 V_{gnd}},
 \end{equation}
-Or 
+where 
 \begin{equation}
     \label{eq:eta_blur_scaling}
     \eta_{ph}^{bl} \propto  \frac{N_{bl} (LR) (GSD^3)}{V_{gnd}}.
@@ -663,16 +668,17 @@ Or
 
 This scaling law is not good for high resolution systems, requiring high $\frac{LR}{V_{gnd}}$ (and commensurate large data intensity, $I_{D}$, $N_{bl} >> 1 \: \textrm{px}$ or very low $Q$.
 
-Likewise, for a TDI system with a fixed number of stages
+Likewise a TDI system with a fixed number of stages
 \begin{equation}
     \eta_{ph}^{TDI} = \frac{4\lambda^2 h_{px} N_{TDI}}{\pi D_{ap}^2 \theta_{fov}^2 Q^2},
 \end{equation}
-and we note that 
+where
 \begin{equation}
     \label{eq:eta_ph_tdi_scaling}
     \eta_{ph}^{TDI} \propto N_{TDI} GSD^2,
 \end{equation}
-indicating that $\eta_{ph}$ is highly sensitive to $GSD$ when there is a non-FWC-based integration time constraint.
+
+In the blur-limited regime, $\eta_{ph}$ is highly sensitive to $GSD$ when there is a non-FWC-based integration time constraint.
 
 %\begin{observation}[Design for FWC-limited regime]
 Operation in the FWC-limited regime results in a weaker coupling of $\eta_{ph}$ to resolution and thus should be a design goal.  However, in order to operate in the FWC-constrained regime for some resolution, effective scan speed, $V_{gnd}$ must be reduced.  While bus back-nod accomplishes this, it does so at the expense of $ACR$.
@@ -680,32 +686,6 @@ Operation in the FWC-limited regime results in a weaker coupling of $\eta_{ph}$ 
 %\begin{observation}[The need for analog stabilization]
 In such cases, analog stabilization -- defined as the dynamic cancellation of ground scan speed, $V_{gnd}$ -- is likely required to operate in the FWC-limited regime for high-resolution satellite remote sensing.
 %\end{observation}
-
-%TODO: Merge focal plane dimension section with the Q and pixel size section above.
-\subsection{Focal Plane Dimensions}
-\label{sec:fp_dimensions}
-The required physical dimension of the imaging detector is a critical system-driver for a number of reasons.  First, the larger required detector dimension implies either a physically large semiconductor or an array of smaller detectors.  
-
-Very few large monolithic detectors are produced commercially because typically applications requiring them are very specialized.  They are also expensive due to yield issues associated with large semiconductor dies and often have low frame rates due to poor perimeter/area ratios.
-
-Arrays of smaller off-the-shelf detectors at first seem an attractive alternative.  However, such tiled arrays also suffer from several shortcomings.  First, there is overhead in packaging and electrical connection such that it is difficult in practice to get high effective tiling fill fractions.  This may lead to solutions requiring additional optical components such as mirrors to allow for reasonable physical layout of the detectors.  The arrays must also be individually optically aligned to the optics which can be costly and time consuming. However if these problems are solved, tiled arrays are scalable and leverage COTS components.
-
-Whether the solution is monolithic or a tiled array, it is clear that minimizing the physical dimension of the detector array is important in constraining system size and cost.
-
-Expanding Eq.~\eqref{eq:A_fov}, it can be shown that, for a circular aperture, the illuminated focal plane radius is
-\begin{equation}
-    \label{eq:r_fp}
-    r_{fp} = \frac{f\theta_{fov}}{2} = \frac{p_{px}R\theta}{2 (GSD)}.
-\end{equation}
-
-For a detector to span the full width of the illuminated area, it thus must span $2 r_{fp}$. 
-
-Eq. \eqref{eq:r_fp} clearly illustrates how important pixel pitch, $p_{px}$ is to minimizing the physical size of detector arrays and provides the second motivatation for the large push towards smaller pixels.
-
-\begin{observation}[Smaller Pixel]
-\label{obs:small_pix}
-Smaller pixels enable driving system size down and $Q$ up but require hybrid stabilization (digital + analog) to make practical due to inherently lower signal, $S$, obtained during exposure.
-\end{observation}
 
 %TODO: Reword this section and take out the observations
 \subsection{Detector Technology}
