@@ -578,7 +578,7 @@ One thing demonstrated in a parametric study of the GIQE-5 is that image quality
 Expanding Eq.~\eqref{eq:A_fov}, it can be shown that, for a circular aperture, the illuminated focal plane radius is
 \begin{equation}
     \label{eq:r_fp}
-    r_{fp} = \frac{f\theta_{fov}}{2} = \frac{p_{px}R\theta}{2 (GSD)}
+    r_{fp} = \frac{f\theta_{fov}}{2} = \frac{p_{px}R\theta}{2 GSD}
 \end{equation}
 and for a detector or detector array to span the full width of the illuminated area, it must thus span $2 r_{fp}$.   The required physical dimension of the imaging detector is a critical system cost-driver for a number of reasons.  
 
@@ -698,20 +698,19 @@ Per Eq.~\eqref{eq:eta_ph_fwc}, we note that
 
 High efficiency FWC-limited systems must either have larger full-well capacities or higher line-rates.  We observed also that smaller pixels have positive system-level size (and thus cost) impacts and thus one desires focal planes with small pixels and high effective line-rates (where effective line-rates for staring arrays is defined in Eq.~\eqref{eq:lr_framing}).
 
-We also showed in Eq.~\eqref{eq:I_D_scaling} that data pixel FWC is very important to dynamic range and data intensity.
-
-In light of these observations we define a sensor figure of merit
+We also showed in Eq.~\eqref{eq:I_D_scaling} that data pixel FWC is very important to dynamic range and data intensity and in light of these observations we define a sensor figure of merit
 \begin{equation}
     \psi_{px} = h_{px}N_{e^-}^{FWC}LR%\frac{h_{px}N_{e^-}^{FWC}LR}{p_{px}}
     \label{eq:psi_px}.
 \end{equation}
+
+In practice, data intensity and dynamic range also depend critically on uncorrelated noise sources in the imaging system but for most modern detectors operating at short integration times, read noise and dark current are relatively small.  We will ignore these noise sources in the sensor metric above but note that if comparing sensors with significantly different uncorrelated noise levels, the figure of merit should be modified to include this noise term.  In that case, $N_{e^-}^{FWC}$ can be replaced by the native pixel dynamic range, $DR=\frac{N_{e^-}^{FWC}}{\sum \sigma_{uncor}}$.
+
 $\psi_{px}$ is computed for a number of commercial-off-the-shelf sensors and plotted in Figure~\ref{fig:psi_px}.
 
 \includefigure{figures/p_kpi.pgf}{fig:psi_px}{Detector figure of merit, $\psi_{px}$.  Note log scale and general trend of higher $\psi_{px}$ for CMOS sensors.}
 
-\begin{observation}[CMOS detectors coupled with analog stabilization are enabling]
-The trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics.
-\end{observation}
+\textbf{From Figure \ref{fig:psi_px} we observe that the trend towards small pixels and high read-out rates enables CMOS detectors to extract more information from high performance, compact (and thus low cost) optics. }
 
 Of course, this additional information does come at the cost of increased data intensity as shown in Equation \eqref{eq:I_D_phi} and, empirically across all types of sensors, in Figure~\ref{fig:psi_vs_id}.
 
@@ -784,7 +783,7 @@ Using different integration times resolves the above dilemma: Shorter integratio
 \begin{figure}
   % Note:  This figure was generated from Matlab script hdr_jonny_paper.m, included here in sharelatex
   \centering
-  \includegraphics[width=\columnwidth]{figures/hdr-design-snr-hdr-examples.png}
+  \includegraphics[width=0.7\columnwidth]{figures/hdr-design-snr-hdr-examples.png}
   \caption{SNR and dynamic range for different integration times. The nominal 1x integration time captures a range of bright levels up to 1.0.  Longer integration times capture smaller ranges of brightness, but with higher SNR. Combining the three image exposures gives the saw-tooth-shaped SNR profile. \label{fig:hdr_snr_example}}
 \end{figure}
 
@@ -827,22 +826,22 @@ In summary, we have shown that the hybrid stabilization imaging modality has som
 \item Provides the designer with additional parameters that can be used to trade image quality, capacity and data intensity through the entire system lifecycle (even in operation)
 \end{enumerate}
 
-Table~\ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities.
-
-\begin{table}[ht]
-%\resizebox{.9\textwidth}{!}{%
-\centering
-\begin{tabular}{@{}rccccc@{}}
-\multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & $\eta_{ph}$         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 
-\textbf{\begin{tabular}[c]{@{}r@{}}Analog \\Electronic\end{tabular}}                                                         & {\color[HTML]{F56B00} \textbf{-}} & {\color[HTML]{32CB00} \textbf{+}}   & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{FE0000} \textbf{- -}}                                & {\color[HTML]{32CB00} \textbf{++}}                                \\ \midrule
-\textbf{\begin{tabular}[c]{@{}r@{}}Digital\\Oversampling\end{tabular}}                                                  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{32CB00} \textbf{++}}                                 & {\color[HTML]{FE0000} \textbf{- -}}                               \\ \midrule
-\textbf{Hybrid} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{++}}  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{Tunable}}                            & {\color[HTML]{32CB00} \textbf{Tunable}}                           \\ \bottomrule
-\end{tabular}%
-}
-\caption{Relative advantages and disadvantages of the modalities. $DR$ is dynamic range, $SNR$ is signal-to-noise ratio.}
-\label{table:modalities}
-\end{table}
-
+%Table~\ref{table:modalities} summarizes qualitatively the relative advantages and disadvantages of the three modalities.
+%
+%\begin{table}[ht]
+%%\resizebox{.9\textwidth}{!}{%
+%\centering
+%\begin{tabular}{@{}rccccc@{}}
+%\multicolumn{1}{l}{}                                                 & \textbf{DR}                       & \textbf{SNR}                        & $\eta_{ph}$         & \textbf{\begin{tabular}[c]{@{}c@{}}Stability\\ Req'd\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}Data\\ Intensity\end{tabular}} \\ \cmidrule(l){2-6} 
+%\textbf{\begin{tabular}[c]{@{}r@{}}Analog \\Electronic\end{tabular}}                                                         & {\color[HTML]{F56B00} \textbf{-}} & {\color[HTML]{32CB00} \textbf{+}}   & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{FE0000} \textbf{- -}}                                & {\color[HTML]{32CB00} \textbf{++}}                                \\ \midrule
+%\textbf{\begin{tabular}[c]{@{}r@{}}Digital\\Oversampling\end{tabular}}                                                  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{FE0000} \textbf{-}} & {\color[HTML]{32CB00} \textbf{++}}                                 & {\color[HTML]{FE0000} \textbf{- -}}                               \\ \midrule
+%\textbf{Hybrid} & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{++}}  & {\color[HTML]{32CB00} \textbf{+}} & {\color[HTML]{32CB00} \textbf{Tunable}}                            & {\color[HTML]{32CB00} \textbf{Tunable}}                           \\ \bottomrule
+%\end{tabular}%
+%%}
+%\caption{Relative advantages and disadvantages of the modalities. $DR$ is dynamic range, $SNR$ is signal-to-noise ratio.}
+%\label{table:modalities}
+%\end{table}
+%
 \section{Design Case Studies}
 \label{sec:case_studies}
 
@@ -859,7 +858,7 @@ Additional requirements and assumptions are captured in Table~\ref{table:case_st
 
 \begin{table}[t]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}ccl@{}}
 \toprule
 \textbf{Requirement} & \textbf{Value}                                                                       & \textbf{Note}              \\ \midrule
@@ -876,7 +875,7 @@ Optical WFE & 0.15 $\lambda$ RMS & At $\lambda_c$ \\ \midrule
 $N_{\lambda}$ & 5 & PAN+NRGB \\ \midrule
 $N_{ct}$ & 5 & $\sim 20$ kpix cross-track req.\\ \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Case study requirements and assumptions.}
 \label{table:case_study_reqs}
 \end{table}
@@ -906,7 +905,7 @@ This design point is for a minimum-size (low-cost) 50cm $GRD_{eff}$ spacecraft w
 
 \begin{table}[ht]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Requirement} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -916,7 +915,7 @@ $x_{ct}$ & 7.5 km & \\ \midrule
 $Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $I_D$ \\ \midrule
 $N_sN_{e^-}^{FWC}$   & 98 k$e^{-}$ & From $SNR_{\alpha}$, $\alpha$  \\ \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Specification for 50-cm small-sat point collector.}
 \label{table:50cm_specs}
 \end{table}
@@ -933,7 +932,7 @@ The full point design given this sensor choice produces the parameters captured 
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Parameter} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -948,7 +947,7 @@ $Ns$ & 3 & \\ \midrule
 $I_D^{raw}$ & 41.3 bit / pix & Uncompressed \\ \midrule
 $DR$ & 82.8 dB & \\\bottomrule
 \end{tabular}%
-}
+%}
 \caption{Dependent system parameters for optimized 50cm system}
 \label{table:50cm_parameters}
 \end{table}
@@ -967,7 +966,7 @@ For this case study, the design point goal is a 1-m class $GRD_{eff}$ with a lar
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Requirement} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -977,7 +976,7 @@ $x_{ct}$ & $\geq$ 20 km & \\ \midrule
 $Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $I_D$ \\ \midrule
 $N_sN_{e^-}^{FWC}$   & 98 $ke^{-}$ & From $SNR_{\alpha}$, $\alpha$  \\ \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Specification for 1-m large-area collector.}
 \label{table:1m_case}
 \end{table}
@@ -992,7 +991,7 @@ Given the choice of sensors, we look at how other system parameters are affected
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lcccccl@{}}
 \toprule
 \textbf{Sensor} & \textbf{$N_{det}$} & \textbf{$FPS^{req}$} & \textbf{$x_{ct}$} & \textbf{$DR$} & \textbf{$I_D$} & \textbf{$F^\#$} \\ \midrule
@@ -1001,7 +1000,7 @@ Python 25k & 5 & 75 & 21.2 km & 68.2 dB & 102.0 bit / pix & 11.1 \\
 CMV12000 & 6 & 111 & 20.3 km & 69.4 dB & 92.2 bit / pix & 13.6 \\
 CMV50000 & 4 & {\color[HTML]{CB0000} \textbf{49.5}} & 26.3 km & 72.8 dB & 84.6 bit / pix & 11.4 \\ \bottomrule
 \end{tabular} %
-}
+%}
 \caption{Impact of sensor choice on other system parameters}
 \label{table:1m_sensor_choice}
 \end{table}
@@ -1014,7 +1013,7 @@ Again, we chose the LTN4625a sensor and the resulting system parameters are comp
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Parameter} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -1029,7 +1028,7 @@ $Ns$ & 3 & \\ \midrule
 $I_D^{raw}$ & 41.3 bit / pix & Uncompressed \\ \midrule
 $DR$ & 82.8 dB & \\\bottomrule
 \end{tabular}%
-}
+%}
 \caption{Dependent system parameters for optimized 1-m system}
 \label{table:1m_parameters}
 \end{table}
@@ -1046,7 +1045,7 @@ The other case-specific direct and derived requirements are captured in Table~\r
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Requirement} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -1056,7 +1055,7 @@ $x_{ct}$ & $\geq$ 5 km & \\ \midrule
 $Q$ & 1.3 & Compromise between IQ, $\psi_{px}$, $I_D$ \\ \midrule
 $N_sN_{e^-}^{FWC}$   & 50 $ke^{-}$ & From $SNR_{\alpha}$, $\alpha$  \\ \bottomrule
 \end{tabular}%
-}
+%}
 \caption{Specification for 30 cm point collector}
 \label{table:30cm_case}
 \end{table}
@@ -1065,7 +1064,7 @@ The model produces a feasible solution to this system design utilizing 5 tiled L
 
 \begin{table}[h!]
 \centering
-\resizebox{\linewidth}{!}{%
+%\resizebox{\linewidth}{!}{%
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Parameter} & \textbf{Value} & \textbf{Note}  \\ \midrule
@@ -1080,7 +1079,7 @@ $Ns$ & 1 & \\ \midrule
 $I_D^{raw}$ & 13 bit / pix & Uncompressed \\ \midrule
 $DR$ & 78.1 dB & \\\bottomrule
 \end{tabular}%
-}
+%}
 \caption{Dependent system parameters for optimized 30 cm system}
 \label{table:30cm_parameters}
 \end{table}
