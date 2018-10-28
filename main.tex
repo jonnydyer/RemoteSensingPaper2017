@@ -1,7 +1,7 @@
 \documentclass[]{spieman}  %10pt, sans, memo
 \usepackage{amsthm}
 
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{}  %inputenc
 
 \usepackage{tikz}
 \usepackage{tikzscale}
@@ -18,8 +18,11 @@
 \usepackage{subfig}
 \usepackage{float}
 %\usepackage{subcaption}
+\usepackage{lineno}
 
-%\bibliographystyle{IEEEtran}
+\pgfplotsset{compat=1.14}
+
+\bibliographystyle{acm}
 
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
@@ -47,6 +50,7 @@
 %\hyphenation{GIQE-5}
 
 \begin{document}
+\linenumbers
 
 \newtheorem{mydef}{Definition}
 \newtheorem{observation}{Observation}
@@ -60,7 +64,6 @@
 \author[a]{Mark Robertson}
 \affil[a]{Google, Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043}
 \affil[b]{Planet, 346 9th Street San Francisco, CA 94103}
-\markboth{IEEE Transactions on Geoscience and Remote Sensing}%
 
 % make the title area
 \maketitle
@@ -69,11 +72,15 @@
 %Many of the technology and investment trends that ushered in the so-called ``SmallSat Revolution'' will continue or accelerate but there is a paucity of analysis available in the open literature regarding the system design implications of these trends.  While these systems may not replace more traditional remote sensing systems in the near term, in many cases they are highly complementary such that interest and investment will continue to grow.
 
 %The authors identify the trends in imaging and micro-electronics driven by investments in such applications as smart phones and 4k TV and analyze the impact the associated technologies can have in new remote sensing spacecraft.  The commercially-driven technologies present large opportunities for cost reduction and performance improvements but require new system architectures and approaches.
-    Remote sensing system design is an exercise in tradeoffs.  Three of the most important axes in this trade space are data quality, data volume (or bandwidth) and cost.  It is well-known for space-systems that cost is highly correlated with size\cite{bearden} and in high resolution remote sensing, there has been a demonstrable trend towards larger fleets of smaller, lest costly spacecraft.  The inevitable compromise is in some combination of reduced data quality and bandwidth, impacts that we would like to minimize.
+    Remote sensing system design is an exercise in tradeoffs.  Three of the most important axes in this trade space are data quality, data volume (or bandwidth) and cost.  It is well-known for space-systems that cost is highly correlated with size \cite{bearden} and in high resolution remote sensing, there has been a demonstrable trend towards larger fleets of smaller, lest costly spacecraft.  The inevitable compromise is in some combination of reduced data quality and bandwidth, impacts that we would like to minimize.
 
-    In this paper we show that for electro-optical remote sensing systems there is a fundmanetal system capability metric, $\eta_{ph}\Omega A$ that encompases trade-offs between data quality and bandwidth and that the value goal for these systems should be to maximize this metric while minimizing system size and complexity to constrain cost.  
+    During our time at Skybox Imaging, we explored these tradeoffs from a resource-constrained start-up perspective and became aware that several of the trends driving an explosion in consumer imaging capability have fundamentally changed the trade space for remote sensing as well.  We seek to put these observations on a firm theoretical foundation and explore what the trends mean for the future of remote sensing.
 
-    Finally we show that modern commercial imaging detector technology is key to accomplishing this optimization, but requires different imaging modalities than the traditional push-broom approach.  These new modalities also enable remote sensing systems to leverage the same computational imaging approaches that have been instrumental in enabling a revolution in consumer device imaging.
+    We start by showing that for electro-optical remote sensing systems there is a fundamental system capability metric, $\eta_{ph}\Omega A$ that encompases trade-offs between data quality and bandwidth and that the value goal for these systems should be to maximize this metric while minimizing system size and complexity to constrain cost.  
+
+    Then we show that modern commercial imaging detector technology is key to accomplishing this optimization, but requires different imaging modalities than the traditional push-broom approach.  These new modalities also enable remote sensing systems to leverage the same computational imaging approaches that have been instrumental in enabling a revolution in consumer device imaging.
+    
+    Finally we explore the implications of this on three specific conceptual system designs.
 \end{abstract}
 
 %\begin{spacing}{2}
@@ -183,11 +190,11 @@ where $R$ is range to target (spacecraft altitude if Nadir-pointed),  $D_{ap}$ i
 	\centering
 	\subfloat[Q = 1]{\includegraphics[]{figures/SNR_mtf_Q1.pdf}}
 	\subfloat[Q = 2]{\includegraphics[]{figures/SNR_mtf_Q2.pdf}}
-	\label{fig:snr_mtf}
 	\caption{Visual resolvability vs SNR and MTF for two different values of $Q$.  Note that dashed red line indicates Nyquist criteria.}
+	\label{fig:snr_mtf}
 \end{figure}
 
-Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q}) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure \ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
+Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q} for the definiton of $Q$) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure \ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
 High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.  NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
@@ -288,9 +295,9 @@ ${SNR}$ can be expressed as
     SNR_{\alpha} = \frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}},
 \label{eq:SNR_multiframe}
 \end{equation}
-where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value and $\sum{\sigma_i^2}$ is the RSS of noises other than shot noise.
+where $\alpha$ is the ratio of target radiance (or reflectance) to the saturation value and $\sum{\sigma_i^2}$ is the squared sum of uncorrelated noises other than shot noise.
 
-Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expanded to include multiple digital exposures such that
+Eq. \eqref{eq:SNR_multiframe}, like eq. \eqref{eq:DR_OS} for $DR$, can be expanded to include multiple (equal) digital exposures such that
 \begin{equation}
 \label{eq:snr_alpha_multiframe}
 SNR_{\alpha} = \sqrt{N_s}\frac{\alpha N_{e^-}^{FWC}}{\sqrt{\sum{\sigma_i^2} + \alpha N_{e^-}^{FWC}}}.
@@ -378,17 +385,19 @@ Optical Etendue or throughput, $A \Omega$, is a fundamental space-bandwidth capa
     P_{opt} = A\Omega \int_{\lambda_1}^{\lambda_2}L(\lambda) d\lambda = A\Omega L.
 \end{equation}
 
-$A\Omega$ is also highly correlated with complexity and cost.  A reasonable design objective is, given some optical etendue, extract the most information from the optics (maximize information bandwidth).  Because information is encoded in the incoming photons, this translates to maximizing the ability of the detector to capture and characterize (spatially, spectrally) photons.  The effective usable photon power for imaging is
+$A\Omega$ is also highly correlated with complexity and cost.  A reasonable design objective is, given some optical etendue, extract the most information from the optics (maximize information bandwidth).  Because information is encoded in the incoming photons, this translates to maximizing the ability of the detector to capture and characterize (spatially, spectrally) photons.
+
+Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Therefore
+
+\begin{equation}
+    \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int},
+\end{equation}
+where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of view at the focal plane, $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons and $L$ is incoming radiance.  The effective usable photon power for imaging is
+
 \begin{equation}
     P_{img} = \eta_{ph} A \Omega L
 \end{equation}
 showing that the product $\eta_{ph}A_{ap}\Omega$ is a very important metric capturing the fundamental information collection bandwidth of the imaging system.
-
-Photons can be lost spatially if the detector area does not cover the full field of view (at the focal plane) of the optic or if there is non-unity duty cycle in photon integration.  Therefore
-\begin{equation}
-    \eta_{ph} = \frac{A_{det}}{A_{fov}} \phi_{int},
-\end{equation}
-where $A_{det}$ is detector area, $A_{fov}$ is the area of the optical field of view at the focal plane, $\phi_{int}$ is the fraction of time that the detectors are actively integrating photons and $L$ is incoming radiance.
 
 \subsubsection{Relationshp of $\eta_{ph}$ to $ACR$ and $IQ$}
 
@@ -491,11 +500,11 @@ While  this limitation can be overcome through digital oversampling (Section~\re
 Finally, line-of-sight stability is crucially important during integration in a TDI array \cite{pittelkau} and the charge-transfer process itself incurs smear\cite{fiete_blur}, degrading image MTF.  Digital oversampling partially mitigates both of these issues.
 
 \subsection{Digital Stabilization with Step-and-Stare}
-Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to creat output data with a longer effective integration time -- virtual TDI in a way.
+Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to create output data with a longer effective integration time -- virtual TDI in a way.
 
 \includefigure{figures/step_stare.pgf}{fig:step_stare}{Step-and-stare t-x diagram.  Red row indicates one in-track ground sample}
 
-Figure~\ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels and a very high framing rate whereas in reality most modern framing sensors are $>$ 1000 pixels high and frames at about 1/6 of the rate shown.  Figure~\ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate.
+Figure~\ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels and a very high framing rate whereas in reality most modern framing sensors are $>$ 1000 pixels high and frames at about 1/6 of the rate shown.  Figure~\ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate.  The widely spaced (in time), short integration periods generate a stroboscobic effect, freezing motion at the cost of light gathering.
 
 It is worth noting in this diagram that the photon collection duty cycle, $\phi_{int}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integration windows.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is typically blur-limited (see~\ref{sec:eta_ph}).  This is a problematic limitation and severe enough that systems $GSD$ below about 3~m must reduce $V_{gnd}$ with a bus ``back-nod'' in order to get sufficient signal without incurring substantial blur.
 
@@ -559,7 +568,7 @@ The remote-sensing trade space is largely constrained by four mission needs:
 As discussed in Section \ref{sec:modalities} and \ref{sec:entendue} \emph{Image Quality (IQ)} and \emph{Collection Capacity} are tightly coupled at the system level.  Equation ~\eqref{eq:acr_snr_gsd} demonstrates this deep relationship for a set of other system parameters.  In this section we develop this result as it pertains to more granular system parameters.  
 
 \subsection{Pixel Size}
-
+\label{sec:fp_dimensions}
 We will study the effect of pixel size through the lens of $Q$ recognizing that \cite{fiete}
 \begin{equation*}
     Q = \frac{\lambda f}{D_{ap} p_{px}},
@@ -845,7 +854,7 @@ In summary, we have shown that the hybrid stabilization imaging modality has som
 \section{Design Case Studies}
 \label{sec:case_studies}
 
-In this section we take the earlier results and apply them to two systems: a very high resolution small satellite for point-collection and a high resolution large area collector for mapping.  For both case studies, we use the following assumptions:
+In this section we take the earlier results and apply them to three systems: a very resolution small satellite for point-collection, a high resolution large area collector for mapping and a very-high resolution point collector.  For both case studies, we use the following assumptions:
 
 \begin{itemize}
     \item Goal is to meet requirements while minimizing overall system size, which is driven directly by aperture diameter and focal plane size
@@ -1258,12 +1267,14 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 
 where $N_s$ is the oversampling ratio.
 
+\newpage
 \section{Appendix D: Sensor Table}
 \label{sec:appendix_d}
 \input{sensor_table}
+\clearpage
 
-%\end{spacing}
-
-\bibliography{IEEEabrv,main}
+\section{References}
+\bibliographystyle{ieeetr}
+\bibliography{main}
 
 \end{document}
