@@ -1,5 +1,5 @@
 \documentclass[]{spieman}  %10pt, sans, memo
-\usepackage{amsthm}
+%\usepackage{amsthm}
 
 \usepackage[utf8]{}  %inputenc
 
@@ -21,8 +21,6 @@
 \usepackage{lineno}
 
 \pgfplotsset{compat=1.14}
-
-\bibliographystyle{acm}
 
 \title{Imaging Trends and the Future of \\High Resolution Satellite Remote Sensing}
 \hypersetup{
@@ -76,14 +74,14 @@
 
     During our time at Skybox Imaging, we explored these tradeoffs from a resource-constrained start-up perspective and became aware that several of the trends driving an explosion in consumer imaging capability have fundamentally changed the trade space for remote sensing as well.  We seek to put these observations on a firm theoretical foundation and explore what the trends mean for the future of remote sensing.
 
-    We start by showing that for electro-optical remote sensing systems there is a fundamental system capability metric, $\eta_{ph}\Omega A$ that encompases trade-offs between data quality and bandwidth and that the value goal for these systems should be to maximize this metric while minimizing system size and complexity to constrain cost.  
+    We start by showing that for electro-optical remote sensing systems there is a fundamental system capability metric, $\eta_{ph}\Omega A$ that encompasses trade-offs between data quality and bandwidth and that the value goal for these systems should be to maximize this metric while minimizing system size and complexity to constrain cost.  
 
     Then we show that modern commercial imaging detector technology is key to accomplishing this optimization, but requires different imaging modalities than the traditional push-broom approach.  These new modalities also enable remote sensing systems to leverage the same computational imaging approaches that have been instrumental in enabling a revolution in consumer device imaging.
     
     Finally we explore the implications of this on three specific conceptual system designs.
 \end{abstract}
 
-%\begin{spacing}{2}
+\begin{spacing}{2}
 
 % Note that keywords are not normally used for peerreview papers.
 \keywords{Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.}
@@ -93,7 +91,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-    The satellite world has seen a techtonic shift in the emergence of Sillicon Valley-inspired efforts to develop and deploy smaller (and thus cheaper) systems within tight time and budget constraints.  Fundamental to these approaches is the well-established observation that satellite system size is highly correlated with cost (see Section \ref{sec:appendix_a}) and, therefore, smaller, simpler systems can be developed and deployed more quickly and inexpensively.  Several systems such as the Planet Dove and Skysat (formerly Skybox Imaging) constellations serve as evidence that this approach can provide value.
+    The satellite world has seen a tectonic shift in the emergence of Sillicon Valley-inspired efforts to develop and deploy smaller (and thus cheaper) systems within tight time and budget constraints.  Fundamental to these approaches is the well-established observation that satellite system size is highly correlated with cost (see Section \ref{sec:appendix_a}) and, therefore, smaller, simpler systems can be developed and deployed more quickly and inexpensively.  Several systems such as the Planet Dove and Skysat (formerly Skybox Imaging) constellations serve as evidence that this approach can provide value.
 
 Simulatenously, the last 15 years have seen a massive upheaval in consumer digital imaging culminating in almost total obsolescence of film-based imaging.  Initially driven by the pro-sumer DSLR and pocket camera market, the trend has continued and accelerated with the introduction and refinement of high quality cameras in to smart phones and the digitization of the TV and movie industries.
 
@@ -179,6 +177,7 @@ In order to compare different remote sensing systems, we need quantitative metri
 Image quality is a complex, multi-faceted subject and while there is no perfect model or metric, substantial work has gone into quantifying the image quality of high resolution remote sensing systems.  We start by introducing integrated image quality models and then expand on some of the subtleties around signal-to-noise ratio and dynamic range.
 
 \subsubsection{Resolution, NIIRS and GIQE}
+
 Resolution is a key component of image quality but is a surprisingly difficult-to-define metric.  Often Ground Sample Distance, $GSD$ is used as a proxy for resolution under the assumption of near-critical sampling.
 Alternatively, Ground Resolution Distance, $GRD$, is used where $GRD$ is a form of the diffraction-limited optical resolution such that given by the Rayleigh Criterion:
 \begin{equation}
@@ -194,9 +193,9 @@ where $R$ is range to target (spacecraft altitude if Nadir-pointed),  $D_{ap}$ i
 	\label{fig:snr_mtf}
 \end{figure}
 
-Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q} for the definiton of $Q$) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure \ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
+Comparing image quality purely on $GSD$ or $GRD$ becomes problematic for systems with varying $Q$ and/or $SNR$ (see Section~\ref{sec:q} for the definition of $Q$) because depending on the sampling or SNR regimes resolvability may first be constrained by sampling, diffraction or SNR.  Figure \ref{fig:snr_mtf} illustrates this graphically.  More holistic image quality formulations typically refer back to \emph{resolvability} or the ability to distinguish objects or features of a given size in an image.
 
-High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.  NIIRS rating is described by specific scene intepretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
+High resolution space-based systems are typically evaluated by quantitative ``image interpretability'' scales, the best known being the National Image Interpretability Rating Scale, or NIIRS.  NIIRS rating is described by specific scene interpretation standards, examples of which are shown in Table~\ref{table:NIIRS}\cite{niirs}.
 
 \begin{table}[h!t]
 \resizebox{.9\textwidth}{!}{%
@@ -216,11 +215,11 @@ High resolution space-based systems are typically evaluated by quantitative ``im
 
 NIIRS is a logarithmic scale traditionally evaluated by trained human image interpreters.  However, much work has gone into developing semi-analytic regressions to predict NIIRS from basic image quality parameters such as sharpness, signal-to-noise ratio (SNR), etc. The Generalized Image Quality Equation (GIQE) is an example of such a function; we will use the 5th version, GIQE-5 which is defined in eq. \eqref{eq:giqe5}.
 
-\begin{dmath}
+\begin{equation}
 NIIRS = 4.4 - 3.32 \log(GSD_{m}) + 3.32 \left[1 - e^{\frac{-5.308}{\Delta SNR}}\right]\log(RER_0)
 - 0.402 \log(RER_0)^4 - 2.92/\Delta SNR - 0.069N_{smear},
 \label{eq:giqe5}
-\end{dmath}
+\end{equation}
 where $GSD_{m}$\footnote{$GSD$ units must be paid close attention to -- many references list GIQE using units of inches for GSD.  In this case, the first parameter in the equation is 9.7 rather than 4.4 because $4.4 - 3.32\log{\left(39.4 \frac{in}{m}\right)} \approx 9.7$} is the ground sample distance in meters, $\Delta SNR$ is difference between $SNR$ for a 15\% and 8\% target reflectance, $RER_0$ is the raw Relative Edge Response (without sharpening or MTFC) and $N_{smear}$ is the number of pixels of linear smear.
 
 GIQE-5 is fairly well validated in studies using human interpreters~\cite{giqe5} and nicely captures the trade-off between various imaging system parameters such as $SNR$ and $GSD$.  Note that GIQE-5 is logarithmic in resolution such that a halving of $GSD$ (proportional to resolution when holding other parameters constant) results in a NIIRS improvement of 1.
@@ -247,7 +246,7 @@ Dynamic range is defined as the ratio of maximum-to-minimum signal level that th
 
 The minimum signal level is the noise-floor of the system, $s_{min} = \sigma$ where $\sigma$ represents all non-signal-correlated noise sources in the system including read noise, dark current, quantization, etc.
 
-The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{FWC}$ for single-exposure systems.  Note that in digitally oversampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{FWC}$ where $N_s$ is the oversampling ratio
+The maximum signal is the maximum number of photo-electrons the system can capture for one output image pixel and is limited by the well depth of a pixel, $s_{max} = N_{e^-}^{FWC}$ for single-exposure systems.  Note that in digitally over-sampled systems (covered later), the digital oversampling factor directly expands dynamic range by increasing the effective well depth such that $s_{max} = N_s N_{e^-}^{FWC}$ where $N_s$ is the oversampling ratio
 
 \begin{equation}
     N_s = \text{floor}\left(\frac{GSD \times LR}{V_{gnd}}\right)
@@ -272,7 +271,7 @@ Dynamic range is a very important quality parameter for remote sensing systems b
 \caption{The first two images have relatively low dynamic range.  The first is under-exposed and the second over-.  Note the details lost in shadows in the first and highlights (parking lot) in the second when compared with the third image which has about 90dB of DR}
 \end{figure}
 
-For systems that digitally oversample with unequal exposures, the dynamic range can be even larger as is shown in Section~\ref{sec:hdr}.
+For systems that digitally over-sample with unequal exposures, the dynamic range can be even larger as is shown in Section~\ref{sec:hdr}.
 Signal-to-noise ratio, $SNR$, like dynamic range depends critically on both the detector well depth and its noise characteristics.  However signal-to-noise ratio is not purely a system-defined metric but depends also on the scene being imaged and as well as exposure parameters.  $SNR$ is defined as
 
 \begin{equation*}
@@ -314,6 +313,7 @@ The high dynamic range in natural overhead scenes presents a challenge in achiev
 As mentioned earlier and discussed further in Section~\ref{sec:hdr}, digital oversampling allows the collection of so-called High Dynamic Range (HDR) images.  HDR enables a system to achieve higher SNR over the full dynamic range of a scene.
 
 \subsection{Data Intensity}
+
 \label{sec:data_intensity}
 Data intensity, $I_D$, is a metric that impacts a wide range of spacecraft subsystems from on-board storage and data handling to downlink bandwidth.  It is defined as the number of digital bits captured, processed or transmitted per image product output pixel
 \begin{equation}
@@ -440,7 +440,7 @@ We will classify modern stabilization strategies into three  buckets
 
 Digital imaging spacecraft have traditionally used a ``push-broom'' architecture where a line-array sensor is pushed along the ground by the spacecraft's motion.  Analog stabilization by charge transfer between rows synchronous with scene velocity allows for so-called Time Delayed Integration, TDI.  
 
-Development of large format CCD and CMOS framing detectors allows for ``step-and-stare'' architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.  If the framing rate is high enough, the scene can be digitally oversampled such that a single point on the ground is captured with multiple exposures of the focal plane.
+Development of large format CCD and CMOS framing detectors allows for ``step-and-stare'' architectures in which a scene snapshot is captured with a 2D framing sensor that is then moved further along the orbital path before another scene is captured.  If the framing rate is high enough, the scene can be digitally over-sampled such that a single point on the ground is captured with multiple exposures of the focal plane.
 
 \begin{figure}[h!t]
 \centering
@@ -453,7 +453,7 @@ Analog optomechanical stabilization relies on an optomechanical component with t
 
 The analog techniques are considered such because they occur before digital sampling of the detectors and are thus still limited by detector well capacity.  Digital oversampling is not as constrained by $FWC$ because each exposure resets the pixel and thus the $FWC$ can be effectively expanded by as many redundant samples as can be obtained.
 
-Both TDI pushbroom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure~\ref{fig:modalities}, analog charge transfer is depicted for TDI pushbroom, and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure pushbroom collection is not feasible in systems with $GSD$ much below 10 m.
+Both TDI push-broom and step-and-stare allow for some form of stabilization or motion compensation which is required to obtain reasonable $SNR$ in high resolution systems.  In the case of Figure~\ref{fig:modalities}, analog charge transfer is depicted for TDI push-broom, and digital oversampling (through overlapping frames) is depicted for step-and-stare.  Pushbroom is shown mostly for historical reference as pure push-broom collection is not feasible in systems with $GSD$ much below 10 m.
 
 To date, analog electronic or TDI stabilization has only been implemented successfully in CCD detectors.  There is ongoing work to implement TDI in CMOS detectors but this technology is still immature~\cite{jerram, rushton}.
 
@@ -497,14 +497,14 @@ Historically missions have developed custom TDI detectors due to the unique perf
 In Section \ref{sec:fp_dimensions} we argue that smaller pixels are desirable from a system-size perspective but this typically comes at the expense of pixel full-well capacity, especially in off-the-shelf detectors.  
 While  this limitation can be overcome through digital oversampling (Section~\ref{sec:eta_ph}), single TDI detectors inherently couple read-out with integration, precluding this. 
 
-Finally, line-of-sight stability is crucially important during integration in a TDI array \cite{pittelkau} and the charge-transfer process itself incurs smear\cite{fiete_blur}, degrading image MTF.  Digital oversampling partially mitigates both of these issues.
+Finally, line-of-sight stability is crucially important during integration in a TDI array \cite{pittelkau} and the charge-transfer process itself incurs smear\cite{fiete_blur, tdi_smear}, degrading image MTF.  Digital oversampling partially mitigates both of these issues.
 
 \subsection{Digital Stabilization with Step-and-Stare}
 Step and stare relies on a high speed framing CMOS sensor to capture multiple, overlapping frames of the same point on the ground as the scene moves by.  The redundant samples are then re-combined in post-processing to create output data with a longer effective integration time -- virtual TDI in a way.
 
 \includefigure{figures/step_stare.pgf}{fig:step_stare}{Step-and-stare t-x diagram.  Red row indicates one in-track ground sample}
 
-Figure~\ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels and a very high framing rate whereas in reality most modern framing sensors are $>$ 1000 pixels high and frames at about 1/6 of the rate shown.  Figure~\ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate.  The widely spaced (in time), short integration periods generate a stroboscobic effect, freezing motion at the cost of light gathering.
+Figure~\ref{fig:step_stare} illustrates this mode on a t-x diagram.  Note that for visualization we illustrate a detector height of only 36 pixels and a very high framing rate whereas in reality most modern framing sensors are $>$ 1000 pixels high and frames at about 1/6 of the rate shown.  Figure~\ref{fig:step_stare_real} shows the same thing with realistic frame height and framerate.  The widely spaced (in time), short integration periods generate a stroboscopic effect, freezing motion at the cost of light gathering.
 
 It is worth noting in this diagram that the photon collection duty cycle, $\phi_{int}$ is small, especially compared with a traditional TDI system which is essentially 100\%.  This can be seen in the white gaps between integration windows.  It is also worth noting the slanted integration periods indicative of motion blur during integration.  Single frame integration time (and thus SNR) for step-and-stare is typically blur-limited (see~\ref{sec:eta_ph}).  This is a problematic limitation and severe enough that systems $GSD$ below about 3~m must reduce $V_{gnd}$ with a bus ``back-nod'' in order to get sufficient signal without incurring substantial blur.
 
@@ -522,7 +522,7 @@ More specifically, the issues hybrid stabilization addresses are:
 \begin{itemize}
     \item Analog stabilization allows operation in FWC-constrained (Section ~\ref{sec:eta_ph}) regime, thus extracting the most from optics ($A\Omega$) and detectors ($\eta_{ph}$)
     \item Digital oversampling enables HDR and ``flatter'' $SNR$ over dynamic range as discussed in Section~\ref{sec:hdr}
-    \item Digital oversampling allows for resolution-enhancement techniques such as superresolution
+    \item Digital oversampling allows for resolution-enhancement techniques such as super-resolution
     \item Hybrid imaging systems inherently un-constrain other elements of the system in both development and operation allowing for image quality, area collection rate, data intensity, required ACS stability and more to be traded throughout the lifecycle of the system
 \end{itemize}
 
@@ -603,7 +603,7 @@ Whether the solution is monolithic or a tiled array, it is clear that minimizing
 
 However, there are two other system impacts of $Q$ that argue against pushing it higher.  The first is that for CCD-based TDI systems operating in the FWC-limited regime, pixels with sufficient full well capacity to meet dynamic range and $SNR$ requirements have traditionally required relatively large pixels compared with commercial state-of-the-art (see Figure~\ref{fig:p_fwc}).
 
-Smaller pixels typically store less charge, both in the photodector and storage node. In fact to first order~\cite{jerram}
+Smaller pixels typically store less charge, both in the photo-detector and storage node. In fact to first order~\cite{jerram}
 \begin{equation}
   \label{eq:pix_fwc_scaling}  
 N_{e^-}^{FWC} \propto p^2,
@@ -1267,14 +1267,17 @@ Note that in several of the modalities, digital over-sampling is utilized.  In t
 
 where $N_s$ is the oversampling ratio.
 
-\newpage
 \section{Appendix D: Sensor Table}
 \label{sec:appendix_d}
 \input{sensor_table}
 \clearpage
 
 \section{References}
-\bibliographystyle{ieeetr}
-\bibliography{main}
+\bibliographystyle{spijour}   % makes bibtex use spiejour.bst
+\bibliography{main}   % bibliography data in main.bib
 
+\listoffigures
+\listoftables
+
+\end{spacing}
 \end{document}
