@@ -27,18 +27,18 @@ def LoadSensorData():
     sheet of sensor properties
     """
     sensors = pd.read_csv('figures/sensors.csv')
-    # JD Note: changed this to match my updated KPI which doesn't put p_px in 
+    # JD Note: changed this to match my updated KPI which doesn't put p_px in
     # denominator because I don't think that made sense.
     sensors['kpi1'] = sensors['FWC'] * sensors['Width'] * sensors['Height'] * \
                        sensors['FPS']# / \
                  #      sensors['Pixel Size']
-    
+
     bits = 12 # Could use log2(DR) but why penalize sensors with good noise characteristics?
-    
+
     # Data intensity in bits/sec
     sensors['I_d'] = sensors['Width'] * sensors['Height'] * sensors['FPS'] * bits
     # Number of samples needed for SNR=100 at alpha=5
-    sensors['n_samp'] = np.ceil(5e4/sensors['FWC']) 
+    sensors['n_samp'] = np.ceil(5e4/sensors['FWC'])
     # Number of samples for each ground point for GSD=1m at h=500km (v=7000m/s)
     sensors['n_samp_gsd1'] = np.floor(sensors['Height']/(7000./1./sensors['FPS']))
     # Number of samples for each ground point for GSD=4m at h=500km (v=7000m/s)
@@ -50,7 +50,7 @@ def LoadSensorData():
     # Data intensity assuming on-board summing with shift/add
     # Could multiply by N_bands below but that's less fundamental
     sensors['I_d_sum'] = sensors['I_d']/sensors['n_samp_gsd1']
-    
+
     return(sensors)
 
 
@@ -62,10 +62,10 @@ def SensorType(sensors):
 
 def PlotPsiVsId(sensors):
     """
-    Make some plots of 
+    Make some plots of
     """
     ccds, cmos, cmos_rolling = SensorType(sensors)
-    
+
     # Information content vs data intensity. Scatter about the linear fit is just
     # due to higher order variation in e.g. aspect ratio, bit depth, etc.
     fig1 = plt.figure(1)
@@ -78,7 +78,7 @@ def PlotPsiVsId(sensors):
     #plt.ylim(0, 50)
     plt.tight_layout()
     plt.legend(loc='best')
-    
+
     # Information content vs data intensity assuming on-board summing of digital
     # oversamples. This (of course) favors CMOS detectors, shifting them to the
     # left so that they are above CCDs instead of up and to the right.
@@ -92,14 +92,14 @@ def PlotPsiVsId(sensors):
     #plt.ylim(0, 50)
     plt.tight_layout()
     plt.legend(loc='best')
-    
+
     return(fig1, fig2)
 
 
 def PlotNBands(sensors):
-    # Klugy attempt to show how the height of a CMOS detector can be used to 
+    # Klugy attempt to show how the height of a CMOS detector can be used to
     # add more spectral bands
-    font = {'family': 'sans_serif',
+    font = {'family': 'sans-serif',
             'color':  'darkred',
             'weight': 'normal',
             'size': 9,
@@ -138,7 +138,7 @@ def PlotNBands(sensors):
     ax.add_patch(patches.Rectangle((2,12),6,5,facecolor='blue', alpha=0.1))
     ax.text(labelx, 13, "Hyperspectral",fontdict=font)
     #f.savefig('figures/p_kpi.pgf')
-    
+
     fig2,ax = plt.subplots()
     ax.plot(ccds['Pixel Size'], ccds['yax4'], 'r^', label='CCD')
     ax.plot(cmos['Pixel Size'], cmos['yax4'], 'go', label='CMOS (Global)')
