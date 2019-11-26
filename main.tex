@@ -1,5 +1,5 @@
-\documentclass[]{spieman}  %10pt, sans, memo
-%\usepackage{amsthm}
+\documentclass[11pt,letterpaper]{memoir}  %10pt, sans, memo
+\usepackage{amsthm}
 
 \usepackage[utf8]{}  %inputenc
 
@@ -18,7 +18,9 @@
 \usepackage{subfig}
 \usepackage{float}
 %\usepackage{subcaption}
-\usepackage{lineno}
+%\usepackage{lineno}
+
+\usepackage[margin=0.75in]{geometry}
 
 \pgfplotsset{compat=1.14}
 
@@ -43,12 +45,14 @@
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
+%\renewcommand{\familydefault}{\sfdefault}
+
 % Don't allow these words to by broken (hyphenated) across lines/pages
 %\hyphenation{NIIRS}
 %\hyphenation{GIQE-5}
 
 \begin{document}
-\linenumbers
+%\linenumbers
 
 \newtheorem{mydef}{Definition}
 \newtheorem{observation}{Observation}
@@ -57,11 +61,14 @@
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
 \makeatother
 
-\author[a]{Jonathan Dyer}
-\author[b]{Paul Boerner}
-\author[a]{Mark Robertson}
-\affil[a]{Google, Inc. 1600 Amphitheatre Parkway, Mountain View, CA 94043}
-\affil[b]{Planet, 346 9th Street San Francisco, CA 94103}
+%\author{Jonathan Dyer}
+%\author{Paul Boerner}
+%\author{Mark Robertson}
+
+\author{Jonathan~Dyer\thanks{Former~Chief~Engineer, Skybox~Imaging,~Terra~ Bella},
+        Paul~Boerner\thanks{Former Imaging Systems Engineer,Skybox~Imaging,~Terra~ Bella},
+        and~Mark~Robertson\thanks{Former Lead Image Processing, Skybox Imaging, Terra Bella}%
+}
 
 % make the title area
 \maketitle
@@ -81,10 +88,10 @@
     Finally we explore the implications of this on three specific conceptual system designs.
 \end{abstract}
 
-\begin{spacing}{2}
+%\begin{spacing}{2}
 
 % Note that keywords are not normally used for peerreview papers.
-\keywords{Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.}
+%\keywords{Remote Sensing, Satellite, Imaging, Image resolution, CMOS Integrated Circuits, Systems Engineering.}
 
 % \tableofcontents
 
@@ -732,8 +739,8 @@ Of course, this additional information does come at the cost of increased data i
   % Note:  This figure was generated from python script sensors_id.py, included here in sharelatex
   \centering
   \includegraphics[]{figures/psi_vs_id.pgf}
-  \caption{Detector figure of merit is closely correlated with Data Intensity (as expected from Equation \eqref{eq:I_D_phi}), with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are applicable for bandwidth-starved systems that cannot do on-board data fusion.
-  \label{fig:psi_vs_id}}
+  \caption{Detector figure of merit is closely correlated with Data Intensity (as expected from Equation \eqref{eq:I_D_phi}), with slight deviations from the trend due to subtle differences in sensor characteristics like aspect ratio and the ratio of well depth to bit depth. CCDs occupy the lower-left corner of the plot, suggesting they are applicable for bandwidth-starved systems that cannot do on-board data fusion.}
+  \label{fig:psi_vs_id}
 \end{figure}
 
 Systems that are downlink-constrained, therefore, will likely be unable to take advantage of the greater information throughput of newer sensors. Equation \eqref{eq:I_D_phi}  indicates that in these cases, choosing a sensor with lower framerates and marginally larger pixel FWC is a good trade even if the overall $\psi_{px}$ is substantially lower.  Indeed if downlink bandwidth is the largest constraint, Equation \eqref{eq:I_D_phi} suggests that $N_{e^-}^{FWC}$ is probably the most important sensor metric.
@@ -1279,5 +1286,5 @@ where $N_s$ is the oversampling ratio.
 \listoffigures
 \listoftables
 
-\end{spacing}
+%\end{spacing}
 \end{document}
