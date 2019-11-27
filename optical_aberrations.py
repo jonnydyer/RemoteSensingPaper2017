@@ -152,10 +152,15 @@ if __name__ == "__main__":
     X = np.linspace(-ts_nom.d_ap/2, ts_nom.d_ap/2, opd.shape[0])
     Y = np.linspace(-ts_nom.d_ap/2, ts_nom.d_ap/2, opd.shape[1])
     X, Y = np.meshgrid(X, Y)
+
+    # There seems to be a bug in POPPY where values near boundary
+    # of aperture sometime show up as identically 0 which leads to
+    # plotting artifacts.  This is an inelegant way to fix.
+    opd[opd == 0.0] = np.nan
+
     #surf = ax.plot_surface(X,Y, opd, cmap=cmap, linewidth=0.,
     #                       cstride=5, rstride=5, vmin=np.nanmin(opd),
     #                       vmax=np.nanmax(opd), antialiased=True, alpha=1.)
-    opd[opd == 0.0] = np.nan
     surf = ax.plot_surface(X,Y, opd, cmap=cmap, edgecolor='k', linewidth=0.5,
                            vmin=np.nanmin(opd),
                            vmax=np.nanmax(opd), antialiased=True,
