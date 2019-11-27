@@ -117,15 +117,16 @@ if __name__ == "__main__":
                         [0.0, # piston
                         0.0, # tip
                         0.0, # tilt
-                        0.15, # focus
+                        0.05, # focus
                         0.03, # astig x
                         0.0, # astig y
-                        0.00, # coma x
+                        0.0, # coma x
                         0.0, # coma y
                         0.0, # astig 2 x
                         0.0, # astig 2 y
-                        -0.05],  # spherical
-                      det_os=9)
+                        0.0],  # spherical
+                        obsc=0.0,
+                        det_os=9)
 
     ts_diff = telescope(0.35,
                         [0.0, # piston
@@ -139,7 +140,8 @@ if __name__ == "__main__":
                         0.0, # astig 2 x
                         0.0, # astig 2 y
                         0.0],  # spherical
-                      det_os=9)
+                        obsc=0.0,
+                        det_os=9)
 
     cmap = 'jet'
     opd = ts_nom.get_opd(npix=512)
@@ -153,6 +155,7 @@ if __name__ == "__main__":
     #surf = ax.plot_surface(X,Y, opd, cmap=cmap, linewidth=0.,
     #                       cstride=5, rstride=5, vmin=np.nanmin(opd),
     #                       vmax=np.nanmax(opd), antialiased=True, alpha=1.)
+    opd[opd == 0.0] = np.nan
     surf = ax.plot_surface(X,Y, opd, cmap=cmap, edgecolor='k', linewidth=0.5,
                            vmin=np.nanmin(opd),
                            vmax=np.nanmax(opd), antialiased=True,
