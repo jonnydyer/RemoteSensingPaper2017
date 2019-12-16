@@ -1,0 +1,6 @@
+detector:
+    red_gain: 0.66
+    blue_gain: 0.66
+    green_gain: 1.0
+    well_depth: 10000
+    rd_noise: 5.
